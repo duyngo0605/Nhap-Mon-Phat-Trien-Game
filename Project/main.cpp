@@ -26,6 +26,7 @@ WARNING: This one file example has a hell LOT of *sinful* programming practices
 ================================================================ */
 
 #include <windows.h>
+#include"Ball.h"
 
 #include <d3d10.h>
 #include <d3dx10.h>
@@ -71,10 +72,12 @@ int BackBufferHeight = 0;
 #define BRICK_HEIGHT 32.0f
 
 
+
 ID3D10Texture2D* texBrick = NULL;				// Texture object to store brick image
 ID3DX10Sprite* spriteObject = NULL;				// Sprite handling object 
 
-D3DX10_SPRITE spriteBrick;
+Ball arrBalls[10];								//array of 10 balls
+D3DX10_SPRITE spriteBalls[10];					//array of 10 sprites of those balls
 
 float brick_x = BRICK_START_X;
 float brick_vx = BRICK_START_VX;
@@ -316,23 +319,26 @@ void LoadResources()
 
 	pD3DDevice->CreateShaderResourceView(texBrick, &SRVDesc, &gSpriteTextureRV);
 
-	// Set the sprite’s shader resource view
-	spriteBrick.pTexture = gSpriteTextureRV;
 
-	// top-left location in U,V coords
-	spriteBrick.TexCoord.x = 0;
-	spriteBrick.TexCoord.y = 0;
+	for (D3DX10_SPRITE spriteball : spriteBalls)
+		// Set the sprites’s shader resource view
+	{
+		spriteball.pTexture = gSpriteTextureRV;
 
-	// Determine the texture size in U,V coords
-	spriteBrick.TexSize.x = 1.0f;
-	spriteBrick.TexSize.y = 1.0f;
+		// top-left location in U,V coords
+		spriteball.TexCoord.x = 0;
+		spriteball.TexCoord.y = 0;
 
-	// Set the texture index. Single textures will use 0
-	spriteBrick.TextureIndex = 0;
+		// Determine the texture size in U,V coords
+		spriteball.TexSize.x = 1.0f;
+		spriteball.TexSize.y = 1.0f;
 
-	// The color to apply to this sprite, full color applies white.
-	spriteBrick.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		// Set the texture index. Single textures will use 0
+		spriteball.TextureIndex = 0;
 
+		// The color to apply to this sprite, full color applies white.
+		spriteball.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	}
 
 	DebugOut((wchar_t*)L"[INFO] Texture loaded Ok: %s \n", TEXTURE_PATH_BRICK);
 }
@@ -348,29 +354,32 @@ void Update(DWORD dt)
 	//Uncomment the whole function to see the brick moves and bounces back when hitting left and right edges
 	//brick_x++;
 
-	brick_x += brick_vx*dt;
-	brick_y += brick_vy * dt;
+	
 
 	// NOTE: BackBufferWidth is indeed related to rendering!!
 	float right_edge = BackBufferWidth;
 	float top_edge = BackBufferHeight;
+	for (Ball ball : arrBalls)
+	{
+		ball.vx += ball.vx * dt;
+		ball.vy += ball.vy * dt;
+		if (ball.x < 0 || ball.x > right_edge) {
 
-	if (brick_x < 0 || brick_x > right_edge) {
+			ball.vx = -ball.vx;
 
-		brick_vx = -brick_vx;
-
-		//	//Why not having these logics would make the brick disappear sometimes?  
-		/*	if (brick_x < 0)
-			{
-				brick_x = 0;
-			}
-			else if (brick_x > right_edge )
-			{
-				brick_x = right_edge;
-			}*/
+			//	//Why not having these logics would make the brick disappear sometimes?  
+			/*	if (brick_x < 0)
+				{
+					brick_x = 0;
+				}
+				else if (brick_x > right_edge )
+				{
+					brick_x = right_edge;
+				}*/
+		}
+		if (ball.y <0 || ball.y>top_edge)
+			ball.vy = -ball.vy;
 	}
-	if (brick_y <0 || brick_y>top_edge)
-		brick_vy = -brick_vy;
 }
 
 /*
@@ -389,17 +398,21 @@ void Render()
 
 		// The translation matrix to be created
 		D3DXMATRIX matTranslation;
-		// Create the translation matrix
-		D3DXMatrixTranslation(&matTranslation, brick_x, (BackBufferHeight - brick_y), 0.1f);
-
+		
 		// Scale the sprite to its correct width and height
-		D3DXMATRIX matScaling;
-		D3DXMatrixScaling(&matScaling, BRICK_WIDTH, BRICK_HEIGHT, 1.0f);
+		D3DXMATRIX matScaling;		
 
-		// Setting the sprite’s position and size
-		spriteBrick.matWorld = (matScaling * matTranslation);
+		// Setting the sprites’s position and size
+		for (D3DX10_SPRITE spriteball : spriteBalls)
+		{
+			// Create the translation matrix
+			D3DXMatrixTranslation(&matTranslation, brick_x, (BackBufferHeight - brick_y), 0.1f);
+			D3DXMatrixScaling(&matScaling, BRICK_WIDTH, BRICK_HEIGHT, 1.0f);
+			spriteball.matWorld = (matScaling * matTranslation);
+		
 
-		spriteObject->DrawSpritesImmediate(&spriteBrick, 1, 0, 0);
+		}
+		spriteObject->DrawSpritesBuffered(spriteBalls, 10);			//Draw 10 sprites from 10 balls
 
 		// Finish up and send the sprites to the hardware
 		spriteObject->End();
