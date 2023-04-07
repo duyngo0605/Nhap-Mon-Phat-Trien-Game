@@ -1,4 +1,4 @@
-/* =============================================================
+ï»¿/* =============================================================
 INTRODUCTION TO GAME PROGRAMMING SE102
 
 SAMPLE 00 - INTRODUCTORY CODE
@@ -58,6 +58,8 @@ ID3D10Device* pD3DDevice = NULL;
 IDXGISwapChain* pSwapChain = NULL;
 ID3D10RenderTargetView* pRenderTargetView = NULL;
 
+ID3D10ShaderResourceView* gSpriteTextureRV = NULL;
+
 int BackBufferWidth = 0;
 int BackBufferHeight = 0;
 
@@ -75,6 +77,25 @@ int BackBufferHeight = 0;
 
 ID3D10Texture2D* texBrick = NULL;				// Texture object to store brick image
 ID3DX10Sprite* spriteObject = NULL;				// Sprite handling object 
+
+class Ball
+{
+public:
+	float width, height, x, y, vx, vy;
+	bool visible;
+public:
+	Ball() {
+		width = BRICK_WIDTH;
+		height = BRICK_HEIGHT;
+		x = (float)(rand() % 650);
+		y = (float(rand() % 450));
+		vx = BRICK_START_VX;
+		vy = BRICK_START_VY;
+		visible = TRUE;
+	}
+
+};
+
 
 Ball arrBalls[10];								//array of 10 balls
 D3DX10_SPRITE spriteBalls[10];					//array of 10 sprites of those balls
@@ -315,29 +336,29 @@ void LoadResources()
 	SRVDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
 	SRVDesc.Texture2D.MipLevels = desc.MipLevels;
 
-	ID3D10ShaderResourceView* gSpriteTextureRV = NULL;
+	
 
 	pD3DDevice->CreateShaderResourceView(texBrick, &SRVDesc, &gSpriteTextureRV);
 
 
-	for (D3DX10_SPRITE spriteball : spriteBalls)
-		// Set the sprites’s shader resource view
+	for (int i=0;i<10;i++)
+		// Set the spritesâ€™s shader resource view
 	{
-		spriteball.pTexture = gSpriteTextureRV;
+		spriteBalls[i].pTexture = gSpriteTextureRV;
 
 		// top-left location in U,V coords
-		spriteball.TexCoord.x = 0;
-		spriteball.TexCoord.y = 0;
+		spriteBalls[i].TexCoord.x = 0;
+		spriteBalls[i].TexCoord.y = 0;
 
 		// Determine the texture size in U,V coords
-		spriteball.TexSize.x = 1.0f;
-		spriteball.TexSize.y = 1.0f;
+		spriteBalls[i].TexSize.x = 1.0f;
+		spriteBalls[i].TexSize.y = 1.0f;
 
 		// Set the texture index. Single textures will use 0
-		spriteball.TextureIndex = 0;
+		spriteBalls[i].TextureIndex = 0;
 
 		// The color to apply to this sprite, full color applies white.
-		spriteball.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		spriteBalls[i].ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	DebugOut((wchar_t*)L"[INFO] Texture loaded Ok: %s \n", TEXTURE_PATH_BRICK);
@@ -359,26 +380,30 @@ void Update(DWORD dt)
 	// NOTE: BackBufferWidth is indeed related to rendering!!
 	float right_edge = BackBufferWidth;
 	float top_edge = BackBufferHeight;
-	for (Ball ball : arrBalls)
+	for (int i=0;i<10;i++)
 	{
-		ball.vx += ball.vx * dt;
-		ball.vy += ball.vy * dt;
-		if (ball.x < 0 || ball.x > right_edge) {
+		
+		if (arrBalls[i].visible == TRUE) {
+			arrBalls[i].x += arrBalls[i].vx * dt;
+			arrBalls[i].y += arrBalls[i].vy * dt;
+			if (arrBalls[i].x < 0 || arrBalls[i].x > right_edge) {
 
-			ball.vx = -ball.vx;
-
-			//	//Why not having these logics would make the brick disappear sometimes?  
-			/*	if (brick_x < 0)
-				{
-					brick_x = 0;
-				}
-				else if (brick_x > right_edge )
-				{
-					brick_x = right_edge;
-				}*/
+				arrBalls[i].vx = -arrBalls[i].vx;
+					if (arrBalls[i].x < 0)
+					{
+						arrBalls[i].x = 0;
+					}
+					else if (arrBalls[i].x > right_edge )
+					{
+						arrBalls[i].x = right_edge;
+					}
+			}
+			
+			if (arrBalls[i].y <= 0 || arrBalls[i].y>top_edge)
+				arrBalls[i].vy = -arrBalls[i].vy;
+			
 		}
-		if (ball.y <0 || ball.y>top_edge)
-			ball.vy = -ball.vy;
+		
 	}
 }
 
@@ -392,31 +417,35 @@ void Render()
 	{
 		// clear the target buffer
 		pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_COLOR);
-
-		// start drawing the sprites
-		spriteObject->Begin(D3DX10_SPRITE_SORT_TEXTURE);
-
-		// The translation matrix to be created
-		D3DXMATRIX matTranslation;
-		
-		// Scale the sprite to its correct width and height
-		D3DXMATRIX matScaling;		
-
-		// Setting the sprites’s position and size
-		for (D3DX10_SPRITE spriteball : spriteBalls)
+		if (spriteObject != NULL)
+			// start drawing the sprites
 		{
-			// Create the translation matrix
-			D3DXMatrixTranslation(&matTranslation, brick_x, (BackBufferHeight - brick_y), 0.1f);
-			D3DXMatrixScaling(&matScaling, BRICK_WIDTH, BRICK_HEIGHT, 1.0f);
-			spriteball.matWorld = (matScaling * matTranslation);
-		
+			spriteObject->Begin(D3DX10_SPRITE_SORT_TEXTURE);
 
+			// The translation matrix to be created
+			D3DXMATRIX matTranslation;
+
+			// Scale the sprite to its correct width and height
+			D3DXMATRIX matScaling;
+
+			// Setting the spritesâ€™s position and size
+			for (int i=0;i<10;i++)
+			{
+				if (arrBalls[i].visible)
+				{// Create the translation matrix
+					D3DXMatrixScaling(&matScaling, BRICK_WIDTH, BRICK_HEIGHT, 1.0f);
+					D3DXMatrixTranslation(&matTranslation, arrBalls[i].x, (float)(BackBufferHeight - arrBalls[i].y), 0.1f);
+					spriteBalls[i].matWorld = (matScaling * matTranslation);
+				}
+
+			}
+			spriteObject->DrawSpritesBuffered(spriteBalls, 10);			//Draw 10 sprites from 10 balls
+
+
+			// Finish up and send the sprites to the hardware
+			spriteObject->Flush();
+			spriteObject->End();
 		}
-		spriteObject->DrawSpritesBuffered(spriteBalls, 10);			//Draw 10 sprites from 10 balls
-
-		// Finish up and send the sprites to the hardware
-		spriteObject->End();
-
 		//DebugOutTitle((wchar_t*)L"%s (%0.1f,%0.1f) v:%0.1f", WINDOW_TITLE, brick_x, brick_y, brick_vx);
 
 		// display the next item in the swap chain
