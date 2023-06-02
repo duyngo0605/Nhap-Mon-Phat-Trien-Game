@@ -17,3 +17,4 @@ height 616
 20	textures\misc.png
 30	textures\misc_1.png
 40	textures\misc_2.png
+50	textures\bg-1-1.png

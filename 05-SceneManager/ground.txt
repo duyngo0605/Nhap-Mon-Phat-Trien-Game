@@ -9,7 +9,7 @@
 #GROUND_2
 51001	1	18	16	33	40
 52001	18	18	33	33	40
-53001	20	18	35	33	40
+53001	35	18	50	33	40
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]

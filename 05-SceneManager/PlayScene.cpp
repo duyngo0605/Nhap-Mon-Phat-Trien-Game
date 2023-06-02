@@ -9,6 +9,8 @@
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
+#include "BackgroundTile.h"
+#include "Pipe.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -105,6 +107,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
+
+
 	case OBJECT_TYPE_MARIO:
 		if (player!=NULL) 
 		{
@@ -119,6 +123,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+
+	case OBJECT_TYPE_BACKGROUNDTILE:
+	{
+		int sprite_id = atoi(tokens[3].c_str());
+		obj = new CBackgroundTile(x, y, sprite_id);
+		break;
+	}
+
 
 	case OBJECT_TYPE_PLATFORM:
 	{
@@ -136,6 +148,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			sprite_begin, sprite_middle, sprite_end
 		);
 
+		break;
+	}
+
+	case OBJECT_TYPE_PIPE:
+	{
+
+		int sprite_id = atoi(tokens[3].c_str());
+		obj = new CPipe(x, y, sprite_id);
 		break;
 	}
 
@@ -259,7 +279,7 @@ void CPlayScene::Update(DWORD dt)
 
 	cy -= game->GetBackBufferHeight() - MARIO_BIG_BBOX_HEIGHT / 2 - 16;
 	if (cx < 0) cx = 0;
-	CGame::GetInstance()->SetCamPos(cx, 580-(game->GetBackBufferHeight() - MARIO_BIG_BBOX_HEIGHT / 2 - 16));
+	CGame::GetInstance()->SetCamPos(cx, 404-(game->GetBackBufferHeight() - MARIO_BIG_BBOX_HEIGHT / 2 - 16));
 
 	PurgeDeletedObjects();
 }
