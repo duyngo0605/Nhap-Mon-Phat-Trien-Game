@@ -8,6 +8,7 @@ background_tile.txt
 pipe.txt
 questionbrick.txt
 mushroom.txt
+goomba.txt
 
 #
 [OBJECTS]
@@ -39,13 +40,16 @@ mushroom.txt
 4	20	350
 
 #QUESTION_BRICK
-8	182	360	1
+8	182	360	2
 8	198	360	1
 8	232	312	1
 8	248	312	2
 8	422	328	1
 8	664	392	2
 8	712	360	1
+
+#GOOMBA
+2	600	360	
 
 
 #PIPE

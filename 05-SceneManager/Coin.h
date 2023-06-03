@@ -10,7 +10,7 @@
 #define COIN_BBOX_WIDTH 10
 #define COIN_BBOX_HEIGHT 16
 
-#define COIN_GRAVITY_AY 0.05f
+#define COIN_GRAVITY 0.05f
 #define COIN_MAX_VY 0.5f
 
 

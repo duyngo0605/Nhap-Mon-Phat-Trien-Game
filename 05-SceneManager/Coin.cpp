@@ -12,7 +12,7 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	x += vx * dt;
 	y += vy * dt;
-	vy += COIN_GRAVITY_AY;
+	vy += COIN_GRAVITY;
 	if (vy > COIN_MAX_VY)
 		Delete();
 	CCollision::GetInstance()->Process(this, dt, coObjects);

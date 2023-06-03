@@ -8,6 +8,7 @@
 #include "Goomba.h"
 #include "Coin.h"
 #include "QuestionBrick.h"
+#include "Mushroom.h"
 #include "Portal.h"
 
 #include "Collision.h"
@@ -120,7 +121,12 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 				coin->SetSpeed(0, -0.5f);
 				scene->AddObject(coin);
 			}
-
+			else if (questionBrick->GetType() == QUESTION_BRICK_TYPE_ITEM)
+			{
+				CMushRoom* mushroom = new CMushRoom(x, y);
+				mushroom->SetState(MUSHROOM_STATE_UP);
+				scene->AddObject(mushroom);
+			}
 		}
 		
 	}
