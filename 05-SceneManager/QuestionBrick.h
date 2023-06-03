@@ -7,10 +7,11 @@
 #define QUESTION_BRICK_BBOX_WIDTH 16
 #define QUESTION_BRICK_BBOX_HEIGHT 16
 
-#define COIN_QUESTION_BRICK 1
-#define ITEM_QUESTION_BRICK 2
+#define QUESTION_BRICK_TYPE_COIN 1
+#define QUESTION_BRICK_TYPE_ITEM 2
 
 #define QUESTION_BRICK_STATE_UP 100
+#define QUESTION_BRICK_STATE_DEFAULT 200
 #define QUESTION_BRICK_SPEED_UP 0.05f
 
 class CQuestionBrick : public CGameObject
@@ -29,6 +30,7 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void OnNoCollision(DWORD dt);
 	boolean GetIsEmpty() { return isEmpty; }
+	int GetType() { return this->type; }
 	void SetState(int state);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 };

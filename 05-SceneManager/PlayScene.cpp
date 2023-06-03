@@ -298,6 +298,11 @@ void CPlayScene::Render()
 		objects[i]->Render();
 }
 
+void CPlayScene::AddObject(CGameObject* object)
+{
+	objects.push_back(object);
+}
+
 /*
 *	Clear all objects from this scene
 */

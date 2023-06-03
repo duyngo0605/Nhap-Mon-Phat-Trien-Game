@@ -37,7 +37,7 @@ public:
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 
 	int GetState() { return this->state; }
-	virtual void Delete() { isDeleted = true;  }
+	virtual void Delete() { isDeleted = true;  	}
 	bool IsDeleted() { return isDeleted; }
 
 	void RenderBoundingBox();

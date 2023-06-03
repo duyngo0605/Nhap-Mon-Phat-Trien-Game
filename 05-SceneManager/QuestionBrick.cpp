@@ -6,6 +6,7 @@ CQuestionBrick::CQuestionBrick(float x, float y, int type) :CGameObject(x, y)
 	xStart = x; 
 	yStart = y; 	
 	yMin = y - QUESTION_BRICK_BBOX_HEIGHT / 4;
+	state = QUESTION_BRICK_STATE_DEFAULT;
 }
 
 void CQuestionBrick::OnNoCollision(DWORD dt)
@@ -40,7 +41,7 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	if (y >= yStart)
 	{
-		vy = 0;
+		SetState(QUESTION_BRICK_STATE_DEFAULT);
 	}
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -62,6 +63,10 @@ void CQuestionBrick::SetState(int state)
 	case QUESTION_BRICK_STATE_UP:
 		vy = -QUESTION_BRICK_SPEED_UP;
 		break;
+	case QUESTION_BRICK_STATE_DEFAULT:
+		vy = 0;
+		break;
 
 	}
 }
+	

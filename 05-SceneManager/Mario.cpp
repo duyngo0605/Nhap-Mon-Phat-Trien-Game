@@ -3,6 +3,7 @@
 
 #include "Mario.h"
 #include "Game.h"
+#include "PlayScene.h"
 
 #include "Goomba.h"
 #include "Coin.h"
@@ -102,15 +103,27 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
+	float x, y;
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
-
+	questionBrick->GetPosition(x, y);
 	// jump from bottom
 	if (e->ny > 0)
 	{
 		if (!questionBrick->GetIsEmpty())
 		{
 			questionBrick->SetState(QUESTION_BRICK_STATE_UP);
+			if (questionBrick->GetType() == QUESTION_BRICK_TYPE_COIN)
+			{
+				coin++;
+				CCoin* coin = new CCoin(x, y - QUESTION_BRICK_BBOX_HEIGHT);
+				coin->SetSpeed(0, -0.5f);
+				scene->AddObject(coin);
+				
+			}
+
 		}
+		
 	}
 }
 
