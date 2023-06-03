@@ -6,6 +6,7 @@
 
 class CPipe :public CGameObject
 {
+protected:
 	int spriteId;
 public:
 	CPipe(float x, float y, int sprite_id) : CGameObject(x, y) { this->spriteId = sprite_id; }

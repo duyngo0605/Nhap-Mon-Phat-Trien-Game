@@ -11,6 +11,7 @@
 #include "Platform.h"
 #include "BackgroundTile.h"
 #include "Pipe.h"
+#include "QuestionBrick.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -156,6 +157,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		int sprite_id = atoi(tokens[3].c_str());
 		obj = new CPipe(x, y, sprite_id);
+		break;
+	}
+
+	case OBJECT_TYPE_QUESTION_BRICK:
+	{
+		int type = atoi(tokens[3].c_str());
+		obj = new CQuestionBrick(x, y, type);
 		break;
 	}
 

@@ -6,6 +6,7 @@ ground.txt
 brick.txt
 background_tile.txt
 pipe.txt
+questionbrick.txt
 
 #
 [OBJECTS]

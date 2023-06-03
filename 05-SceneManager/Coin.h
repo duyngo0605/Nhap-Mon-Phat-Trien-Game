@@ -11,6 +11,8 @@
 #define COIN_BBOX_HEIGHT 16
 
 class CCoin : public CGameObject {
+protected:
+
 public:
 	CCoin(float x, float y) : CGameObject(x, y) {}
 	void Render();
