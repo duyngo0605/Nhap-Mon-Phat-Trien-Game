@@ -119,7 +119,6 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 				CCoin* coin = new CCoin(x, y - QUESTION_BRICK_BBOX_HEIGHT);
 				coin->SetSpeed(0, -0.5f);
 				scene->AddObject(coin);
-				
 			}
 
 		}
