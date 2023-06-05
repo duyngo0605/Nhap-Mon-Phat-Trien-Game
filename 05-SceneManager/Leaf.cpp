@@ -12,8 +12,6 @@ void CLeaf::Render()
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
-	vx += ax * dt;
-	vy += ay * dt;
 	if (GetState() == LEAF_STATE_UP)
 	{
 		if (y < yStart - LEAF_BBOX_HEIGHT*3)
@@ -21,9 +19,10 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(LEAF_STATE_FLYING);
 		}
 	}
-	if (abs(vx) >= LEAF_SPEED_FLYING)
+	if (abs(x-xStart)>= LEAF_BBOX_WIDTH * 3)
 	{
-		ax = -ax;
+		vx = -vx;
+		xStart = x;
 	}
 
 	CGameObject::Update(dt, coObjects);
@@ -32,10 +31,8 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CLeaf::OnNoCollision(DWORD dt)
 {
-}
-
-void CLeaf::OnCollisionWith(LPCOLLISIONEVENT e)
-{
+	x += vx * dt;
+	y += vy * dt;
 }
 
 void CLeaf::SetState(int state)
@@ -50,9 +47,8 @@ void CLeaf::SetState(int state)
 		break;
 
 	case LEAF_STATE_FLYING:
-		ax = LEAF_AX;
-		ay = LEAF_GRAVITY;
-		vy = 0;
+		vx = LEAF_SPEED_FLYING;
+		vy = LEAF_SPEED_DROP;
 		break;
 	}
 
@@ -60,5 +56,8 @@ void CLeaf::SetState(int state)
 
 void CLeaf::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-
+	l = x - LEAF_BBOX_WIDTH / 2;
+	t = y - LEAF_BBOX_HEIGHT / 2;
+	r = l + LEAF_BBOX_WIDTH;
+	b = t + LEAF_BBOX_HEIGHT;
 }

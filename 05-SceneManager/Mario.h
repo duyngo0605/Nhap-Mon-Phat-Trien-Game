@@ -124,6 +124,7 @@ class CMario : public CGameObject
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
+	int GetAniIdTail();
 
 public:
 	CMario(float x, float y) : CGameObject(x, y)

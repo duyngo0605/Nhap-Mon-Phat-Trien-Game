@@ -11,6 +11,7 @@
 #include "Mushroom.h"
 #include "Portal.h"
 #include "SpecialPlatform.h"
+#include "Leaf.h"
 
 #include "Collision.h"
 
@@ -130,9 +131,18 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 			}
 			else if (questionBrick->GetType() == QUESTION_BRICK_TYPE_ITEM)
 			{
-				CMushRoom* mushroom = new CMushRoom(x, y);
-				mushroom->SetState(MUSHROOM_STATE_UP);
-				scene->AddObject(mushroom);
+				if (level == MARIO_LEVEL_SMALL)
+				{
+					CMushRoom* mushroom = new CMushRoom(x, y);
+					mushroom->SetState(MUSHROOM_STATE_UP);
+					scene->AddObject(mushroom);
+				}
+				else
+				{
+					CLeaf* leaf = new CLeaf(x, y);
+					leaf->SetState(LEAF_STATE_UP);
+					scene->AddObject(leaf);
+				}
 			}
 		}
 		
@@ -248,6 +258,11 @@ int CMario::GetAniIdSmall()
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
 
 	return aniId;
+}
+
+int CMario::GetAniIdTail()
+{
+	return 0;
 }
 
 

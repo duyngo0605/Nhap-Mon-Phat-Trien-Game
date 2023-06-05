@@ -10,24 +10,22 @@
 #define LEAF_STATE_UP 100
 #define LEAF_STATE_FLYING 200
 
-#define LEAF_SPEED_UP 0.25f
-#define LEAF_SPEED_FLYING 0.15f
+#define LEAF_SPEED_UP -0.25f
+#define LEAF_SPEED_FLYING 0.03f
 
-#define LEAF_GRAVITY 0.001f
-#define LEAF_AX 0.02f;
+#define LEAF_SPEED_DROP 0.01f
 
 class CLeaf :public CGameObject
 {
 protected:
-	float xStart, yStart, ax, ay;
+	float xStart, yStart;
 public:
-	CLeaf(float x, float y) :CGameObject(x, y) { xStart = x; yStart = y; ax = 0; ay = LEAF_GRAVITY; }
+	CLeaf(float x, float y) :CGameObject(x, y) { xStart = x; yStart = y; }
 	void Render();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual int IsCollidable() { return 1; }
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	int IsCollidable() { return 0; }
 
 	void OnNoCollision(DWORD dt);
-	void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void SetState(int state);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
