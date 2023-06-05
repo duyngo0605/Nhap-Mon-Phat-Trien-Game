@@ -40,6 +40,21 @@ void CLeaf::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CLeaf::SetState(int state)
 {
+	CGameObject::SetState(state);
+
+	switch (this->state)
+	{
+
+	case LEAF_STATE_UP:
+		SetSpeed(0, LEAF_SPEED_UP);
+		break;
+
+	case LEAF_STATE_FLYING:
+		ax = LEAF_AX;
+		ay = LEAF_GRAVITY;
+		vy = 0;
+		break;
+	}
 
 }
 

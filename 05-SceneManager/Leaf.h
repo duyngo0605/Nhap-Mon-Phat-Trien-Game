@@ -10,10 +10,11 @@
 #define LEAF_STATE_UP 100
 #define LEAF_STATE_FLYING 200
 
-#define LEAF_SPEED _UP 0.25f
+#define LEAF_SPEED_UP 0.25f
 #define LEAF_SPEED_FLYING 0.15f
 
 #define LEAF_GRAVITY 0.001f
+#define LEAF_AX 0.02f;
 
 class CLeaf :public CGameObject
 {
