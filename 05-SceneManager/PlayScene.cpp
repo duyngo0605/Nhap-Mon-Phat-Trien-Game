@@ -128,6 +128,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_BACKGROUNDTILE:
 	{
+		numofBackgroundTile++;
 		int sprite_id = atoi(tokens[3].c_str());
 		obj = new CBackgroundTile(x, y, sprite_id);
 		break;
@@ -322,7 +323,7 @@ void CPlayScene::Render()
 
 void CPlayScene::AddObject(CGameObject* object)
 {
-	objects.push_back(object);
+	objects.insert(objects.begin() + numofBackgroundTile + 1, object);
 }
 
 /*
