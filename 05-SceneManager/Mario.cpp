@@ -19,6 +19,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vx += ax * dt;
 
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
+	if (x <= MARIO_SMALL_BBOX_WIDTH/2)x = MARIO_SMALL_BBOX_WIDTH / 2;
 
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
@@ -57,6 +58,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
+	else if (dynamic_cast<CMushRoom*>(e->obj))
+		OnCollisionWithMushRoom(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }
@@ -130,6 +133,14 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 		}
 		
 	}
+}
+
+void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
+{
+	y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT)/2;
+	level++;
+	
+	e->obj->Delete();
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
