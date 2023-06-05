@@ -19,7 +19,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(LEAF_STATE_FLYING);
 		}
 	}
-	if (abs(x-xStart)>= LEAF_BBOX_WIDTH * 3)
+	if (abs(x-xStart)>= LEAF_BBOX_WIDTH * 2)
 	{
 		vx = -vx;
 		xStart = x;

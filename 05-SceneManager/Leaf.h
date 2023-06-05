@@ -11,9 +11,9 @@
 #define LEAF_STATE_FLYING 200
 
 #define LEAF_SPEED_UP -0.25f
-#define LEAF_SPEED_FLYING 0.03f
+#define LEAF_SPEED_FLYING 0.05f
 
-#define LEAF_SPEED_DROP 0.01f
+#define LEAF_SPEED_DROP 0.025f
 
 class CLeaf :public CGameObject
 {
