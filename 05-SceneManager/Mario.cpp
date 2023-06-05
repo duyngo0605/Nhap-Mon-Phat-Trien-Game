@@ -10,6 +10,7 @@
 #include "QuestionBrick.h"
 #include "Mushroom.h"
 #include "Portal.h"
+#include "SpecialPlatform.h"
 
 #include "Collision.h"
 
@@ -51,6 +52,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = 0;
 	}
+
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
@@ -141,6 +143,42 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 	level++;
 	
 	e->obj->Delete();
+}
+
+void CMario::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
+{
+	CSpecialPlatform* specialPlat = dynamic_cast<CSpecialPlatform*>(e->obj);
+	float xPlat, yPlat;
+	specialPlat->GetPosition(xPlat, yPlat);
+	if (e->ny < 0) {
+		if (level == MARIO_LEVEL_SMALL) {
+
+			if (yPlat - y < (MARIO_SMALL_BBOX_HEIGHT + 4))
+			{
+				SetPosition(x,yPlat - MARIO_SMALL_BBOX_HEIGHT - 2);
+				vy = 0;
+				isOnPlatform = true;
+			}
+		}
+		else {
+			if (!isSitting) {
+				if (yPlat - y < MARIO_BIG_BBOX_HEIGHT)
+				{
+					SetPosition(x, yPlat - MARIO_BIG_BBOX_HEIGHT + 4);
+					vy = 0;
+					isOnPlatform = true;
+				}
+			}
+			else {
+				if (yPlat- y < MARIO_BIG_BBOX_HEIGHT / 2 + 4)
+				{
+					SetPosition(x, yPlat - MARIO_BIG_BBOX_HEIGHT / 2 - 4);
+					vy = 0;
+					isOnPlatform = true;
+				}
+			}
+		}
+	}
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)

@@ -32,8 +32,10 @@ void CQuestionBrick::Render()
 
 void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	
 	x += vx * dt;
 	y += vy * dt;
+
 	if (y <= yMin)
 	{
 		vy = QUESTION_BRICK_SPEED_UP;
@@ -43,6 +45,7 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		SetState(QUESTION_BRICK_STATE_DEFAULT);
 	}
+
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
