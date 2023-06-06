@@ -80,6 +80,8 @@ firevenustrap.txt
 7	376	392	12003
 7	376	378	12001
 
+#FIRE VENUS TRAP
+11	100	350
 
 
 #Portal 

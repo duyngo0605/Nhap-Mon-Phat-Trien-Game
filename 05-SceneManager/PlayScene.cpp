@@ -13,6 +13,7 @@
 #include "BackgroundTile.h"
 #include "Pipe.h"
 #include "QuestionBrick.h"
+#include "FireVenusTrap.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -189,6 +190,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CQuestionBrick(x, y, type);
 		break;
 	}
+
+	case OBJECT_TYPE_FIREVENUSTRAP:obj = new CFireVenusTrap(x, y);
+		break;
+
 
 	case OBJECT_TYPE_PORTAL:
 	{
