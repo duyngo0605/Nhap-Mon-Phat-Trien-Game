@@ -11,6 +11,7 @@ mushroom.txt
 goomba.txt
 leaf.txt
 firevenustrap.txt
+fireball.txt
 
 #
 [OBJECTS]
