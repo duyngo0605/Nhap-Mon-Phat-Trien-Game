@@ -209,10 +209,22 @@ void CMario::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e)
 {
-
-	if (level == MARIO_LEVEL_SMALL)
-		SetState(MARIO_STATE_DIE);
-	level--;
+	if (untouchable == 0)
+	{
+		if (e->obj->GetState() != FIREVENUSTRAP_STATE_HIDE)
+		{
+			if (level > MARIO_LEVEL_SMALL)
+			{
+				level--;
+				StartUntouchable();
+			}
+			else
+			{
+				DebugOut(L">>> Mario DIE >>> \n");
+				SetState(MARIO_STATE_DIE);
+			}
+		}
+	}
 }
 
 
