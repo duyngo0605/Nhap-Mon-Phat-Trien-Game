@@ -12,6 +12,7 @@
 #include "Portal.h"
 #include "SpecialPlatform.h"
 #include "Leaf.h"
+#include "FireVenusTrap.h"
 
 #include "Collision.h"
 
@@ -67,6 +68,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithMushRoom(e);
 	else if (dynamic_cast<CLeaf*>(e->obj))
 		OnCollisionWithLeaf(e);
+	else if (dynamic_cast<CFireVenusTrap*>(e->obj))
+		OnCollisionWithFireVenusTrap(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }
@@ -202,6 +205,16 @@ void CMario::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
 		}
 	}
 }
+
+
+void CMario::OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e)
+{
+
+	if (level == MARIO_LEVEL_SMALL)
+		SetState(MARIO_STATE_DIE);
+	level--;
+}
+
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
