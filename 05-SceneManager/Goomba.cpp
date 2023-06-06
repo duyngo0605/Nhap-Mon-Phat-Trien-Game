@@ -69,12 +69,30 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CGoomba::Render()
 {
-	int aniId = ID_ANI_GOOMBA_WALKING;
-	if (state == GOOMBA_STATE_DIE) 
+	int aniId;
+	if (type == GOOMBA_TYPE_NORMAL)
 	{
-		aniId = ID_ANI_GOOMBA_DIE;
+		aniId = ID_ANI_GOOMBA_WALKING;
+		if (state == GOOMBA_STATE_DIE)
+		{
+			aniId = ID_ANI_GOOMBA_DIE;
+		}
 	}
-
+	else if (type == GOOMBA_TYPE_PARA)
+	{
+		if (level == 1)
+		{
+			aniId = ID_ANI_PARAGOOMBA_WALKING;
+			if (state == GOOMBA_STATE_DIE)
+			{
+				aniId = ID_ANI_PARAGOOMBA_DIE;
+			}
+		}
+		else
+		{
+			aniId = ID_ANI_PARAGOOMBA_WINGS_WALKING;
+		}
+	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x,y);
 	RenderBoundingBox();
 }
@@ -86,6 +104,7 @@ void CGoomba::SetState(int state)
 	{
 		case GOOMBA_STATE_DIE:
 			die_start = GetTickCount64();
+			y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
 			level--;
 			vx = 0;
 			vy = 0;
