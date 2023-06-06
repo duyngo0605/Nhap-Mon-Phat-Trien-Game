@@ -3,7 +3,7 @@
 void CFireBall::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-		animations->Get(ID_ANI_FIREBALL)->Render(x, y);
+	animations->Get(ID_ANI_FIREBALL)->Render(x, y);
 }
 
 void CFireBall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

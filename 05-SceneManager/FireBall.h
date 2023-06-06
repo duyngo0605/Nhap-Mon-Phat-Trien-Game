@@ -11,15 +11,13 @@
 
 class CFireBall :public CGameObject
 {
-protected:
-	int nx, ny;
 public:
-	CFireBall(float x, float y, int nx, int ny) :CGameObject(x, y) {
-		this->nx = nx; this->ny = ny; vx = nx * FIREBALL_SPEED_X; vy = ny * FIREBALL_SPEED_Y;
+	CFireBall(float x, float y) :CGameObject(x, y) {
+		 vx = 0; vy = 0;
 	}
 	void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual int IsCollidable() { return 0; }
+	int IsCollidable() { return 0; }
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
 };

@@ -36,6 +36,7 @@ public:
 	CFireVenusTrap(float x, float y) :CGameObject(x, y) { vx = 0; vy = 0; xStart = x; yStart = y; state = FIREVENUSTRAP_STATE_HIDE; ny = 0; attack_start = -1; attack_gap = -1; }
 	void OnNoCollision(DWORD dt);
 	void SetState(int state);
+	void Fire();
 
 	virtual int IsCollidable() { return 0; };
 	virtual int IsBlocking() { return 0; }

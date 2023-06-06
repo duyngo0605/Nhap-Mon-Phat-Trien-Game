@@ -1,6 +1,7 @@
 #include "FireVenusTrap.h"
 #include "PlayScene.h"
 #include "Mario.h"
+#include "FireBall.h"
 
 void CFireVenusTrap::GetBoundingBox(float& l, float& t, float&  r, float& b)
 {
@@ -13,13 +14,14 @@ void CFireVenusTrap::GetBoundingBox(float& l, float& t, float&  r, float& b)
 
 void CFireVenusTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)(scene->GetPlayer());
 	float xM, yM;
 	mario->GetPosition(xM, yM);
 	if (xM - x < 0) nx = -1;
 	else nx = 1;
-	if (yM - y < 0) ny = 1;
-	else ny = -1;
+	if (yM - y < 0) ny = -1;
+	else ny = 1;
 	if (GetState() == FIREVENUSTRAP_STATE_HIDE)
 	{
 		if (GetTickCount64() - attack_gap >= FIREVENUSTRAP_TIME_ATTACK)
@@ -36,7 +38,12 @@ void CFireVenusTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(FIREVENUSTRAP_STATE_ATTACK);
 	}
 	else if (GetState() == FIREVENUSTRAP_STATE_ATTACK) {
-		if (GetTickCount64() - attack_start>=FIREVENUSTRAP_TIME_ATTACK/2)
+		if (GetTickCount64() - attack_start == FIREVENUSTRAP_TIME_ATTACK / 2)
+		{
+			CFireBall* fire = new CFireBall(x, y-FIREBALL_BBOX_HEIGHT);
+			fire->SetSpeed(nx * FIREBALL_SPEED_X, ny * FIREBALL_SPEED_Y);
+			scene->AddObject(fire);
+		}
 		if (GetTickCount64() - attack_start >= FIREVENUSTRAP_TIME_ATTACK)
 			SetState(FIREVENUSTRAP_STATE_DOWN);
 	}
@@ -45,7 +52,6 @@ void CFireVenusTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (y >= yStart)
 			SetState(FIREVENUSTRAP_STATE_HIDE);
 	}
-	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -53,7 +59,7 @@ void CFireVenusTrap::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
 	if (nx < 0) {
-		if(ny < 0)
+		if(ny > 0)
 			if (GetState()==FIREVENUSTRAP_STATE_ATTACK)
 				animations->Get(ID_ANI_FIREVENUSTRAP_LEFT_DOWN+5)->Render(x, y);
 			else
@@ -65,7 +71,7 @@ void CFireVenusTrap::Render()
 			animations->Get(ID_ANI_FIREVENUSTRAP_LEFT_UP)->Render(x, y);
 	}
 	else {
-		if (ny < 0)
+		if (ny > 0)
 			if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
 				animations->Get(ID_ANI_FIREVENUSTRAP_RIGHT_DOWN + 5)->Render(x, y);
 			else
