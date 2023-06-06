@@ -161,7 +161,8 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
-	level++;
+	if (level<MARIO_LEVEL_TAIL)
+		level++;
 
 	e->obj->Delete();
 }

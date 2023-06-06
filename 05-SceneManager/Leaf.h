@@ -24,10 +24,9 @@ public:
 	CLeaf(float x, float y) :CGameObject(x, y) { xStart = x; yStart = y; ay = 0; }
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	int IsCollidable() { return 1; }
+	int IsCollidable() { return 0; }
 
 	void OnNoCollision(DWORD dt);
-	void OnCollisionWith(LPCOLLISIONEVENT e){}
 
 	void SetState(int state);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
