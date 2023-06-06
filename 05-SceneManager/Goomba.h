@@ -4,6 +4,9 @@
 #define GOOMBA_GRAVITY 0.002f
 #define GOOMBA_WALKING_SPEED 0.05f
 
+#define GOOMBA_TYPE_NORMAL 1
+#define GOOMBA_TYPE_PARA 2
+
 
 #define GOOMBA_BBOX_WIDTH 16
 #define GOOMBA_BBOX_HEIGHT 14
@@ -17,11 +20,19 @@
 #define ID_ANI_GOOMBA_WALKING 5000
 #define ID_ANI_GOOMBA_DIE 5001
 
+#define ID_ANI_PARAGOOMBA_WALKING 5100
+#define ID_ANI_PARAGOOMBA_FLYING 5101
+#define ID_ANI_PARAGOOMBA_DIE 5102
+
+
 class CGoomba : public CGameObject
 {
 protected:
 	float ax;				
 	float ay; 
+
+	int type;
+	int level;
 
 	ULONGLONG die_start;
 
@@ -36,6 +47,9 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public: 	
-	CGoomba(float x, float y);
+	
+	CGoomba(float x, float y, int type);
+	int GetLevel() { return this->level; }
+	void MinusLevel() { level--; }
 	virtual void SetState(int state);
 };

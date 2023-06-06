@@ -1,7 +1,10 @@
 #include "Goomba.h"
 
-CGoomba::CGoomba(float x, float y):CGameObject(x, y)
+CGoomba::CGoomba(float x, float y, int type):CGameObject(x, y)
 {
+	this->type = type;
+	if (type == GOOMBA_TYPE_NORMAL) level = 1;
+	if (type == GOOMBA_TYPE_PARA)	level = 2;
 	this->ax = 0;
 	this->ay = GOOMBA_GRAVITY;
 	die_start = -1;
@@ -51,12 +54,13 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
-	if ( (state==GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT) )
+	
+	if (GetState()==GOOMBA_STATE_DIE&&(GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
 	{
-		isDeleted = true;
+		Delete();
 		return;
 	}
+	if (level == 0) SetState(GOOMBA_STATE_DIE);
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -78,11 +82,11 @@ void CGoomba::Render()
 void CGoomba::SetState(int state)
 {
 	CGameObject::SetState(state);
-	switch (state)
+	switch (this->state)
 	{
 		case GOOMBA_STATE_DIE:
 			die_start = GetTickCount64();
-			y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE)/2;
+			level--;
 			vx = 0;
 			vy = 0;
 			ay = 0; 

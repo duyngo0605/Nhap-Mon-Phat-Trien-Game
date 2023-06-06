@@ -69,7 +69,7 @@ firevenustrap.txt
 
 
 #GOOMBA
-2	232	400	
+2	232	400	1
 
 
 
