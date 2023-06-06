@@ -75,7 +75,7 @@ firevenustrap.txt
 
 
 #FIRE VENUS TRAP
-11	368	386
+11	368	396
 
 #PIPE
 7	360	408	12002

@@ -32,12 +32,12 @@ void CFireVenusTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else if (GetState() == FIREVENUSTRAP_STATE_UP)
 	{
-		if (y <= yStart - FIREVENUSTRAP_BBOX_HEIGHT)
+		if (y <= yStart - FIREVENUSTRAP_BBOX_HEIGHT*1.25)
 			SetState(FIREVENUSTRAP_STATE_ATTACK);
 	}
 	else if (GetState() == FIREVENUSTRAP_STATE_ATTACK) {
-		if (GetTickCount() - attack_start>=FIREVENUSTRAP_TIME_ATTACK/2)
-		if (GetTickCount() - attack_start >= FIREVENUSTRAP_TIME_ATTACK)
+		if (GetTickCount64() - attack_start>=FIREVENUSTRAP_TIME_ATTACK/2)
+		if (GetTickCount64() - attack_start >= FIREVENUSTRAP_TIME_ATTACK)
 			SetState(FIREVENUSTRAP_STATE_DOWN);
 	}
 	else if (GetState() == FIREVENUSTRAP_STATE_DOWN)
