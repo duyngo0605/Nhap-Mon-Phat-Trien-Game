@@ -72,6 +72,11 @@ firevenustrap.txt
 2	232	400	
 
 
+
+
+#FIRE VENUS TRAP
+11	368	386
+
 #PIPE
 7	360	408	12002
 7	360	392	12002
@@ -79,9 +84,6 @@ firevenustrap.txt
 7	376	408	12003
 7	376	392	12003
 7	376	378	12001
-
-#FIRE VENUS TRAP
-11	100	350
 
 
 #Portal 
