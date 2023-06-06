@@ -227,6 +227,23 @@ void CMario::OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
+{
+	if (untouchable == 0)
+	{
+		if (level > MARIO_LEVEL_SMALL)
+		{
+			level--;
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
+		}
+	}
+}
+
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {

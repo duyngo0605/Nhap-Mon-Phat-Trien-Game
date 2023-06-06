@@ -52,6 +52,7 @@ void CFireVenusTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (y >= yStart)
 			SetState(FIREVENUSTRAP_STATE_HIDE);
 	}
+	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
