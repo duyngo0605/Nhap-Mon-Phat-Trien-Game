@@ -10,6 +10,7 @@ questionbrick.txt
 mushroom.txt
 goomba.txt
 leaf.txt
+firevenustrap.txt
 
 #
 [OBJECTS]
