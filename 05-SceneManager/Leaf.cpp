@@ -3,7 +3,7 @@
 void CLeaf::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	if (vx>=0)
+	if (vx<0)
 		animations->Get(ID_ANI_LEAF_MOVING_RIGHT)->Render(x, y);
 	else
 		animations->Get(ID_ANI_LEAF_MOVING_LEFT)->Render(x, y);
@@ -12,6 +12,7 @@ void CLeaf::Render()
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
+	vy += ay * dt;
 	if (GetState() == LEAF_STATE_UP)
 	{
 		if (y < yStart - LEAF_BBOX_HEIGHT*3)
@@ -22,6 +23,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (abs(x-xStart)>= LEAF_BBOX_WIDTH * 2)
 	{
 		vx = -vx;
+		vy = LEAF_SPEED_DROP_START;
 		xStart = x;
 	}
 
@@ -48,7 +50,8 @@ void CLeaf::SetState(int state)
 
 	case LEAF_STATE_FLYING:
 		vx = LEAF_SPEED_FLYING;
-		vy = LEAF_SPEED_DROP;
+		vy = LEAF_SPEED_DROP_START;
+		ay = LEAF_GRAVITY;
 		break;
 	}
 

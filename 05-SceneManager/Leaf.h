@@ -13,14 +13,15 @@
 #define LEAF_SPEED_UP -0.25f
 #define LEAF_SPEED_FLYING 0.05f
 
-#define LEAF_SPEED_DROP 0.025f
+#define LEAF_SPEED_DROP_START 0.025f
+#define LEAF_GRAVITY 0.00002
 
 class CLeaf :public CGameObject
 {
 protected:
-	float xStart, yStart;
+	float xStart, yStart, ay;
 public:
-	CLeaf(float x, float y) :CGameObject(x, y) { xStart = x; yStart = y; }
+	CLeaf(float x, float y) :CGameObject(x, y) { xStart = x; yStart = y; ay = 0; }
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	int IsCollidable() { return 0; }
