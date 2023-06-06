@@ -37,6 +37,7 @@ void CLeaf::OnNoCollision(DWORD dt)
 	y += vy * dt;
 }
 
+
 void CLeaf::SetState(int state)
 {
 	CGameObject::SetState(state);
