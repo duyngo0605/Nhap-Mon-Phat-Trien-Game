@@ -128,7 +128,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int type = (int)atof(tokens[3].c_str());
 		obj = new CGoomba(x, y, type); break; 
 	}
-	case OBJECT_TYPE_KOOPAS:
+	case OBJECT_TYPE_KOOPA:
 	{
 
 	}

@@ -9,7 +9,10 @@
 
 CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
 {
+	ax = 0;
+	ay = KOOPA_GRAVITY;
 	this->type = type;
+	vx = -1;
 	SetState(GOOMBA_STATE_WALKING);
 }
 
@@ -34,8 +37,16 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	}
 }
 
+void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	if (!isInCam())	return;
+	vx += ax * dt;
+	vy += vy * dt;
+}
+
 void CKoopa::OnNoCollision(DWORD dt)
 {
+	if (!isInCam())	return;
 	x += vx * dt;
 	y += vy * dt;
 }
@@ -102,5 +113,28 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 				scene->AddObject(leaf);
 			}
 		}
+	}
+}
+
+void CKoopa::SetState(int state)
+{
+	CGameObject::SetState(state);
+	switch (state)
+	{
+	case KOOPA_STATE_WALKING:
+		if (vx>0)
+			vx = KOOPA_WALKING_SPEED;
+		else
+			vx = -KOOPA_WALKING_SPEED;
+		break;
+	case KOOPA_STATE_DEFEND:
+		vx = 0;
+		break;
+	case KOOPA_STATE_THROWN:
+		if (vx > 0)
+			vx = KOOPA_THROWN_SPEED;
+		else
+			vx = -KOOPA_THROWN_SPEED;
+		break;
 	}
 }
