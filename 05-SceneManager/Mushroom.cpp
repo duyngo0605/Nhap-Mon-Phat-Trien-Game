@@ -14,7 +14,7 @@ void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	if (GetState() == MUSHROOM_STATE_UP)
 	{
-		if (y < yStart - MUSHROOM_BBOX_HEIGHT)
+		if (y <= yStart - MUSHROOM_BBOX_HEIGHT)
 		{
 			SetState(MUSHROOM_STATE_MOVING);
 		}
@@ -37,11 +37,11 @@ void CMushRoom::OnNoCollision(DWORD dt)
 void CMushRoom::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
-	if (e->ny != 0)
+	if (e->ny != 0&&e->obj->IsBlocking())
 	{
 		vy = 0;
 	}
-	if (e->nx != 0)
+	else if (e->nx != 0)
 	{
 		vx = -vx;
 	}

@@ -67,6 +67,8 @@ void CQuestionBrick::SetState(int state)
 		vy = -QUESTION_BRICK_SPEED_UP;
 		break;
 	case QUESTION_BRICK_STATE_DEFAULT:
+		x = xStart;
+		y = yStart;
 		vy = 0;
 		break;
 
