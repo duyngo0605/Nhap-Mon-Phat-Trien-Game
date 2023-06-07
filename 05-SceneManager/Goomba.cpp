@@ -1,4 +1,5 @@
 #include "Goomba.h"
+#include "SpecialPlatform.h"
 
 CGoomba::CGoomba(float x, float y, int type):CGameObject(x, y)
 {
@@ -61,6 +62,42 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		vx = -vx;
+	}
+}
+
+void CGoomba::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
+{
+	CSpecialPlatform* specialPlat = dynamic_cast<CSpecialPlatform*>(e->obj);
+	float xPlat, yPlat;
+	specialPlat->GetPosition(xPlat, yPlat);
+	if (e->ny < 0) {
+		if (state==GOOMBA_STATE_DIE)
+		{
+			if (yPlat - y <= (GOOMBA_BBOX_HEIGHT_DIE + SPECIAL_PLATFORM_BBOX_HEIGHT) / 2)
+			{
+				SetPosition(x, yPlat - (GOOMBA_BBOX_HEIGHT_DIE + SPECIAL_PLATFORM_BBOX_HEIGHT) / 2);
+				vy = 0;
+			}
+		}
+		else
+		{
+			if (level == 1)
+			{
+				if (yPlat - y <= (GOOMBA_BBOX_HEIGHT + SPECIAL_PLATFORM_BBOX_HEIGHT) / 2)
+				{
+					SetPosition(x, yPlat - (GOOMBA_BBOX_HEIGHT + SPECIAL_PLATFORM_BBOX_HEIGHT) / 2);
+					vy = 0;
+				}
+			}
+			else if (level == 2)
+			{
+				if (yPlat - y <= (PARAGOOMBA_BBOX_HEIGHT + SPECIAL_PLATFORM_BBOX_HEIGHT) / 2)
+				{
+					SetPosition(x, yPlat - (PARAGOOMBA_BBOX_HEIGHT + SPECIAL_PLATFORM_BBOX_HEIGHT) / 2);
+					vy = 0;
+				}
+			}
+		}
 	}
 }
 

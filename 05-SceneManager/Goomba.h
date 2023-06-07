@@ -62,6 +62,7 @@ protected:
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	void OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e);
 
 public: 	
 	
