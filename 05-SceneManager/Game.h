@@ -18,6 +18,10 @@ using namespace std;
 #define KEYBOARD_BUFFER_SIZE 1024
 #define KEYBOARD_STATE_SIZE 256
 
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
+
+
 
 
 /*

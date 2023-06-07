@@ -8,6 +8,7 @@
 #include "Animations.h"
 #include "Sprites.h"
 #include "Collision.h"
+#include "Game.h"
 
 using namespace std;
 
@@ -47,8 +48,8 @@ public:
 
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {};
-	virtual void Render() = 0;
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) { if (!isInCam()) return; };
+	virtual void Render() { if (!isInCam()) return; }
 	virtual void SetState(int state) { this->state = state; }
 
 	//
@@ -57,7 +58,7 @@ public:
 	virtual int IsCollidable() { return 0; };
 
 	// When no collision has been detected (triggered by CCollision::Process)
-	virtual void OnNoCollision(DWORD dt) {};
+	virtual void OnNoCollision(DWORD dt) { if (!isInCam()) return; };
 
 	// When collision with an object has been detected (triggered by CCollision::Process)
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e) {};
@@ -69,4 +70,15 @@ public:
 	~CGameObject();
 
 	static bool IsDeleted(const LPGAMEOBJECT &o) { return o->isDeleted; }
+	bool isInCam() {
+		float cx, cy;
+		CGame::GetInstance()->GetCamPos(cx, cy);
+		if ( abs(x-cx)>=SCREEN_WIDTH)
+			return false;
+		if (abs(y-cy)>=SCREEN_HEIGHT)
+			return false;
+		return true;
+	}
+
+
 };

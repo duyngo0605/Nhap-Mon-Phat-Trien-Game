@@ -13,6 +13,7 @@
 #include "SpecialPlatform.h"
 #include "Leaf.h"
 #include "FireVenusTrap.h"
+#include "FireBall.h"
 
 #include "Collision.h"
 
@@ -70,6 +71,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithLeaf(e);
 	else if (dynamic_cast<CFireVenusTrap*>(e->obj))
 		OnCollisionWithFireVenusTrap(e);
+	else if (dynamic_cast<CFireBall*>(e->obj))
+		OnCollisionWithFireBall(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }

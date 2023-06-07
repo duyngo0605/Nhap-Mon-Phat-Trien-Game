@@ -9,6 +9,7 @@ CGoomba::CGoomba(float x, float y, int type):CGameObject(x, y)
 	if (type == GOOMBA_TYPE_PARA)	level = 2;
 	this->ax = 0;
 	this->ay = GOOMBA_GRAVITY;
+	vx = 0;
 	die_start = walk_start = prepare_fly_start = -1;
 	SetState(GOOMBA_STATE_WALKING);
 }
@@ -49,6 +50,7 @@ void CGoomba::OnNoCollision(DWORD dt)
 
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (!isInCam()) return;
 	if (!e->obj->IsBlocking()) return; 
 	if (dynamic_cast<CGoomba*>(e->obj)) return; 
 
@@ -64,6 +66,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	if (!isInCam()) return;
 	vy += ay * dt;
 	vx += ax * dt;
 	
@@ -100,6 +103,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CGoomba::Render()
 {
+	CGameObject::Render();
 	int aniId;
 	if (type == GOOMBA_TYPE_NORMAL)
 	{
@@ -154,7 +158,9 @@ void CGoomba::SetState(int state)
 			walk_start = GetTickCount64();
 			ay = GOOMBA_GRAVITY;
 			ax = 0;
-			vx = -GOOMBA_WALKING_SPEED;
+			if( vx>0) vx = GOOMBA_WALKING_SPEED;
+			else
+				vx = -GOOMBA_WALKING_SPEED;
 			break;
 		case GOOMBA_STATE_FLYING:
 			fly_start = GetTickCount64();

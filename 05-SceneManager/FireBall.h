@@ -1,8 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-#define FIREBALL_SPEED_X 0.03f
-#define FIREBALL_SPEED_Y 0.02f
+#define FIREBALL_SPEED_X 0.045f
+#define FIREBALL_SPEED_Y 0.03f
 
 #define ID_ANI_FIREBALL 16100
 
@@ -11,8 +11,10 @@
 
 class CFireBall :public CGameObject
 {
+	float xStart, yStart;
 public:
 	CFireBall(float x, float y) :CGameObject(x, y) {
+		xStart = x; yStart = y;
 		 vx = 0; vy = 0;
 	}
 	void Render();

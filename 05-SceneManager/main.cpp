@@ -1,25 +1,3 @@
-/* =============================================================
-	INTRODUCTION TO GAME PROGRAMMING SE102
-	
-	SAMPLE 05 - SCENE MANAGER
-
-	This sample illustrates how to:
-
-		1/ Read scene (textures, sprites, animations and objects) from files 
-		2/ Handle multiple scenes in game
-
-	Key classes/functions:
-		CScene
-		CPlayScene		
-
-
-HOW TO INSTALL Microsoft.DXSDK.D3DX
-===================================
-1) Tools > NuGet package manager > Package Manager Console
-2) execute command :  Install-Package Microsoft.DXSDK.D3DX
-
-
-================================================================ */
 
 #include <windows.h>
 #include <d3d10.h>
@@ -49,8 +27,6 @@ HOW TO INSTALL Microsoft.DXSDK.D3DX
 
 #define BACKGROUND_COLOR D3DXCOLOR(156.0f/255, 252.0f/255, 240.0f/255, 0.0f)
 
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
