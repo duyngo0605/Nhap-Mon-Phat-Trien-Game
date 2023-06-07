@@ -1,5 +1,11 @@
 #include "Koopa.h"
 #include "Goomba.h"
+#include "QuestionBrick.h"
+#include "Coin.h"
+#include "Mushroom.h"
+#include "Leaf.h"
+#include "Mario.h"
+#include "PlayScene.h"
 
 CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
 {
@@ -54,6 +60,9 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		if (dynamic_cast<CGoomba*>(e->obj)) {
 			OnCollisionWithGoomba(e);
 		}
+		if (dynamic_cast<CQuestionBrick*>(e->obj)) {
+			OnCollisionWithQuestionBrick(e);
+		}
 	}
 }
 
@@ -61,4 +70,37 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	e->obj->SetState(GOOMBA_STATE_DIE);
 	e->obj->Delete();
+}
+
+void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (!questionBrick->GetIsEmpty())
+	{
+		questionBrick->SetState(QUESTION_BRICK_STATE_UP);
+		if (questionBrick->GetType() == QUESTION_BRICK_TYPE_COIN)
+		{
+			mario->AddCoin();
+			CCoin* coin = new CCoin(x, y - QUESTION_BRICK_BBOX_HEIGHT);
+			coin->SetSpeed(0, -0.5f);
+			scene->AddObject(coin);
+		}
+		else if (questionBrick->GetType() == QUESTION_BRICK_TYPE_ITEM)
+		{
+			if (mario->GetLevel() == MARIO_LEVEL_SMALL)
+			{
+				CMushRoom* mushroom = new CMushRoom(x, y);
+				mushroom->SetState(MUSHROOM_STATE_UP);
+				scene->AddObject(mushroom);
+			}
+			else
+			{
+				CLeaf* leaf = new CLeaf(x, y);
+				leaf->SetState(LEAF_STATE_UP);
+				scene->AddObject(leaf);
+			}
+		}
+	}
 }
