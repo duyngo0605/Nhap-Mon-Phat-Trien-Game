@@ -13,6 +13,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
 	vy += ay * dt;
+	if (!isInCam()) Delete();
 	if (GetState() == LEAF_STATE_UP)
 	{
 		if (y < yStart - LEAF_BBOX_HEIGHT*3)

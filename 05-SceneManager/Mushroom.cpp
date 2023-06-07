@@ -10,7 +10,6 @@ void CMushRoom::Render()
 
 void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
 	vx += ax * dt;
 	vy += ay * dt;
 	if (GetState() == MUSHROOM_STATE_UP)

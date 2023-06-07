@@ -12,6 +12,7 @@ goomba.txt
 leaf.txt
 firevenustrap.txt
 fireball.txt
+koopa.txt
 
 #
 [OBJECTS]
