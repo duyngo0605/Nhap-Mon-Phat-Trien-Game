@@ -7,6 +7,7 @@
 #include "Mario.h"
 #include "PlayScene.h"
 #include "SpecialPlatform.h"
+#include "BlockKoopa.h"
 
 CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
 {
@@ -95,6 +96,12 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 			OnCollisionWithQuestionBrick(e);
 		}
 	}
+	else
+	{
+		if (dynamic_cast<CBlockKoopa*>(e->obj)) {
+			OnCollisionWithBlockKoopa(e);
+		}
+	}
 	if (dynamic_cast<CSpecialPlatform*>(e->obj))
 		OnCollisionWithSpecialPlatform(e);
 	if (!e->obj->IsBlocking()) return;
@@ -171,6 +178,14 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 				scene->AddObject(leaf);
 			}
 		}
+	}
+}
+
+void CKoopa::OnCollisionWithBlockKoopa(LPCOLLISIONEVENT e)
+{
+	if (e->nx != 0)
+	{
+		vx = -vx;
 	}
 }
 

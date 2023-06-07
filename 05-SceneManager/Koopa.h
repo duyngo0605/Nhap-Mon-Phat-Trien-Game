@@ -66,6 +66,7 @@ public:
 	void OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithBlockKoopa(LPCOLLISIONEVENT e);
 
 	void SetState(int state);
 
