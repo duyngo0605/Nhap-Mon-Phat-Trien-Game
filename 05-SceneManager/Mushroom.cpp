@@ -1,6 +1,7 @@
 #include "Mushroom.h"
 #include "Mario.h"
 #include "PlayScene.h"
+#include "SpecialPlatform.h"
 
 void CMushRoom::Render()
 {
@@ -36,6 +37,8 @@ void CMushRoom::OnNoCollision(DWORD dt)
 
 void CMushRoom::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CSpecialPlatform*>(e->obj))
+		OnCollisionWithSpecialPlatform(e);
 	if (!e->obj->IsBlocking()) return;
 	if (e->ny != 0&&e->obj->IsBlocking())
 	{
@@ -44,6 +47,20 @@ void CMushRoom::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		vx = -vx;
+	}
+}
+
+void CMushRoom::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
+{
+	CSpecialPlatform* specialPlat = dynamic_cast<CSpecialPlatform*>(e->obj);
+	float xPlat, yPlat;
+	specialPlat->GetPosition(xPlat, yPlat);
+	if (e->ny < 0) {
+		if (yPlat - y <= (MUSHROOM_BBOX_HEIGHT))
+		{
+			SetPosition(x, yPlat - MUSHROOM_BBOX_HEIGHT);
+			vy = 0;
+		}
 	}
 }
 

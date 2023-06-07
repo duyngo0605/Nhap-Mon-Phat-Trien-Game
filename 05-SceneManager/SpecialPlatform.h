@@ -1,5 +1,9 @@
 #pragma once
 #include "Platform.h"
+
+#define SPECIAL_PLATFORM_BBOX_HEIGHT 16
+#define SPECIAL_PLATFORM_BBOX_WIDTH 16
+
 class CSpecialPlatform :public CPlatform //only block with down moving
 {
 public:

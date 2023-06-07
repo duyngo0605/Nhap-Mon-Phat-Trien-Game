@@ -14,6 +14,7 @@
 #include "Leaf.h"
 #include "FireVenusTrap.h"
 #include "FireBall.h"
+#include "Koopa.h"
 
 #include "Collision.h"
 
@@ -61,6 +62,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	if (dynamic_cast<CKoopa*>(e->obj))
+		OnCollisionWithKoopa(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
@@ -98,7 +101,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
-					level = MARIO_LEVEL_SMALL;
+					level--;
 					StartUntouchable();
 				}
 				else
@@ -106,6 +109,47 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 					DebugOut(L">>> Mario DIE >>> \n");
 					SetState(MARIO_STATE_DIE);
 				}
+			}
+		}
+	}
+}
+
+void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
+{
+	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+
+	// jump on top >> Koopa defend and deflect a bit 
+	if (e->ny < 0)
+	{
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
+		if (koopa->GetState() == KOOPA_STATE_WALKING|| koopa->GetState() == KOOPA_STATE_THROWN)
+		{
+			koopa->SetState(KOOPA_STATE_DEFEND);
+		}
+		else if (koopa->GetState() == KOOPA_STATE_DEFEND)
+		{
+			koopa->SetState(KOOPA_STATE_THROWN);
+		}
+		
+
+	}
+	else // hit by Koopa
+	{
+		if (koopa->GetState() == KOOPA_STATE_DEFEND)
+		{
+			koopa->SetState(KOOPA_STATE_THROWN);
+		}
+		else if (untouchable == 0)
+		{
+			if (level > MARIO_LEVEL_SMALL)
+			{
+				level--;
+				StartUntouchable();
+			}
+			else
+			{
+				DebugOut(L">>> Mario DIE >>> \n");
+				SetState(MARIO_STATE_DIE);
 			}
 		}
 	}

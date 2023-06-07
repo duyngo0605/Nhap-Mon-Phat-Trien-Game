@@ -6,6 +6,7 @@
 #include "Leaf.h"
 #include "Mario.h"
 #include "PlayScene.h"
+#include "SpecialPlatform.h"
 
 CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
 {
@@ -68,7 +69,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CKoopa::Render()
 {
-	int aniId;
+	int aniId = -1;
 	if (type == KOOPA_TYPE_RED)
 		aniId = GetAniIdRed();
 	CAnimations::GetInstance()->Get(aniId)->Render(x,y);
@@ -85,18 +86,6 @@ void CKoopa::OnNoCollision(DWORD dt)
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!isInCam()) return;
-	if (!e->obj->IsBlocking()) return;
-	
-
-
-	if (e->ny != 0)
-	{
-		vy = 0;
-	}
-	else if (e->nx != 0)
-	{
-		vx = -vx;
-	}
 	if (GetState() == KOOPA_STATE_THROWN)
 	{
 		if (dynamic_cast<CGoomba*>(e->obj)) {
@@ -106,12 +95,50 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 			OnCollisionWithQuestionBrick(e);
 		}
 	}
+	if (dynamic_cast<CSpecialPlatform*>(e->obj))
+		OnCollisionWithSpecialPlatform(e);
+	if (!e->obj->IsBlocking()) return;
+
+	if (e->ny != 0)
+	{
+		vy = 0;
+	}
+	else if (e->nx != 0)
+	{
+		vx = -vx;
+	}
+	
+}
+
+void CKoopa::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
+{
+	CSpecialPlatform* specialPlat = dynamic_cast<CSpecialPlatform*>(e->obj);
+	float xPlat, yPlat;
+	specialPlat->GetPosition(xPlat, yPlat);
+	if (e->ny < 0) {
+		if (state == KOOPA_STATE_WALKING)
+		{
+			if (yPlat - y <= (KOOPA_BBOX_HEIGHT+SPECIAL_PLATFORM_BBOX_HEIGHT)/2)
+			{
+				SetPosition(x, yPlat - (KOOPA_BBOX_HEIGHT + SPECIAL_PLATFORM_BBOX_HEIGHT) / 2);
+				vy = 0;
+			}
+		}
+		else
+		{
+			if (yPlat - y <= (KOOPA_BBOX_HEIGHT_DEFEND))
+			{
+				SetPosition(x, yPlat - KOOPA_BBOX_HEIGHT_DEFEND);
+				vy = 0;
+			}
+		}
+	}
 }
 
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
-	e->obj->SetState(GOOMBA_STATE_DIE);
-	e->obj->Delete();
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+	goomba->SetState(GOOMBA_STATE_DIE);
 }
 
 void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)

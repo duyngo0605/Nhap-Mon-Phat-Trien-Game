@@ -28,6 +28,7 @@ public:
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e);
 
 	void SetState(int state);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
