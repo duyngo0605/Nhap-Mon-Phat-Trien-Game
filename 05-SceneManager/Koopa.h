@@ -26,6 +26,19 @@
 #define KOOPA_TYPE_RED 1
 #define KOOPA_TYPE_GREEN 2
 
+#define ID_ANI_RED_KOOPA_WALK_LEFT 18100
+#define ID_ANI_RED_KOOPA_WALK_RIGHT 18101
+#define ID_ANI_RED_KOOPA_DEFEND 18200
+#define ID_ANI_RED_KOOPA_THROWN 18201
+#define ID_ANI_RED_KOOPA_BACK 18300
+
+
+#define ID_ANI_GREEN_KOOPA_WALK_LEFT 18600
+#define ID_ANI_GREEN_KOOPA_WALK_RIGHT 18601
+#define ID_ANI_GREEN_KOOPA_DEFEND 18700
+#define ID_ANI_GREEN_KOOPA_THROWN 18701
+#define ID_ANI_GREEN_KOOPA_BACK 18800
+
 class CKoopa : public CGameObject
 {
 protected:
@@ -35,6 +48,9 @@ protected:
 	ULONGLONG defend_start;
 	ULONGLONG die_start;
 	ULONGLONG back_start;
+
+	int GetAniIdRed();
+	int GetAniIdGreen();
 
 public:
 	CKoopa(float x, float y, int type);

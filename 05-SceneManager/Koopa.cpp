@@ -12,10 +12,29 @@ CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
 	ax = 0;
 	ay = KOOPA_GRAVITY;
 	this->type = type;
-	vx = -1;
+	vx = 0;
 	SetState(GOOMBA_STATE_WALKING);
 }
 
+
+int CKoopa::GetAniIdRed()
+{
+	int aniId = -1;
+	if (vx == KOOPA_WALKING_SPEED)
+		aniId = ID_ANI_RED_KOOPA_WALK_RIGHT;
+	else if (vx == -KOOPA_WALKING_SPEED)
+		aniId = ID_ANI_RED_KOOPA_WALK_LEFT;
+	else if (abs(vx) == KOOPA_THROWN_SPEED)
+		aniId = ID_ANI_RED_KOOPA_THROWN;
+	else if (vx == 0)
+		aniId = ID_ANI_RED_KOOPA_DEFEND;
+	return aniId;
+}
+
+int CKoopa::GetAniIdGreen()
+{
+	return 0;
+}
 
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -41,7 +60,19 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (!isInCam())	return;
 	vx += ax * dt;
-	vy += vy * dt;
+	vy += ay * dt;
+
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+}
+
+void CKoopa::Render()
+{
+	int aniId;
+	if (type == KOOPA_TYPE_RED)
+		aniId = GetAniIdRed();
+	CAnimations::GetInstance()->Get(aniId)->Render(x,y);
+		
 }
 
 void CKoopa::OnNoCollision(DWORD dt)

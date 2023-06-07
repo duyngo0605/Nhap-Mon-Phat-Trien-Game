@@ -68,6 +68,9 @@ koopa.txt
 
 #BRICK
 
+#KOOPA
+3	600	360	1
+
 
 
 #GOOMBA
