@@ -131,6 +131,22 @@
 
 
 
+////Transform animations
+#define ID_ANI_MARIO_FROM_SMALL_TO_BIG_RIGHT 9000
+#define ID_ANI_MARIO_FROM_BIG_TO_TAIL_RIGHT 9001
+
+#define ID_ANI_MARIO_FROM_BIG_TO_SMALL_RIGHT 9002
+#define ID_ANI_MARIO_FROM_TAIL_TO_BIG_RIGHT 9003
+
+#define ID_ANI_MARIO_FROM_SMALL_TO_BIG_LEFT 9100
+#define ID_ANI_MARIO_FROM_BIG_TO_TAIL_LEFT 9101
+
+#define ID_ANI_MARIO_FROM_BIG_TO_SMALL_LEFT 9102
+#define ID_ANI_MARIO_FROM_TAIL_TO_BIG_LEFT 9103
+
+
+
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -170,13 +186,15 @@ class CMario : public CGameObject
 	float ay;				// acceleration on y 
 
 	int level; 
+	int preLevel;
 	int untouchable; 
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
-	bool isHolding = false;
-	bool isKicking = false;
+	bool isHolding;
+	bool isKicking;
+	bool isTransforming;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
@@ -192,6 +210,7 @@ class CMario : public CGameObject
 	int GetAniIdBig();
 	int GetAniIdSmall();
 	int GetAniIdTail();
+	int GetAniIdTransform(int preLevel, int curLevel);
 
 public:
 	CMario(float x, float y) : CGameObject(x, y)
@@ -202,9 +221,13 @@ public:
 		ay = MARIO_GRAVITY; 
 
 		level = MARIO_LEVEL_SMALL;
+		preLevel = 0;
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
+		isHolding = false;
+		isKicking = false;
+		isTransforming = false;
 		coin = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -212,7 +235,7 @@ public:
 	void SetState(int state);
 	
 	bool GetIsHolding() { return isHolding; }
-	bool SetIsHolding(bool isHolding) { this->isHolding = isHolding; }
+	void SetIsHolding(bool isHolding) { this->isHolding = isHolding; }
 	float GetNX() { return nx; }
 
 	int IsCollidable()
@@ -226,8 +249,7 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	int GetLevel() { return level; }
 	void SetLevel(int l);
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); isTransforming = true; }
 	void AddCoin() { coin++; }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-
 };

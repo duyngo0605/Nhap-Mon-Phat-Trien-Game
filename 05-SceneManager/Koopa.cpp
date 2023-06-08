@@ -71,6 +71,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	if (state == KOOPA_STATE_DEFEND)
 	{
+		
 		if (GetTickCount64() - defend_start > KOOPA_DEFEND_TIMEOUT)
 		{
 			SetState(KOOPA_STATE_BACK);

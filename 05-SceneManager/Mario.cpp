@@ -20,20 +20,21 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+	{
+		isTransforming = false;
+		untouchable_start = 0;
+		untouchable = 0;
+	}
+	if (isTransforming) return;
 	vy += ay * dt;
 	vx += ax * dt;
-	if (abs(ax) == MARIO_ACCEL_WALK_X) isHolding = false;
-	if (abs(ax) == MARIO_ACCEL_RUN_X)	isHolding = true;
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 	if (x <= MARIO_SMALL_BBOX_WIDTH/2)x = MARIO_SMALL_BBOX_WIDTH / 2;
 
 	// reset untouchable timer if untouchable time has passed
-	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
-	{
-		untouchable_start = 0;
-		untouchable = 0;
-	}
-
+	
+	
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -103,7 +104,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
-					level--;
+					SetLevel(level - 1);
 					StartUntouchable();
 				}
 				else
@@ -145,7 +146,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		{
 			if (level > MARIO_LEVEL_SMALL)
 			{
-				level--;
+				SetLevel(level - 1);
 				StartUntouchable();
 			}
 			else
@@ -206,16 +207,16 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
 	y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT)/2;
-	level++;
-	
+	SetLevel(level+1);
+	StartUntouchable();
 	e->obj->Delete();
 }
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
-	if (level<MARIO_LEVEL_TAIL)
-		level++;
-
+	if (level < MARIO_LEVEL_TAIL)
+		SetLevel(level+1);
+	StartUntouchable();
 	e->obj->Delete();
 }
 
@@ -264,7 +265,7 @@ void CMario::OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e)
 		{
 			if (level > MARIO_LEVEL_SMALL)
 			{
-				level--;
+				SetLevel(level - 1);
 				StartUntouchable();
 			}
 			else
@@ -282,7 +283,7 @@ void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
 	{
 		if (level > MARIO_LEVEL_SMALL)
 		{
-			level--;
+			SetLevel(level - 1);
 			StartUntouchable();
 		}
 		else
@@ -489,20 +490,73 @@ void CMario::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
 
-	if (state == MARIO_STATE_DIE)
-		aniId = ID_ANI_MARIO_DIE;
-	else if (level == MARIO_LEVEL_BIG)
-		aniId = GetAniIdBig();
-	else if (level == MARIO_LEVEL_SMALL)
-		aniId = GetAniIdSmall();
-	else if (level == MARIO_LEVEL_TAIL)
-		aniId = GetAniIdTail();
+	if (isTransforming)
+		aniId = GetAniIdTransform(preLevel, level);
+	else
+	{
+		if (state == MARIO_STATE_DIE)
+			aniId = ID_ANI_MARIO_DIE;
+		else if (level == MARIO_LEVEL_BIG)
+			aniId = GetAniIdBig();
+		else if (level == MARIO_LEVEL_SMALL)
+			aniId = GetAniIdSmall();
+		else if (level == MARIO_LEVEL_TAIL)
+			aniId = GetAniIdTail();
+	}
 
 	animations->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
 	
 	DebugOutTitle(L"Coins: %d", coin);
+}
+
+int CMario::GetAniIdTransform(int preLevel, int curLevel)
+{
+	int aniId = -1;
+	if (abs(preLevel - curLevel) != 1) return aniId;
+	if (isTransforming)
+	{
+		if (nx >= 0)
+		{
+			if (preLevel == MARIO_LEVEL_SMALL && curLevel == MARIO_LEVEL_BIG)
+			{
+				aniId = ID_ANI_MARIO_FROM_SMALL_TO_BIG_RIGHT;
+			}
+			else if (preLevel == MARIO_LEVEL_BIG && curLevel == MARIO_LEVEL_TAIL)
+			{
+				aniId = ID_ANI_MARIO_FROM_BIG_TO_TAIL_RIGHT;
+			}
+			else if (preLevel == MARIO_LEVEL_BIG && curLevel == MARIO_LEVEL_SMALL)
+			{
+				aniId = ID_ANI_MARIO_FROM_BIG_TO_SMALL_RIGHT;
+			}
+			else if (preLevel == MARIO_LEVEL_TAIL && curLevel == MARIO_LEVEL_BIG)
+			{
+				aniId = ID_ANI_MARIO_FROM_TAIL_TO_BIG_RIGHT;
+			}
+		}
+		else
+		{
+			if (preLevel == MARIO_LEVEL_SMALL && curLevel == MARIO_LEVEL_BIG)
+			{
+				aniId = ID_ANI_MARIO_FROM_SMALL_TO_BIG_LEFT;
+			}
+			else if (preLevel == MARIO_LEVEL_BIG && curLevel == MARIO_LEVEL_TAIL)
+			{
+				aniId = ID_ANI_MARIO_FROM_BIG_TO_TAIL_LEFT;
+			}
+			else if (preLevel == MARIO_LEVEL_BIG && curLevel == MARIO_LEVEL_SMALL)
+			{
+				aniId = ID_ANI_MARIO_FROM_BIG_TO_SMALL_LEFT;
+			}
+			else if (preLevel == MARIO_LEVEL_TAIL && curLevel == MARIO_LEVEL_BIG)
+			{
+				aniId = ID_ANI_MARIO_FROM_TAIL_TO_BIG_LEFT;
+			}
+		}
+		return aniId;
+	}
 }
 
 void CMario::SetState(int state)
@@ -585,6 +639,7 @@ void CMario::SetState(int state)
 	CGameObject::SetState(state);
 }
 
+
 void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	
@@ -621,6 +676,7 @@ void CMario::SetLevel(int l)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
+	preLevel = level;
 	level = l;
 }
 
