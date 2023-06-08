@@ -5,7 +5,7 @@
 #define KOOPA_THROWN_SPEED 0.2f
 
 
-#define KOOPA_DEFEND_TIMEOUT 4000 
+#define KOOPA_DEFEND_TIMEOUT 8000 
 #define KOOPA_BACK_TIMEOUT 1000 
 
 #define KOOPA_DIE_TIME 1000
@@ -21,9 +21,10 @@
 
 #define KOOPA_STATE_WALKING 100
 #define KOOPA_STATE_DEFEND 200
-#define KOOPA_STATE_THROWN 300
+#define KOOPA_STATE_KICKED 300
 #define KOOPA_STATE_BACK 400
-#define KOOPA_STATE_DIE 500
+#define KOOPA_STATE_HOLD 500
+#define KOOPA_STATE_DIE 900
 
 #define KOOPA_TYPE_RED 1
 #define KOOPA_TYPE_GREEN 2
@@ -31,7 +32,7 @@
 #define ID_ANI_RED_KOOPA_WALK_LEFT 18100
 #define ID_ANI_RED_KOOPA_WALK_RIGHT 18101
 #define ID_ANI_RED_KOOPA_DEFEND 18200
-#define ID_ANI_RED_KOOPA_THROWN 18201
+#define ID_ANI_RED_KOOPA_KICKED 18201
 #define ID_ANI_RED_KOOPA_BACK 18300
 
 
@@ -53,7 +54,7 @@ protected:
 
 	int GetAniIdRed();
 	int GetAniIdGreen();
-
+	bool isHeld = false;
 public:
 	CKoopa(float x, float y, int type);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -71,6 +72,9 @@ public:
 	void OnCollisionWithBlockKoopa(LPCOLLISIONEVENT e);
 
 	void SetState(int state);
-
+	void SetIsHeld(bool isHeld)
+	{
+		this->isHeld = isHeld;
+	}
 
 };

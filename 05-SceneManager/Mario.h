@@ -13,7 +13,7 @@
 #define MARIO_ACCEL_RUN_X	0.0003f
 
 #define MARIO_JUMP_SPEED_Y		0.5f
-#define MARIO_JUMP_RUN_SPEED_Y	0.7f
+#define MARIO_JUMP_RUN_SPEED_Y	0.55f
 
 #define MARIO_GRAVITY			0.002f
 #define MARIO_ACCEL_JUMP_Y		0.00015f
@@ -34,17 +34,19 @@
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 
-#define MARIO_STATE_HOLD			700
-#define MARIO_STATE_HOLD_RELEASE	701
-
 #define MARIO_STATE_FLY				800
 #define MARIO_STATE_FLY_RELEASE		801
 
 
 #pragma region ANIMATION_ID
 
-#define ID_ANI_MARIO_HOLDING_RIGHT 300
-#define ID_ANI_MARIO_HOLDING_LEFT 301
+#define ID_ANI_MARIO_KICKING 100
+
+#define ID_ANI_MARIO_HOLDING_RIGHT 200
+#define ID_ANI_MARIO_HOLDING_LEFT 201
+
+#define ID_ANI_MARIO_HOLDING_RUN_RIGHT 300
+#define ID_ANI_MARIO_HOLDING_RUN_LEFT 301
 
 #define ID_ANI_MARIO_IDLE_RIGHT 400
 #define ID_ANI_MARIO_IDLE_LEFT 401
@@ -88,6 +90,15 @@
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1600
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1601
 
+#define ID_ANI_MARIO_SMALL_HOLDING_RIGHT 1700
+#define ID_ANI_MARIO_SMALL_HOLDING_LEFT 1701
+
+#define ID_ANI_MARIO_SMALL_HOLDING_RUN_RIGHT 1800
+#define ID_ANI_MARIO_SMALL_HOLDING_RUN_LEFT 1801
+
+#define ID_ANI_MARIO_SMALL_KICKING 1900
+
+
 ///TAIL MARIO
 #define ID_ANI_MARIO_TAIL_IDLE_RIGHT 2100
 #define ID_ANI_MARIO_TAIL_IDLE_LEFT 2101
@@ -109,6 +120,15 @@
 
 #define ID_ANI_MARIO_TAIL_SIT_RIGHT 2700
 #define ID_ANI_MARIO_TAIL_SIT_LEFT 2701
+
+#define ID_ANI_MARIO_SMALL_HOLDING_RIGHT 2800
+#define ID_ANI_MARIO_SMALL_HOLDING_LEFT 2801
+
+#define ID_ANI_MARIO_SMALL_HOLDING_RUN_RIGHT 2900
+#define ID_ANI_MARIO_SMALL_HOLDING_RUN_LEFT 2901
+
+#define ID_ANI_MARIO_SMALL_KICKING 3000
+
 
 
 #pragma endregion
@@ -140,6 +160,7 @@
 
 
 #define MARIO_UNTOUCHABLE_TIME 2500
+#define MARIO_KICKKING_TIME		200
 
 class CMario : public CGameObject
 {
@@ -154,6 +175,9 @@ class CMario : public CGameObject
 	BOOLEAN isOnPlatform;
 	int coin; 
 
+	bool isHolding = false;
+	bool isKicking = false;
+
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -161,7 +185,6 @@ class CMario : public CGameObject
 	void OnCollisionWithMushRoom(LPCOLLISIONEVENT e);
 	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	void OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e);
-	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireBall(LPCOLLISIONEVENT e);
@@ -188,6 +211,9 @@ public:
 	void Render();
 	void SetState(int state);
 	
+	bool GetIsHolding() { return isHolding; }
+	bool SetIsHolding(bool isHolding) { this->isHolding = isHolding; }
+	float GetNX() { return nx; }
 
 	int IsCollidable()
 	{ 
@@ -203,4 +229,5 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void AddCoin() { coin++; }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
 };

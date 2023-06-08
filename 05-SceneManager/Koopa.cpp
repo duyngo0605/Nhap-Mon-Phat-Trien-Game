@@ -27,7 +27,7 @@ int CKoopa::GetAniIdRed()
 	else if (vx == -KOOPA_WALKING_SPEED)
 		aniId = ID_ANI_RED_KOOPA_WALK_LEFT;
 	else if (abs(vx) == KOOPA_THROWN_SPEED)
-		aniId = ID_ANI_RED_KOOPA_THROWN;
+		aniId = ID_ANI_RED_KOOPA_KICKED;
 	else if (vx == 0)
 	{
 		if (state==KOOPA_STATE_DEFEND)
@@ -65,6 +65,7 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	
 	if (!isInCam())	return;
 	vx += ax * dt;
 	vy += ay * dt;
@@ -82,6 +83,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(KOOPA_STATE_WALKING);
 		}
 	}
+	isHeld = false;
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -105,7 +107,7 @@ void CKoopa::OnNoCollision(DWORD dt)
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!isInCam()) return;
-	if (GetState() == KOOPA_STATE_THROWN)
+	if (GetState() == KOOPA_STATE_KICKED)
 	{
 		if (dynamic_cast<CGoomba*>(e->obj)) {
 			OnCollisionWithGoomba(e);
@@ -223,7 +225,7 @@ void CKoopa::SetState(int state)
 		defend_start = GetTickCount64();
 		vx = 0;
 		break;
-	case KOOPA_STATE_THROWN:
+	case KOOPA_STATE_KICKED:
 		if (nx >= 0)
 			vx = KOOPA_THROWN_SPEED;
 		else

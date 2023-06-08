@@ -22,7 +22,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
+	if (abs(ax) == MARIO_ACCEL_WALK_X) isHolding = false;
+	if (abs(ax) == MARIO_ACCEL_RUN_X)	isHolding = true;
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 	if (x <= MARIO_SMALL_BBOX_WIDTH/2)x = MARIO_SMALL_BBOX_WIDTH / 2;
 
@@ -123,13 +124,13 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	if (e->ny < 0)
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		if (koopa->GetState() == KOOPA_STATE_WALKING|| koopa->GetState() == KOOPA_STATE_THROWN)
+		if (koopa->GetState() == KOOPA_STATE_WALKING|| koopa->GetState() == KOOPA_STATE_KICKED)
 		{
 			koopa->SetState(KOOPA_STATE_DEFEND);
 		}
 		else if (koopa->GetState() == KOOPA_STATE_DEFEND)
 		{
-			koopa->SetState(KOOPA_STATE_THROWN);
+			koopa->SetState(KOOPA_STATE_KICKED);
 		}
 		
 
@@ -138,7 +139,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	{
 		if (koopa->GetState() == KOOPA_STATE_DEFEND)
 		{
-			koopa->SetState(KOOPA_STATE_THROWN);
+			koopa->SetState(KOOPA_STATE_KICKED);
 		}
 		else if (untouchable == 0)
 		{
