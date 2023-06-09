@@ -20,15 +20,18 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+	if (GetTickCount64() - untouchable_start >= MARIO_UNTOUCHABLE_TIME)
 	{
 		isTransforming = false;
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-	if (isTransforming) return;
-	vy += ay * dt;
-	vx += ax * dt;
+	if (isTransforming) vx = vy = 0;
+	else
+	{
+		vy += ay * dt;
+		vx += ax * dt;
+	}
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 	if (x <= MARIO_SMALL_BBOX_WIDTH/2)x = MARIO_SMALL_BBOX_WIDTH / 2;
 
@@ -307,56 +310,70 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 int CMario::GetAniIdSmall()
 {
 	int aniId = -1;
-	if (!isOnPlatform)
+	if (!isTransforming)
 	{
-		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		if (!isOnPlatform)
 		{
-			if (nx >= 0)
-				aniId = ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT;
+			if (abs(ax) == MARIO_ACCEL_RUN_X)
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT;
+			}
 			else
-				aniId = ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT;
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT;
+			}
 		}
 		else
-		{
-			if (nx >= 0)
-				aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
+			if (isSitting)
+			{
+				if (nx > 0)
+					aniId = ID_ANI_MARIO_SIT_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_SIT_LEFT;
+			}
 			else
-				aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT;
-		}
+				if (vx == 0)
+				{
+					if (nx > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
+					else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
+				}
+				else if (vx > 0)
+				{
+					if (ax < 0)
+						aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
+					else if (ax == MARIO_ACCEL_RUN_X)
+						aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
+					else if (ax == MARIO_ACCEL_WALK_X)
+						aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
+				}
+				else // vx < 0
+				{
+					if (ax > 0)
+						aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
+					else if (ax == -MARIO_ACCEL_RUN_X)
+						aniId = ID_ANI_MARIO_SMALL_RUNNING_LEFT;
+					else if (ax == -MARIO_ACCEL_WALK_X)
+						aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
+				}
 	}
 	else
-		if (isSitting)
+	{
+		if (nx >= 0)
 		{
-			if (nx > 0)
-				aniId = ID_ANI_MARIO_SIT_RIGHT;
-			else
-				aniId = ID_ANI_MARIO_SIT_LEFT;
+			aniId = ID_ANI_MARIO_FROM_SMALL_TO_BIG_LEFT;
 		}
 		else
-			if (vx == 0)
-			{
-				if (nx > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
-				else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
-			}
-			else if (vx > 0)
-			{
-				if (ax < 0)
-					aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
-				else if (ax == MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X)
-					aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
-			}
-			else // vx < 0
-			{
-				if (ax > 0)
-					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
-				else if (ax == -MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_SMALL_RUNNING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X)
-					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
-			}
+		{
+			aniId = ID_ANI_MARIO_FROM_SMALL_TO_BIG_LEFT;
+		}
 
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
 
 	return aniId;
@@ -369,56 +386,69 @@ int CMario::GetAniIdSmall()
 int CMario::GetAniIdBig()
 {
 	int aniId = -1;
-	if (!isOnPlatform)
+	if (!isTransforming)
 	{
-		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		if (!isOnPlatform)
 		{
-			if (nx >= 0)
-				aniId = ID_ANI_MARIO_JUMP_RUN_RIGHT;
+			if (abs(ax) == MARIO_ACCEL_RUN_X)
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_JUMP_RUN_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_JUMP_RUN_LEFT;
+			}
 			else
-				aniId = ID_ANI_MARIO_JUMP_RUN_LEFT;
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_JUMP_WALK_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_JUMP_WALK_LEFT;
+			}
 		}
 		else
-		{
-			if (nx >= 0)
-				aniId = ID_ANI_MARIO_JUMP_WALK_RIGHT;
+			if (isSitting)
+			{
+				if (nx > 0)
+					aniId = ID_ANI_MARIO_SIT_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_SIT_LEFT;
+			}
 			else
-				aniId = ID_ANI_MARIO_JUMP_WALK_LEFT;
-		}
+				if (vx == 0)
+				{
+					if (nx > 0) aniId = ID_ANI_MARIO_IDLE_RIGHT;
+					else aniId = ID_ANI_MARIO_IDLE_LEFT;
+				}
+				else if (vx > 0)
+				{
+					if (ax < 0)
+						aniId = ID_ANI_MARIO_BRACE_RIGHT;
+					else if (ax == MARIO_ACCEL_RUN_X)
+						aniId = ID_ANI_MARIO_RUNNING_RIGHT;
+					else if (ax == MARIO_ACCEL_WALK_X)
+						aniId = ID_ANI_MARIO_WALKING_RIGHT;
+				}
+				else // vx < 0
+				{
+					if (ax > 0)
+						aniId = ID_ANI_MARIO_BRACE_LEFT;
+					else if (ax == -MARIO_ACCEL_RUN_X)
+						aniId = ID_ANI_MARIO_RUNNING_LEFT;
+					else if (ax == -MARIO_ACCEL_WALK_X)
+						aniId = ID_ANI_MARIO_WALKING_LEFT;
+				}
 	}
 	else
-		if (isSitting)
+	{
+		if (nx >= 0)
 		{
-			if (nx > 0)
-				aniId = ID_ANI_MARIO_SIT_RIGHT;
-			else
-				aniId = ID_ANI_MARIO_SIT_LEFT;
+			aniId = ID_ANI_MARIO_FROM_SMALL_TO_BIG_RIGHT;
 		}
 		else
-			if (vx == 0)
-			{
-				if (nx > 0) aniId = ID_ANI_MARIO_IDLE_RIGHT;
-				else aniId = ID_ANI_MARIO_IDLE_LEFT;
-			}
-			else if (vx > 0)
-			{
-				if (ax < 0)
-					aniId = ID_ANI_MARIO_BRACE_RIGHT;
-				else if (ax == MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_RUNNING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X)
-					aniId = ID_ANI_MARIO_WALKING_RIGHT;
-			}
-			else // vx < 0
-			{
-				if (ax > 0)
-					aniId = ID_ANI_MARIO_BRACE_LEFT;
-				else if (ax == -MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_RUNNING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X)
-					aniId = ID_ANI_MARIO_WALKING_LEFT;
-			}
-
+		{
+			aniId = ID_ANI_MARIO_FROM_SMALL_TO_BIG_LEFT;
+		}
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
 
 	return aniId;
@@ -428,56 +458,68 @@ int CMario::GetAniIdBig()
 int CMario::GetAniIdTail()
 {
 	int aniId = -1;
-	if (!isOnPlatform)
-	{
-		if (abs(ax) == MARIO_ACCEL_RUN_X)
+	if (!isTransforming) {
+		if (!isOnPlatform)
 		{
-			if (nx >= 0)
-				aniId = ID_ANI_MARIO_TAIL_JUMP_RUN_RIGHT;
+			if (abs(ax) == MARIO_ACCEL_RUN_X)
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_TAIL_JUMP_RUN_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_TAIL_JUMP_RUN_LEFT;
+			}
 			else
-				aniId = ID_ANI_MARIO_TAIL_JUMP_RUN_LEFT;
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_TAIL_JUMP_WALK_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_TAIL_JUMP_WALK_LEFT;
+			}
 		}
 		else
-		{
-			if (nx >= 0)
-				aniId = ID_ANI_MARIO_TAIL_JUMP_WALK_RIGHT;
+			if (isSitting)
+			{
+				if (nx > 0)
+					aniId = ID_ANI_MARIO_TAIL_SIT_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_TAIL_SIT_LEFT;
+			}
 			else
-				aniId = ID_ANI_MARIO_TAIL_JUMP_WALK_LEFT;
-		}
+				if (vx == 0)
+				{
+					if (nx > 0) aniId = ID_ANI_MARIO_TAIL_IDLE_RIGHT;
+					else aniId = ID_ANI_MARIO_TAIL_IDLE_LEFT;
+				}
+				else if (vx > 0)
+				{
+					if (ax < 0)
+						aniId = ID_ANI_MARIO_TAIL_BRACE_RIGHT;
+					else if (ax == MARIO_ACCEL_RUN_X)
+						aniId = ID_ANI_MARIO_TAIL_RUNNING_RIGHT;
+					else if (ax == MARIO_ACCEL_WALK_X)
+						aniId = ID_ANI_MARIO_TAIL_WALKING_RIGHT;
+				}
+				else // vx < 0
+				{
+					if (ax > 0)
+						aniId = ID_ANI_MARIO_TAIL_BRACE_LEFT;
+					else if (ax == -MARIO_ACCEL_RUN_X)
+						aniId = ID_ANI_MARIO_TAIL_RUNNING_LEFT;
+					else if (ax == -MARIO_ACCEL_WALK_X)
+						aniId = ID_ANI_MARIO_TAIL_WALKING_LEFT;
+				}
 	}
 	else
-		if (isSitting)
+	{
+		if (nx >= 0)
 		{
-			if (nx > 0)
-				aniId = ID_ANI_MARIO_TAIL_SIT_RIGHT;
-			else
-				aniId = ID_ANI_MARIO_TAIL_SIT_LEFT;
+			aniId = ID_ANI_MARIO_FROM_BIG_TO_TAIL_RIGHT;
 		}
 		else
-			if (vx == 0)
-			{
-				if (nx > 0) aniId = ID_ANI_MARIO_TAIL_IDLE_RIGHT;
-				else aniId = ID_ANI_MARIO_TAIL_IDLE_LEFT;
-			}
-			else if (vx > 0)
-			{
-				if (ax < 0)
-					aniId = ID_ANI_MARIO_TAIL_BRACE_RIGHT;
-				else if (ax == MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_TAIL_RUNNING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X)
-					aniId = ID_ANI_MARIO_TAIL_WALKING_RIGHT;
-			}
-			else // vx < 0
-			{
-				if (ax > 0)
-					aniId = ID_ANI_MARIO_TAIL_BRACE_LEFT;
-				else if (ax == -MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_TAIL_RUNNING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X)
-					aniId = ID_ANI_MARIO_TAIL_WALKING_LEFT;
-			}
-
+		{
+			aniId = ID_ANI_MARIO_FROM_BIG_TO_TAIL_LEFT;
+		}
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_TAIL_IDLE_RIGHT;
 
 	return aniId;
@@ -487,23 +529,20 @@ int CMario::GetAniIdTail()
 
 void CMario::Render()
 {
-	CAnimations* animations = CAnimations::GetInstance();
+	
 	int aniId = -1;
 
-	if (isTransforming)
-		aniId = GetAniIdTransform(preLevel, level);
-	else
-	{
-		if (state == MARIO_STATE_DIE)
-			aniId = ID_ANI_MARIO_DIE;
-		else if (level == MARIO_LEVEL_BIG)
-			aniId = GetAniIdBig();
-		else if (level == MARIO_LEVEL_SMALL)
-			aniId = GetAniIdSmall();
-		else if (level == MARIO_LEVEL_TAIL)
-			aniId = GetAniIdTail();
-	}
-
+	
+	if (state == MARIO_STATE_DIE)
+		aniId = ID_ANI_MARIO_DIE;
+	else if (level == MARIO_LEVEL_BIG)
+		aniId = GetAniIdBig();
+	else if (level == MARIO_LEVEL_SMALL)
+		aniId = GetAniIdSmall();
+	else if (level == MARIO_LEVEL_TAIL)
+		aniId = GetAniIdTail();
+	if (aniId == -1) return;
+	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
@@ -511,53 +550,6 @@ void CMario::Render()
 	DebugOutTitle(L"Coins: %d", coin);
 }
 
-int CMario::GetAniIdTransform(int preLevel, int curLevel)
-{
-	int aniId = -1;
-	if (abs(preLevel - curLevel) != 1) return aniId;
-	if (isTransforming)
-	{
-		if (nx >= 0)
-		{
-			if (preLevel == MARIO_LEVEL_SMALL && curLevel == MARIO_LEVEL_BIG)
-			{
-				aniId = ID_ANI_MARIO_FROM_SMALL_TO_BIG_RIGHT;
-			}
-			else if (preLevel == MARIO_LEVEL_BIG && curLevel == MARIO_LEVEL_TAIL)
-			{
-				aniId = ID_ANI_MARIO_FROM_BIG_TO_TAIL_RIGHT;
-			}
-			else if (preLevel == MARIO_LEVEL_BIG && curLevel == MARIO_LEVEL_SMALL)
-			{
-				aniId = ID_ANI_MARIO_FROM_BIG_TO_SMALL_RIGHT;
-			}
-			else if (preLevel == MARIO_LEVEL_TAIL && curLevel == MARIO_LEVEL_BIG)
-			{
-				aniId = ID_ANI_MARIO_FROM_TAIL_TO_BIG_RIGHT;
-			}
-		}
-		else
-		{
-			if (preLevel == MARIO_LEVEL_SMALL && curLevel == MARIO_LEVEL_BIG)
-			{
-				aniId = ID_ANI_MARIO_FROM_SMALL_TO_BIG_LEFT;
-			}
-			else if (preLevel == MARIO_LEVEL_BIG && curLevel == MARIO_LEVEL_TAIL)
-			{
-				aniId = ID_ANI_MARIO_FROM_BIG_TO_TAIL_LEFT;
-			}
-			else if (preLevel == MARIO_LEVEL_BIG && curLevel == MARIO_LEVEL_SMALL)
-			{
-				aniId = ID_ANI_MARIO_FROM_BIG_TO_SMALL_LEFT;
-			}
-			else if (preLevel == MARIO_LEVEL_TAIL && curLevel == MARIO_LEVEL_BIG)
-			{
-				aniId = ID_ANI_MARIO_FROM_TAIL_TO_BIG_LEFT;
-			}
-		}
-		return aniId;
-	}
-}
 
 void CMario::SetState(int state)
 {
@@ -676,7 +668,8 @@ void CMario::SetLevel(int l)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
-	preLevel = level;
+	isTransforming = true;
 	level = l;
+	
 }
 

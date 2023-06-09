@@ -132,17 +132,13 @@
 
 
 ////Transform animations
-#define ID_ANI_MARIO_FROM_SMALL_TO_BIG_RIGHT 9000
-#define ID_ANI_MARIO_FROM_BIG_TO_TAIL_RIGHT 9001
+#define ID_ANI_MARIO_FROM_SMALL_TO_BIG_RIGHT 4000
+#define ID_ANI_MARIO_FROM_BIG_TO_TAIL_RIGHT 4001
 
-#define ID_ANI_MARIO_FROM_BIG_TO_SMALL_RIGHT 9002
-#define ID_ANI_MARIO_FROM_TAIL_TO_BIG_RIGHT 9003
+#define ID_ANI_MARIO_FROM_SMALL_TO_BIG_LEFT 4100
+#define ID_ANI_MARIO_FROM_BIG_TO_TAIL_LEFT 4101
 
-#define ID_ANI_MARIO_FROM_SMALL_TO_BIG_LEFT 9100
-#define ID_ANI_MARIO_FROM_BIG_TO_TAIL_LEFT 9101
 
-#define ID_ANI_MARIO_FROM_BIG_TO_SMALL_LEFT 9102
-#define ID_ANI_MARIO_FROM_TAIL_TO_BIG_LEFT 9103
 
 
 
@@ -175,7 +171,7 @@
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
 
-#define MARIO_UNTOUCHABLE_TIME 2500
+#define MARIO_UNTOUCHABLE_TIME 1000
 #define MARIO_KICKKING_TIME		200
 
 class CMario : public CGameObject
@@ -185,8 +181,8 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 
-	int level; 
-	int preLevel;
+	int level;
+
 	int untouchable; 
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
@@ -210,7 +206,6 @@ class CMario : public CGameObject
 	int GetAniIdBig();
 	int GetAniIdSmall();
 	int GetAniIdTail();
-	int GetAniIdTransform(int preLevel, int curLevel);
 
 public:
 	CMario(float x, float y) : CGameObject(x, y)
@@ -219,9 +214,8 @@ public:
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
-
+		nx = 1;
 		level = MARIO_LEVEL_SMALL;
-		preLevel = 0;
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
@@ -236,6 +230,7 @@ public:
 	
 	bool GetIsHolding() { return isHolding; }
 	void SetIsHolding(bool isHolding) { this->isHolding = isHolding; }
+	bool GetIsTransforming() { return isTransforming; }
 	float GetNX() { return nx; }
 
 	int IsCollidable()
@@ -249,7 +244,7 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	int GetLevel() { return level; }
 	void SetLevel(int l);
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); isTransforming = true; }
+	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void AddCoin() { coin++; }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
