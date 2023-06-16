@@ -70,6 +70,7 @@ public:
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithBlockKoopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e);
 
 	void SetState(int state);
 	void SetIsHeld(bool isHeld)

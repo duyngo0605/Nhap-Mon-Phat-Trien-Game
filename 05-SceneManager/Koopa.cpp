@@ -8,6 +8,7 @@
 #include "PlayScene.h"
 #include "SpecialPlatform.h"
 #include "BlockKoopa.h"
+#include "FireVenusTrap.h"
 
 CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
 {
@@ -75,7 +76,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (state == KOOPA_STATE_DEFEND)
 	{
 		if (mario->GetIsHolding() && isHeld) {
-			x = xM + mario->GetNX() * (MARIO_BIG_BBOX_WIDTH - 3);
+			x = xM + mario->GetNX() * (KOOPA_BBOX_WIDTH - 5);
 			y = yM - 3;
 
 			vx = vxM;
@@ -123,10 +124,13 @@ void CKoopa::OnNoCollision(DWORD dt)
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!isInCam()) return;
-	if (GetState() == KOOPA_STATE_KICKED)
+	if (GetState() == KOOPA_STATE_KICKED||GetState()==KOOPA_STATE_DEFEND)
 	{
 		if (dynamic_cast<CGoomba*>(e->obj)) {
 			OnCollisionWithGoomba(e);
+		}
+		if (dynamic_cast<CFireVenusTrap*>(e->obj)) {
+			OnCollisionWithFireVenusTrap(e);
 		}
 		if (dynamic_cast<CQuestionBrick*>(e->obj)) {
 			OnCollisionWithQuestionBrick(e);
@@ -184,11 +188,18 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	goomba->SetState(GOOMBA_STATE_DIE);
 }
 
+void CKoopa::OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e)
+{
+	CFireVenusTrap* trap = dynamic_cast<CFireVenusTrap*>(e->obj);
+	trap->SetState(FIREVENUSTRAP_STATE_DIE);
+}
+
 void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
 	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
+	if (isHeld) return;
 	if (!questionBrick->GetIsEmpty())
 	{
 		questionBrick->SetState(QUESTION_BRICK_STATE_UP);
@@ -239,6 +250,7 @@ void CKoopa::SetState(int state)
 		break;
 	case KOOPA_STATE_DEFEND:
 		defend_start = GetTickCount64();
+		y -= KOOPA_BBOX_HEIGHT / 4;
 		vx = 0;
 		break;
 	case KOOPA_STATE_KICKED:

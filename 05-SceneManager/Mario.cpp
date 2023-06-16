@@ -130,6 +130,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		if (koopa->GetState() == KOOPA_STATE_WALKING|| koopa->GetState() == KOOPA_STATE_KICKED)
 		{
+			
 			koopa->SetState(KOOPA_STATE_DEFEND);
 		}
 		else if (koopa->GetState() == KOOPA_STATE_DEFEND)
@@ -145,16 +146,16 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		{
 			if (koopa->GetState() == KOOPA_STATE_DEFEND)
 			{
-				if (abs(ax) == MARIO_ACCEL_WALK_X)
+				if (isHolding==true) {
+					koopa->SetIsHeld(true);
+				}
+				else
 				{
 					koopa->SetIsHeld(false);
 					isKicking = true;
-
+					koopa->SetNX(-e->nx);
 					koopa->SetState(KOOPA_STATE_KICKED);
-				}
-				else if (abs(ax) == MARIO_ACCEL_RUN_X) {
-					isHolding = true;
-					koopa->SetIsHeld(true);
+					
 				}
 			}
 			else
@@ -277,7 +278,7 @@ void CMario::OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e)
 {
 	if (untouchable == 0)
 	{
-		if (e->obj->GetState() != FIREVENUSTRAP_STATE_HIDE)
+		if (e->obj->GetState() != FIREVENUSTRAP_STATE_HIDE&& e->obj->GetState() != FIREVENUSTRAP_STATE_DIE)
 		{
 			if (level > MARIO_LEVEL_SMALL)
 			{

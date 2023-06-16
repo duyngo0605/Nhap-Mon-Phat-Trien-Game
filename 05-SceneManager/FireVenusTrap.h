@@ -20,15 +20,17 @@
 #define FIREVENUSTRAP_STATE_UP 200
 #define FIREVENUSTRAP_STATE_DOWN 300
 #define FIREVENUSTRAP_STATE_ATTACK 400
+#define FIREVENUSTRAP_STATE_DIE 500
 
 #define FIREVENUSTRAP_TIME_ATTACK 1000
+#define FIREVENUSTRAP_DIE_TIME_OUT 1000
 
 
 class CFireVenusTrap :public CGameObject
 {
 protected:
 	float xStart, yStart, ny;
-	ULONGLONG attack_start, attack_gap;
+	ULONGLONG attack_start, attack_gap, die_start;
 public:
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
