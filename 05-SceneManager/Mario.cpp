@@ -139,23 +139,36 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		
 
 	}
-	else // hit by Koopa
+	else if (e->nx != 0)
 	{
-		if (koopa->GetState() == KOOPA_STATE_DEFEND)
+		if (untouchable == 0)
 		{
-			koopa->SetState(KOOPA_STATE_KICKED);
-		}
-		else if (untouchable == 0)
-		{
-			if (level > MARIO_LEVEL_SMALL)
+			if (koopa->GetState() == KOOPA_STATE_DEFEND)
 			{
-				SetLevel(level - 1);
-				StartUntouchable();
+				if (abs(ax) == MARIO_ACCEL_WALK_X)
+				{
+					koopa->SetIsHeld(false);
+					isKicking = true;
+
+					koopa->SetState(KOOPA_STATE_KICKED);
+				}
+				else if (abs(ax) == MARIO_ACCEL_RUN_X) {
+					isHolding = true;
+					koopa->SetIsHeld(true);
+				}
 			}
 			else
 			{
-				DebugOut(L">>> Mario DIE >>> \n");
-				SetState(MARIO_STATE_DIE);
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					SetLevel(level - 1);
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
 			}
 		}
 	}

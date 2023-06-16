@@ -26,9 +26,9 @@ int CKoopa::GetAniIdRed()
 		aniId = ID_ANI_RED_KOOPA_WALK_RIGHT;
 	else if (vx == -KOOPA_WALKING_SPEED)
 		aniId = ID_ANI_RED_KOOPA_WALK_LEFT;
-	else if (abs(vx) == KOOPA_THROWN_SPEED)
+	else if (abs(vx) == KOOPA_KICKED_SPEED)
 		aniId = ID_ANI_RED_KOOPA_KICKED;
-	else if (vx == 0)
+	else
 	{
 		if (state==KOOPA_STATE_DEFEND)
 			aniId = ID_ANI_RED_KOOPA_DEFEND;
@@ -65,12 +65,28 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	float xM, yM, vxM, vyM;
+	mario->GetPosition(xM, yM);
+	mario->GetSpeed(vxM, vyM);
 	if (!isInCam())	return;
 	vx += ax * dt;
 	vy += ay * dt;
 	if (state == KOOPA_STATE_DEFEND)
 	{
+		if (mario->GetIsHolding() && isHeld) {
+			x = xM + mario->GetNX() * (MARIO_BIG_BBOX_WIDTH - 3);
+			y = yM - 3;
+
+			vx = vxM;
+			vy = vyM;
+		}
+		else {
+			if (this->isHeld) {
+				ay = KOOPA_GRAVITY;
+				SetState(KOOPA_STATE_KICKED);
+			}
+		}
 		
 		if (GetTickCount64() - defend_start > KOOPA_DEFEND_TIMEOUT)
 		{
@@ -84,7 +100,6 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(KOOPA_STATE_WALKING);
 		}
 	}
-	isHeld = false;
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -228,9 +243,9 @@ void CKoopa::SetState(int state)
 		break;
 	case KOOPA_STATE_KICKED:
 		if (nx >= 0)
-			vx = KOOPA_THROWN_SPEED;
+			vx = KOOPA_KICKED_SPEED;
 		else
-			vx = -KOOPA_THROWN_SPEED;
+			vx = -KOOPA_KICKED_SPEED;
 		break;
 	case KOOPA_STATE_BACK:
 		back_start = GetTickCount64();
