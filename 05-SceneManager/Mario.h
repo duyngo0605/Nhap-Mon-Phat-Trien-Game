@@ -121,13 +121,13 @@
 #define ID_ANI_MARIO_TAIL_SIT_RIGHT 2700
 #define ID_ANI_MARIO_TAIL_SIT_LEFT 2701
 
-#define ID_ANI_MARIO_SMALL_HOLDING_RIGHT 2800
-#define ID_ANI_MARIO_SMALL_HOLDING_LEFT 2801
+#define ID_ANI_MARIO_TAIL_HOLDING_RIGHT 2800
+#define ID_ANI_MARIO_TAIL_HOLDING_LEFT 2801
 
-#define ID_ANI_MARIO_SMALL_HOLDING_RUN_RIGHT 2900
-#define ID_ANI_MARIO_SMALL_HOLDING_RUN_LEFT 2901
+#define ID_ANI_MARIO_TAIL_HOLDING_RUN_RIGHT 2900
+#define ID_ANI_MARIO_TAIL_HOLDING_RUN_LEFT 2901
 
-#define ID_ANI_MARIO_SMALL_KICKING 3000
+#define ID_ANI_MARIO_TAIL_KICKING 3000
 
 
 
@@ -231,7 +231,7 @@ public:
 	bool GetIsHolding() { return isHolding; }
 	void SetIsHolding(bool isHolding) { this->isHolding = isHolding; }
 	bool GetIsTransforming() { return isTransforming; }
-	float GetNX() { return nx; }
+	int GetNX() { return nx; }
 
 	int IsCollidable()
 	{ 
