@@ -199,7 +199,6 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
-	if (isHeld) return;
 	if (!questionBrick->GetIsEmpty())
 	{
 		questionBrick->SetState(QUESTION_BRICK_STATE_UP);
