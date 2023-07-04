@@ -326,7 +326,7 @@ void CPlayScene::Update(DWORD dt)
 
 	cy -= game->GetBackBufferHeight() - MARIO_BIG_BBOX_HEIGHT / 2 - 16;
 	if (cx < 0) cx = 0;
-	if (cx > MAP_WIDTH) cx = MAP_WIDTH;
+	if (cx > MAP_WIDTH - game->GetBackBufferWidth()) cx=MAP_WIDTH - game->GetBackBufferWidth();
 	CGame::GetInstance()->SetCamPos(cx, 404-(game->GetBackBufferHeight() - MARIO_BIG_BBOX_HEIGHT / 2 - 16));
 
 	PurgeDeletedObjects();
