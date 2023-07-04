@@ -8,6 +8,9 @@
 #include "Goomba.h"
 //#include "Koopas.h"
 
+#define MAP_HEIGHT 432
+#define MAP_WIDTH 2816
+
 
 class CPlayScene: public CScene
 {
