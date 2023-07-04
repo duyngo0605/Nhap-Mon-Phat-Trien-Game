@@ -213,13 +213,13 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 		{
 			if (mario->GetLevel() == MARIO_LEVEL_SMALL)
 			{
-				CMushRoom* mushroom = new CMushRoom(x, y);
+				CMushRoom* mushroom = new CMushRoom(x+KOOPA_BBOX_WIDTH, y);
 				mushroom->SetState(MUSHROOM_STATE_UP);
 				scene->AddObject(mushroom);
 			}
 			else
 			{
-				CLeaf* leaf = new CLeaf(x, y);
+				CLeaf* leaf = new CLeaf(x + KOOPA_BBOX_WIDTH, y);
 				leaf->SetState(LEAF_STATE_UP);
 				scene->AddObject(leaf);
 			}
