@@ -78,7 +78,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (mario->GetIsHolding() && isHeld) {
 			x = xM + mario->GetNX() * (KOOPA_BBOX_WIDTH - 5);
 			y = yM - 3;
-
+			nx = mario->GetNX();
 			vx = vxM;
 			vy = vyM;
 		}
@@ -202,14 +202,8 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	if (!questionBrick->GetIsEmpty())
 	{
 		questionBrick->SetState(QUESTION_BRICK_STATE_UP);
-		if (questionBrick->GetType() == QUESTION_BRICK_TYPE_COIN)
-		{
-			mario->AddCoin();
-			CCoin* coin = new CCoin(x, y - QUESTION_BRICK_BBOX_HEIGHT);
-			coin->SetSpeed(0, -0.5f);
-			scene->AddObject(coin);
-		}
-		else if (questionBrick->GetType() == QUESTION_BRICK_TYPE_ITEM)
+		
+		if (questionBrick->GetType() == QUESTION_BRICK_TYPE_ITEM)
 		{
 			if (mario->GetLevel() == MARIO_LEVEL_SMALL)
 			{
@@ -255,7 +249,7 @@ void CKoopa::SetState(int state)
 	case KOOPA_STATE_KICKED:
 		if (nx >= 0)
 			vx = KOOPA_KICKED_SPEED;
-		else
+		else if (nx < 0)
 			vx = -KOOPA_KICKED_SPEED;
 		break;
 	case KOOPA_STATE_BACK:

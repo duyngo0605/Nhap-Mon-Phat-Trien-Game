@@ -48,6 +48,9 @@
 #define ID_ANI_MARIO_HOLDING_RUN_RIGHT 300
 #define ID_ANI_MARIO_HOLDING_RUN_LEFT 301
 
+#define ID_ANI_MARIO_HOLDING_JUMP_RIGHT 310
+#define ID_ANI_MARIO_HOLDING_JUMP_LEFT 311
+
 #define ID_ANI_MARIO_IDLE_RIGHT 400
 #define ID_ANI_MARIO_IDLE_LEFT 401
 
@@ -96,6 +99,9 @@
 #define ID_ANI_MARIO_SMALL_HOLDING_RUN_RIGHT 1800
 #define ID_ANI_MARIO_SMALL_HOLDING_RUN_LEFT 1801
 
+#define ID_ANI_MARIO_SMALL_HOLDING_JUMP_RIGHT 1810
+#define ID_ANI_MARIO_SMALL_HOLDING_JUMP_LEFT 1801
+
 #define ID_ANI_MARIO_SMALL_KICKING 1900
 
 
@@ -126,6 +132,10 @@
 
 #define ID_ANI_MARIO_TAIL_HOLDING_RUN_RIGHT 2900
 #define ID_ANI_MARIO_TAIL_HOLDING_RUN_LEFT 2901
+
+
+#define ID_ANI_MARIO_TAIL_HOLDING_JUMP_RIGHT 2910
+#define ID_ANI_MARIO_TAIL_HOLDING_JUMP_LEFT 2911
 
 #define ID_ANI_MARIO_TAIL_KICKING 3000
 
@@ -173,6 +183,7 @@
 
 #define MARIO_UNTOUCHABLE_TIME 1000
 #define MARIO_KICKKING_TIME		200
+#define HEIGHT_DEATH 450
 
 class CMario : public CGameObject
 {
@@ -188,7 +199,8 @@ class CMario : public CGameObject
 	BOOLEAN isOnPlatform;
 	int coin; 
 
-	bool isHolding;
+	bool canHold;
+	bool isHolding = false;
 	bool isKicking;
 	bool isTransforming;
 
@@ -219,7 +231,7 @@ public:
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
-		isHolding = false;
+		canHold = false;
 		isKicking = false;
 		isTransforming = false;
 		coin = 0;
@@ -228,8 +240,8 @@ public:
 	void Render();
 	void SetState(int state);
 	
-	bool GetIsHolding() { return isHolding; }
-	void SetIsHolding(bool isHolding) { this->isHolding = isHolding; }
+	bool GetIsHolding() { return canHold; }
+	void SetCanHold(bool canHold) { this->canHold = canHold; if (canHold == false) isHolding = false; }
 	bool GetIsTransforming() { return isTransforming; }
 	int GetNX() { return nx; }
 

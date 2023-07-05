@@ -34,7 +34,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		//Reload();
 		break;
 	case DIK_A:
-		mario->SetIsHolding(true);
+		mario->SetCanHold(true);
 		break;
 	}
 }
@@ -53,7 +53,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
 		break;
-	case DIK_A: mario->SetIsHolding(false);
+	case DIK_A: mario->SetCanHold(false);
 		break;
 	}
 }
