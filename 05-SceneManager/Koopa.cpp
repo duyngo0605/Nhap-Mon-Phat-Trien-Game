@@ -84,6 +84,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else {
 			if (this->isHeld) {
+				mario->Kick();
 				ay = KOOPA_GRAVITY;
 				SetState(KOOPA_STATE_KICKED);
 			}

@@ -40,7 +40,8 @@
 
 #pragma region ANIMATION_ID
 
-#define ID_ANI_MARIO_KICKING 100
+#define ID_ANI_MARIO_KICKING_RIGHT 100
+#define ID_ANI_MARIO_KICKING_LEFT 101
 
 #define ID_ANI_MARIO_HOLDING_RIGHT 200
 #define ID_ANI_MARIO_HOLDING_LEFT 201
@@ -102,7 +103,8 @@
 #define ID_ANI_MARIO_SMALL_HOLDING_JUMP_RIGHT 1810
 #define ID_ANI_MARIO_SMALL_HOLDING_JUMP_LEFT 1801
 
-#define ID_ANI_MARIO_SMALL_KICKING 1900
+#define ID_ANI_MARIO_SMALL_KICKING_RIGHT 1900
+#define ID_ANI_MARIO_SMALL_KICKING_LEFT 1901
 
 
 ///TAIL MARIO
@@ -137,7 +139,8 @@
 #define ID_ANI_MARIO_TAIL_HOLDING_JUMP_RIGHT 2910
 #define ID_ANI_MARIO_TAIL_HOLDING_JUMP_LEFT 2911
 
-#define ID_ANI_MARIO_TAIL_KICKING 3000
+#define ID_ANI_MARIO_TAIL_KICKING_RIGHT 3000
+#define ID_ANI_MARIO_TAIL_KICKING_LEFT 3001
 
 
 
@@ -181,8 +184,8 @@
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
 
-#define MARIO_UNTOUCHABLE_TIME 1000
-#define MARIO_KICKKING_TIME		200
+#define MARIO_UNTOUCHABLE_TIME 2000
+#define MARIO_KICKING_TIME		200
 #define HEIGHT_DEATH 450
 
 class CMario : public CGameObject
@@ -196,6 +199,7 @@ class CMario : public CGameObject
 
 	int untouchable; 
 	ULONGLONG untouchable_start;
+	ULONGLONG kick_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
@@ -242,6 +246,7 @@ public:
 	
 	bool GetIsHolding() { return canHold; }
 	void SetCanHold(bool canHold) { this->canHold = canHold; if (canHold == false) isHolding = false; }
+	void Kick() { isKicking = true; kick_start = GetTickCount64(); }
 	bool GetIsTransforming() { return isTransforming; }
 	int GetNX() { return nx; }
 
