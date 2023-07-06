@@ -152,6 +152,8 @@
 #define ID_ANI_MARIO_TAIL_FLYING_DROP_RIGHT 3300
 #define ID_ANI_MARIO_TAIL_FLYING_DROP_LEFT 3301
 
+#define ID_ANI_MARIO_TAIL_ATTACK_RIGHT 3400
+#define ID_ANI_MARIO_TAIL_ATTACK_LEFT 3401
 
 ////Transform animations
 #define ID_ANI_MARIO_FROM_SMALL_TO_BIG_RIGHT 4000
@@ -181,10 +183,7 @@
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
 
-#define MARIO_TAIL_BBOX_WIDTH  14
-#define MARIO_TAIL_BBOX_HEIGHT 24
-#define MARIO_TAIL_SITTING_BBOX_WIDTH  14
-#define MARIO_TAIL_SITTING_BBOX_HEIGHT 16
+#define TAIL_LENGTH 4
 
 
 #define MARIO_SIT_HEIGHT_ADJUST ((MARIO_BIG_BBOX_HEIGHT-MARIO_BIG_SITTING_BBOX_HEIGHT)/2)
@@ -195,6 +194,8 @@
 
 #define MARIO_UNTOUCHABLE_TIME 2000
 #define MARIO_KICKING_TIME		200
+#define MARIO_TAIL_ATTACK_TIME	200
+#define MARIO_TAIL_ATTACK_TIME	300
 #define MARIO_FLY_JUMP_TIME		100
 #define HEIGHT_DEATH 500
 
@@ -212,6 +213,7 @@ class CMario : public CGameObject
 	ULONGLONG untouchable_start;
 	ULONGLONG kick_start;
 	ULONGLONG flyJump_start;
+	ULONGLONG tailAttack_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
@@ -221,6 +223,7 @@ class CMario : public CGameObject
 	bool isTransforming;
 	bool isFlying = false;
 	bool flyJump = false;
+	bool isAttacking = false;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
@@ -267,6 +270,7 @@ public:
 	int GetNX() { return nx; }
 
 	void Fly();
+	void TailAttack();
 	bool GetIsFlying() { return isFlying; }
 
 	int IsCollidable()

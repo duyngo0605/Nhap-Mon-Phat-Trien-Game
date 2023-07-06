@@ -39,6 +39,10 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetRunLevel(1);
 			mario->SetCanHold(true);
 		}
+		if (mario->GetLevel() == MARIO_LEVEL_TAIL)
+		{
+			mario->TailAttack();
+		}
 	
 		break;
 	}

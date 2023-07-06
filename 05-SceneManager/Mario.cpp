@@ -37,6 +37,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		isKicking = false;
 	}
+	if (GetTickCount64() - tailAttack_start >= MARIO_TAIL_ATTACK_TIME)
+	{
+		isAttacking = false;
+	}
 	if (GetTickCount64() - flyJump_start >= MARIO_FLY_JUMP_TIME)
 	{
 		flyJump = false;
@@ -638,6 +642,13 @@ int CMario::GetAniIdTail()
 						else
 							aniId = ID_ANI_MARIO_TAIL_SIT_LEFT;
 					}
+					else if (isAttacking)
+					{
+						if (nx > 0)
+							aniId = ID_ANI_MARIO_TAIL_ATTACK_RIGHT;
+						else
+							aniId = ID_ANI_MARIO_TAIL_ATTACK_LEFT;
+					}
 					else
 						if (vx == 0)
 						{
@@ -733,7 +744,15 @@ void CMario::Render()
 		aniId = GetAniIdTail();
 	if (aniId == -1) return;
 	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(aniId)->Render(x, y);
+	if (level == MARIO_LEVEL_TAIL)
+	{
+		if (nx > 0)
+			animations->Get(aniId)->Render(x - TAIL_LENGTH / 2, y);
+		else
+			animations->Get(aniId)->Render(x + TAIL_LENGTH / 2, y);
+	}
+	else
+		animations->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
 	
@@ -847,6 +866,12 @@ void CMario::Fly()
 		isFlying = true;
 		flyJump = true;
 	}
+}
+
+void CMario::TailAttack()
+{
+	isAttacking = true;
+	tailAttack_start = GetTickCount64();
 }
 
 
