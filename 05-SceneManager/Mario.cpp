@@ -37,8 +37,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		isKicking = false;
 	}
-	if (GetTickCount64() - fly_start >= MARIO_FLY_TIME)
+	if (GetTickCount64() - flyJump_start >= MARIO_FLY_JUMP_TIME)
 	{
+		flyJump = false;
 		ay = MARIO_GRAVITY;
 	}
 	if (isOnPlatform) { isFlying = false; ay = 0.002f; }
@@ -479,10 +480,13 @@ int CMario::GetAniIdBig()
 				{
 					if (runLevel == 2 && abs(ax) == MARIO_ACCEL_RUN_X)
 					{
-						if (nx >= 0)
-							aniId = ID_ANI_MARIO_JUMP_RUN_RIGHT;
-						else
-							aniId = ID_ANI_MARIO_JUMP_RUN_LEFT;
+						if (!isFlying)
+						{
+							if (nx >= 0)
+								aniId = ID_ANI_MARIO_JUMP_RUN_RIGHT;
+							else
+								aniId = ID_ANI_MARIO_JUMP_RUN_LEFT;
+						}
 					}
 					else
 					{
@@ -589,10 +593,20 @@ int CMario::GetAniIdTail()
 				{
 					if (runLevel == 2 && abs(ax) == MARIO_ACCEL_RUN_X)
 					{
-						if (nx >= 0)
-							aniId = ID_ANI_MARIO_TAIL_JUMP_RUN_RIGHT;
+						if (flyJump)
+						{
+							if (nx >= 0)
+								aniId = ID_ANI_MARIO_TAIL_FLYING_JUMP_RIGHT;
+							else
+								aniId = ID_ANI_MARIO_TAIL_FLYING_JUMP_LEFT;
+						}
 						else
-							aniId = ID_ANI_MARIO_TAIL_JUMP_RUN_LEFT;
+						{
+							if (nx >= 0)
+								aniId = ID_ANI_MARIO_TAIL_JUMP_RUN_RIGHT;
+							else
+								aniId = ID_ANI_MARIO_TAIL_JUMP_RUN_LEFT;
+						}
 					}
 					else
 					{
@@ -806,8 +820,9 @@ void CMario::Fly()
 	if (runLevel != 2) return;
 	vy = MARIO_JUMP_FLY_SPEED_Y;
 	ay = 0;
-	fly_start = GetTickCount64();
+	flyJump_start = GetTickCount64();
 	isFlying = true;
+	flyJump = true;
 }
 
 

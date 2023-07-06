@@ -143,6 +143,11 @@
 #define ID_ANI_MARIO_TAIL_KICKING_RIGHT 3000
 #define ID_ANI_MARIO_TAIL_KICKING_LEFT 3001
 
+#define ID_ANI_MARIO_TAIL_FLYING_JUMP_RIGHT 3100
+#define ID_ANI_MARIO_TAIL_FLYING_JUMP_LEFT 3101
+
+#define ID_ANI_MARIO_TAIL_FLYING_DROP_RIGHT 3200
+#define ID_ANI_MARIO_TAIL_FLYING_DROP_LEFT 3201
 
 
 ////Transform animations
@@ -187,8 +192,8 @@
 
 #define MARIO_UNTOUCHABLE_TIME 2000
 #define MARIO_KICKING_TIME		200
-#define MARIO_FLY_TIME		100
-#define HEIGHT_DEATH 450
+#define MARIO_FLY_JUMP_TIME		100
+#define HEIGHT_DEATH 500
 
 class CMario : public CGameObject
 {
@@ -203,7 +208,7 @@ class CMario : public CGameObject
 	int untouchable; 
 	ULONGLONG untouchable_start;
 	ULONGLONG kick_start;
-	ULONGLONG fly_start;
+	ULONGLONG flyJump_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
@@ -212,6 +217,7 @@ class CMario : public CGameObject
 	bool isKicking;
 	bool isTransforming;
 	bool isFlying = false;
+	bool flyJump = false;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
