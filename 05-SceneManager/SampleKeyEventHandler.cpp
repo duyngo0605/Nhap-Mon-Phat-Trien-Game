@@ -33,8 +33,13 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_R: // reset
 		//Reload();
 		break;
-	case DIK_A:
-		mario->SetCanHold(true);
+	case DIK_A: 
+		if (mario->GetRunLevel() < 2)
+		{
+			mario->SetRunLevel(1);
+			mario->SetCanHold(true);
+		}
+	
 		break;
 	}
 }
@@ -53,7 +58,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
 		break;
-	case DIK_A: mario->SetCanHold(false);
+	case DIK_A: mario->SetCanHold(false); mario->SetRunLevel(0);
 		break;
 	}
 }

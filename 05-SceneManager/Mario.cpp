@@ -20,6 +20,7 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	
 	if (GetTickCount64() - untouchable_start >= MARIO_UNTOUCHABLE_TIME/2)
 	{
 		if (GetTickCount64() - untouchable_start >= MARIO_UNTOUCHABLE_TIME)
@@ -36,13 +37,24 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		isKicking = false;
 	}
+	if (GetTickCount64() - fly_start >= MARIO_FLY_TIME)
+	{
+		ay = MARIO_GRAVITY;
+	}
 	if (isTransforming) vx = vy = 0;
 	else
 	{
 		vy += ay * dt;
 		vx += ax * dt;
 	}
-	if (abs(vx) > abs(maxVx)) vx = maxVx;
+
+	if (abs(vx) > abs(maxVx)) { vx = maxVx; SetRunLevel(2); }
+	else
+	{
+		if (abs(ax) == MARIO_ACCEL_RUN_X) SetRunLevel(1);
+		else
+			SetRunLevel(0);
+	}
 	if (x <= MARIO_SMALL_BBOX_WIDTH/2)x = MARIO_SMALL_BBOX_WIDTH / 2;
 	if (x >= MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2)x = MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2;
 	if (y >= HEIGHT_DEATH) SetState(MARIO_STATE_DIE);
@@ -738,6 +750,14 @@ void CMario::SetState(int state)
 			else
 				vy = -MARIO_JUMP_SPEED_Y;
 		}
+		else
+		{
+			if (GetLevel() == MARIO_LEVEL_TAIL && GetRunLevel() == 2)
+			{
+				Fly();
+			}
+
+		}
 		break;
 
 	case MARIO_STATE_RELEASE_JUMP:
@@ -776,6 +796,13 @@ void CMario::SetState(int state)
 	}
 
 	CGameObject::SetState(state);
+}
+
+void CMario::Fly()
+{
+	vy = -0.25f;
+	ay = 0;
+	fly_start = GetTickCount64();
 }
 
 

@@ -9,8 +9,8 @@
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
 
-#define MARIO_ACCEL_WALK_X	0.0002f
-#define MARIO_ACCEL_RUN_X	0.0003f
+#define MARIO_ACCEL_WALK_X	0.0001f
+#define MARIO_ACCEL_RUN_X	0.00015f
 
 #define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_RUN_SPEED_Y	0.55f
@@ -186,6 +186,7 @@
 
 #define MARIO_UNTOUCHABLE_TIME 2000
 #define MARIO_KICKING_TIME		200
+#define MARIO_FLY_TIME		100
 #define HEIGHT_DEATH 450
 
 class CMario : public CGameObject
@@ -196,10 +197,12 @@ class CMario : public CGameObject
 	float ay;				// acceleration on y 
 
 	int level;
+	int runLevel;
 
 	int untouchable; 
 	ULONGLONG untouchable_start;
 	ULONGLONG kick_start;
+	ULONGLONG fly_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
@@ -239,16 +242,20 @@ public:
 		isKicking = false;
 		isTransforming = false;
 		coin = 0;
+		runLevel = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
-	
+	void SetRunLevel(int l) { runLevel = l; }
+	int GetRunLevel() { return runLevel; }
 	bool GetIsHolding() { return canHold; }
 	void SetCanHold(bool canHold) { this->canHold = canHold; if (canHold == false) isHolding = false; }
 	void Kick() { isKicking = true; kick_start = GetTickCount64(); }
 	bool GetIsTransforming() { return isTransforming; }
 	int GetNX() { return nx; }
+
+	void Fly();
 
 	int IsCollidable()
 	{ 
