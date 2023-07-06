@@ -18,7 +18,7 @@ protected:
 	// A play scene has to have player, right? 
 
 	int numofBackgroundTile = 0;
-	LPGAMEOBJECT player;					
+	CMario* player;					
 
 	vector<LPGAMEOBJECT> objects;
 

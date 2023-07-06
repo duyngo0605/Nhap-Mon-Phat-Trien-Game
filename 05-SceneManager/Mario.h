@@ -210,6 +210,7 @@ class CMario : public CGameObject
 	bool isHolding = false;
 	bool isKicking;
 	bool isTransforming;
+	bool isFlying = false;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
@@ -256,6 +257,7 @@ public:
 	int GetNX() { return nx; }
 
 	void Fly();
+	bool GetIsFlying() { return isFlying; }
 
 	int IsCollidable()
 	{ 

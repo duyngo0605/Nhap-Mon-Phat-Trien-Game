@@ -41,6 +41,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		ay = MARIO_GRAVITY;
 	}
+	if (isOnPlatform) isFlying = false;
 	if (isTransforming) vx = vy = 0;
 	else
 	{
@@ -803,6 +804,7 @@ void CMario::Fly()
 	vy = -0.25f;
 	ay = 0;
 	fly_start = GetTickCount64();
+	isFlying = true;
 }
 
 
