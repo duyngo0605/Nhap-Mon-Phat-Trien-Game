@@ -480,13 +480,10 @@ int CMario::GetAniIdBig()
 				{
 					if (runLevel == 2 && abs(ax) == MARIO_ACCEL_RUN_X)
 					{
-						if (!isFlying)
-						{
-							if (nx >= 0)
-								aniId = ID_ANI_MARIO_JUMP_RUN_RIGHT;
-							else
-								aniId = ID_ANI_MARIO_JUMP_RUN_LEFT;
-						}
+						if (nx >= 0)
+							aniId = ID_ANI_MARIO_JUMP_RUN_RIGHT;
+						else
+							aniId = ID_ANI_MARIO_JUMP_RUN_LEFT;
 					}
 					else
 					{
@@ -610,10 +607,27 @@ int CMario::GetAniIdTail()
 					}
 					else
 					{
-						if (nx >= 0)
-							aniId = ID_ANI_MARIO_TAIL_JUMP_WALK_RIGHT;
+						if (flyJump&&isFlying)
+						{
+							if (nx >= 0)
+								aniId = ID_ANI_MARIO_TAIL_FLYING_DROP_JUMP_RIGHT;
+							else
+								aniId = ID_ANI_MARIO_TAIL_FLYING_DROP_JUMP_LEFT;
+						}
+						else if (isFlying)
+						{
+							if (nx >= 0)
+								aniId = ID_ANI_MARIO_TAIL_FLYING_DROP_RIGHT;
+							else
+								aniId = ID_ANI_MARIO_TAIL_FLYING_DROP_LEFT;
+						}
 						else
-							aniId = ID_ANI_MARIO_TAIL_JUMP_WALK_LEFT;
+						{
+							if (nx >= 0)
+								aniId = ID_ANI_MARIO_TAIL_JUMP_WALK_RIGHT;
+							else
+								aniId = ID_ANI_MARIO_TAIL_JUMP_WALK_LEFT;
+						}
 					}
 				}
 				else
@@ -769,7 +783,7 @@ void CMario::SetState(int state)
 		}
 		else
 		{
-			if (GetLevel() == MARIO_LEVEL_TAIL && GetRunLevel() == 2)
+			if (GetLevel() == MARIO_LEVEL_TAIL)
 			{
 				Fly();
 			}
@@ -778,7 +792,7 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_RELEASE_JUMP:
-		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
+		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 4;
 		break;
 
 	case MARIO_STATE_SIT:
@@ -817,12 +831,22 @@ void CMario::SetState(int state)
 
 void CMario::Fly()
 {
-	if (runLevel != 2) return;
-	vy = MARIO_JUMP_FLY_SPEED_Y;
-	ay = 0;
-	flyJump_start = GetTickCount64();
-	isFlying = true;
-	flyJump = true;
+	if (runLevel == 2 && abs(ax) == MARIO_ACCEL_RUN_X) {
+		vy = MARIO_JUMP_FLY_SPEED_Y;
+		ay = 0;
+		flyJump_start = GetTickCount64();
+		isFlying = true;
+		flyJump = true;
+	}
+	if (vy > 0&&isFlying)
+	{
+		coin++;
+		vy = 0;
+		ay = MARIO_GRAVITY / 10;
+		flyJump_start = GetTickCount64();	
+		isFlying = true;
+		flyJump = true;
+	}
 }
 
 
