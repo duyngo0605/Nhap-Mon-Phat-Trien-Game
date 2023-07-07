@@ -7,7 +7,7 @@ height 616
 # type: 0: intro, 1: play scene 
 [SCENES]
 0	intro.txt
-1	map1_1.txt
+1	Map\map1_1.txt
 
 # id	file 
 [TEXTURES]
