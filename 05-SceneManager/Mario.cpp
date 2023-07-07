@@ -66,6 +66,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (x <= MARIO_SMALL_BBOX_WIDTH/2)x = MARIO_SMALL_BBOX_WIDTH / 2;
 	if (x >= MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2)x = MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2;
 	if (y >= HEIGHT_DEATH) SetState(MARIO_STATE_DIE);
+	else if (y <= 0) {
+		y = MARIO_BIG_BBOX_HEIGHT/2;
+		vy = 0.0001f;
+		if (nx > 0) SetState(MARIO_STATE_WALKING_RIGHT);
+		else
+			SetState(MARIO_STATE_WALKING_LEFT);
+	}
 	// reset untouchable timer if untouchable time has passed
 	
 	
@@ -183,34 +190,42 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	}
 	else if (e->nx != 0)
 	{
-		if (untouchable == 0)
+		if (isAttacking)
 		{
-			if (koopa->GetState() == KOOPA_STATE_DEFEND)
+			koopa->SetSpeed(nx * MARIO_TAIL_ATTACK_SPEED_X, MARIO_TAIL_ATTACK_SPEED_Y);
+
+			
+		}
+		else {
+			if (untouchable == 0)
 			{
-				if (canHold==true) {
-					koopa->SetIsHeld(true);
-					isHolding = true;
+				if (koopa->GetState() == KOOPA_STATE_DEFEND)
+				{
+					if (canHold == true) {
+						koopa->SetIsHeld(true);
+						isHolding = true;
+					}
+					else
+					{
+						Kick();
+						koopa->SetIsHeld(false);
+						koopa->SetNX(-e->nx);
+						koopa->SetState(KOOPA_STATE_KICKED);
+
+					}
 				}
 				else
 				{
-					Kick();
-					koopa->SetIsHeld(false);					
-					koopa->SetNX(-e->nx);
-					koopa->SetState(KOOPA_STATE_KICKED);
-					
-				}
-			}
-			else
-			{
-				if (level > MARIO_LEVEL_SMALL)
-				{
-					SetLevel(level - 1);
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
+					if (level > MARIO_LEVEL_SMALL)
+					{
+						SetLevel(level - 1);
+						StartUntouchable();
+					}
+					else
+					{
+						DebugOut(L">>> Mario DIE >>> \n");
+						SetState(MARIO_STATE_DIE);
+					}
 				}
 			}
 		}
@@ -775,13 +790,13 @@ void CMario::SetState(int state)
 	switch (state)
 	{
 	case MARIO_STATE_RUNNING_RIGHT:
-		if (isSitting) break;
+		if (isSitting||vy>0) break;
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
-		if (isSitting) break;
+		if (isSitting||vy>0) break;
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;

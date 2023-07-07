@@ -263,9 +263,14 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
-	void SetRunLevel(int l) { runLevel = l; }
+	void SetRunLevel(int l) { 
+		if (l == 2)
+		{
+			if (!isOnPlatform) return;
+		}
+		runLevel = l; }
 	int GetRunLevel() { return runLevel; }
-	bool GetIsHolding() { return canHold; }
+	bool GetIsHolding() { return isHolding; }
 	void SetCanHold(bool canHold) { this->canHold = canHold; if (canHold == false) isHolding = false; }
 	void Kick() { isKicking = true; kick_start = GetTickCount64(); }
 	bool GetIsTransforming() { return isTransforming; }
