@@ -6,7 +6,10 @@
 void CMushRoom::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(ID_ANI_MUSHROOM)->Render(x, y);
+	if (type==MUSHROOM_TYPE_RED)
+		animations->Get(ID_ANI_RED_MUSHROOM)->Render(x, y);
+	else
+		animations->Get(ID_ANI_GREEN_MUSHROOM)->Render(x, y);
 }
 
 void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

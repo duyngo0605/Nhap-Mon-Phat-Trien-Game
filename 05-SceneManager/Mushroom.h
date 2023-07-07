@@ -1,7 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-#define ID_ANI_MUSHROOM 13100
+#define ID_ANI_RED_MUSHROOM 13100
+#define ID_ANI_GREEN_MUSHROOM 13101
 
 #define MUSHROOM_BBOX_WIDTH 16
 #define MUSHROOM_BBOX_HEIGHT 16
@@ -16,12 +17,16 @@
 #define MUSHROOM_STATE_MOVING 1
 #define MUSHROOM_STATE_UP 2
 
+#define MUSHROOM_TYPE_RED 1
+#define MUSHROOM_TYPE_GREEN 2
+
 class CMushRoom :public CGameObject
 {
 protected:
 	float xStart, yStart, ax, ay;
+	int type;
 public:
-	CMushRoom(float x, float y) :CGameObject(x, y) { xStart = x; yStart = y; ax = 0; ay = 0; }
+	CMushRoom(float x, float y, int type) :CGameObject(x, y) { xStart = x; yStart = y; ax = 0; ay = 0; this->type = type; }
 	void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual int IsCollidable() { return 1; }

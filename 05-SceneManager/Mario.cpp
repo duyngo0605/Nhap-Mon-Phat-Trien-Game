@@ -262,7 +262,7 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 			{
 				if (level == MARIO_LEVEL_SMALL)
 				{
-					CMushRoom* mushroom = new CMushRoom(x, y);
+					CMushRoom* mushroom = new CMushRoom(x, y, MUSHROOM_TYPE_GREEN);
 					mushroom->SetState(MUSHROOM_STATE_UP);
 					scene->AddObject(mushroom);
 				}

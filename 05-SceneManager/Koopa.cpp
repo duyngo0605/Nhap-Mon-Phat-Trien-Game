@@ -229,7 +229,7 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 		{
 			if (mario->GetLevel() == MARIO_LEVEL_SMALL)
 			{
-				CMushRoom* mushroom = new CMushRoom(x+KOOPA_BBOX_WIDTH, y);
+				CMushRoom* mushroom = new CMushRoom(x+KOOPA_BBOX_WIDTH, y, MUSHROOM_TYPE_RED);
 				mushroom->SetState(MUSHROOM_STATE_UP);
 				scene->AddObject(mushroom);
 			}
