@@ -23,7 +23,7 @@
 #define KOOPA_STATE_DEFEND 200
 #define KOOPA_STATE_KICKED 300
 #define KOOPA_STATE_BACK 400
-#define KOOPA_STATE_HOLD 500
+#define KOOPA_STATE_UP 500
 #define KOOPA_STATE_DIE 900
 
 #define KOOPA_TYPE_RED 1
@@ -34,6 +34,10 @@
 #define ID_ANI_RED_KOOPA_DEFEND 18200
 #define ID_ANI_RED_KOOPA_KICKED 18201
 #define ID_ANI_RED_KOOPA_BACK 18300
+
+#define ID_ANI_RED_KOOPA_FLIP_DEFEND 18210
+#define ID_ANI_RED_KOOPA_FLIP_KICKED 18211
+#define ID_ANI_RED_KOOPA_FLIP_BACK 18310
 
 
 #define ID_ANI_GREEN_KOOPA_WALK_LEFT 18600
@@ -55,6 +59,8 @@ protected:
 	int GetAniIdRed();
 	int GetAniIdGreen();
 	bool isHeld = false;
+	bool isOnPlatForm;
+	bool isFlipped;
 public:
 	CKoopa(float x, float y, int type);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);

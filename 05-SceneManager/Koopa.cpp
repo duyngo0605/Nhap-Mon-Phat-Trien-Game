@@ -23,18 +23,30 @@ CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
 int CKoopa::GetAniIdRed()
 {
 	int aniId = -1;
-	if (vx == KOOPA_WALKING_SPEED)
-		aniId = ID_ANI_RED_KOOPA_WALK_RIGHT;
-	else if (vx == -KOOPA_WALKING_SPEED)
-		aniId = ID_ANI_RED_KOOPA_WALK_LEFT;
-	else if (abs(vx) == KOOPA_KICKED_SPEED)
-		aniId = ID_ANI_RED_KOOPA_KICKED;
+	if (isFlipped)
+	{
+		if (state == KOOPA_STATE_DEFEND)
+			aniId = ID_ANI_RED_KOOPA_FLIP_DEFEND;
+		else if (state == KOOPA_STATE_BACK)
+			aniId = ID_ANI_RED_KOOPA_FLIP_BACK;
+		else
+			aniId = ID_ANI_RED_KOOPA_FLIP_KICKED;
+	}
 	else
 	{
-		if (state==KOOPA_STATE_DEFEND)
-			aniId = ID_ANI_RED_KOOPA_DEFEND;
+		if (vx == KOOPA_WALKING_SPEED)
+			aniId = ID_ANI_RED_KOOPA_WALK_RIGHT;
+		else if (vx == -KOOPA_WALKING_SPEED)
+			aniId = ID_ANI_RED_KOOPA_WALK_LEFT;
+		else if (abs(vx) == KOOPA_KICKED_SPEED)
+			aniId = ID_ANI_RED_KOOPA_KICKED;
 		else
-			aniId = ID_ANI_RED_KOOPA_BACK;
+		{
+			if (state == KOOPA_STATE_DEFEND)
+				aniId = ID_ANI_RED_KOOPA_DEFEND;
+			else
+				aniId = ID_ANI_RED_KOOPA_BACK;
+		}
 	}
 	return aniId;
 }
@@ -73,6 +85,11 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (!isInCam())	return;
 	vx += ax * dt;
 	vy += ay * dt;
+	if (state == KOOPA_STATE_UP)
+	{
+		if (isOnPlatForm) SetState(KOOPA_STATE_DEFEND);
+		else this->vx = nx * MARIO_TAIL_ATTACK_SPEED_X;
+	}
 	if (state == KOOPA_STATE_DEFEND)
 	{
 		if (mario->GetIsHolding() && isHeld) {
@@ -102,6 +119,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(KOOPA_STATE_WALKING);
 		}
 	}
+	
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -150,6 +168,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		vy = 0;
+		if(e->ny>0) isOnPlatForm = true;
 	}
 	else if (e->nx != 0)
 	{
@@ -170,6 +189,7 @@ void CKoopa::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
 			{
 				SetPosition(x, yPlat - (KOOPA_BBOX_HEIGHT + SPECIAL_PLATFORM_BBOX_HEIGHT) / 2);
 				vy = 0;
+				isOnPlatForm = true;
 			}
 		}
 		else
@@ -178,6 +198,7 @@ void CKoopa::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
 			{
 				SetPosition(x, yPlat - KOOPA_BBOX_HEIGHT_DEFEND);
 				vy = 0;
+				isOnPlatForm = true;
 			}
 		}
 	}
@@ -236,6 +257,7 @@ void CKoopa::SetState(int state)
 	switch (state)
 	{
 	case KOOPA_STATE_WALKING:
+		isFlipped = false;
 		y -= (KOOPA_BBOX_HEIGHT + KOOPA_BBOX_HEIGHT_DEFEND) / 2;
 		if (vx>0)
 			vx = KOOPA_WALKING_SPEED;
@@ -255,6 +277,11 @@ void CKoopa::SetState(int state)
 		break;
 	case KOOPA_STATE_BACK:
 		back_start = GetTickCount64();
+		break;
+	case KOOPA_STATE_UP:
+		isOnPlatForm = false;
+		isFlipped = true;
+		vy = MARIO_TAIL_ATTACK_SPEED_Y;
 		break;
 	case KOOPA_STATE_DIE:
 		die_start = GetTickCount64();

@@ -188,12 +188,12 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		
 
 	}
-	else if (e->nx != 0)
+	else
 	{
 		if (isAttacking)
 		{
-			koopa->SetSpeed(nx * MARIO_TAIL_ATTACK_SPEED_X, MARIO_TAIL_ATTACK_SPEED_Y);
-
+			koopa->SetNX(-e->nx);
+			koopa->SetState(KOOPA_STATE_UP);
 			
 		}
 		else {
