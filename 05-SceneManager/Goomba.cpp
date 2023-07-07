@@ -149,12 +149,20 @@ void CGoomba::Render()
 		{
 			aniId = ID_ANI_GOOMBA_DIE;
 		}
+		if (state == GOOMBA_STATE_TAIL_ATTACKED)
+		{
+			aniId = ID_ANI_GOOMBA_TAIL_ATTACKED;
+		}
 	}
 	else if (type == GOOMBA_TYPE_PARA)
 	{
 		if (state == GOOMBA_STATE_DIE)
 		{
 			aniId = ID_ANI_PARAGOOMBA_DIE;
+		}
+		if (state == GOOMBA_STATE_TAIL_ATTACKED)
+		{
+			aniId = ID_ANI_PARAGOOMBA_TAIL_ATTACKED;
 		}
 		if (level == 1)
 		{
@@ -190,6 +198,10 @@ void CGoomba::SetState(int state)
 			vx = 0;
 			vy = 0;
 			ay = 0; 
+			break;
+		case GOOMBA_STATE_TAIL_ATTACKED:
+			die_start = GetTickCount64();
+			level = -1;
 			break;
 		case GOOMBA_STATE_WALKING: 
 			walk_start = GetTickCount64();
