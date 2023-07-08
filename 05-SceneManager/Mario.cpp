@@ -288,7 +288,7 @@ void CMario::OnCollisionWithSpecialBrick(LPCOLLISIONEVENT e)
 	CSpecialBrick* specialBrick = dynamic_cast<CSpecialBrick*>(e->obj);
 	specialBrick->GetPosition(x, y);
 	// jump from bottom
-	if (e->ny > 0)
+	if (e->ny > 0||isAttacking)
 	{
 		if (!specialBrick->GetIsEmpty())
 		{
