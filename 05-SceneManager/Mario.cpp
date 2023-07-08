@@ -15,6 +15,7 @@
 #include "FireVenusTrap.h"
 #include "FireBall.h"
 #include "Koopa.h"
+#include"SpecialBrick.h"
 
 #include "Collision.h"
 
@@ -110,6 +111,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopa(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
+	else if (dynamic_cast<CSpecialBrick*>(e->obj))
+		OnCollisionWithSpecialBrick(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
 	else if (dynamic_cast<CMushRoom*>(e->obj))
@@ -246,7 +249,7 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
 	questionBrick->GetPosition(x, y);
 	// jump from bottom
-	if (e->ny > 0)
+	if (e->ny > 0||isAttacking)
 	{
 		if (!questionBrick->GetIsEmpty())
 		{
@@ -262,7 +265,7 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 			{
 				if (level == MARIO_LEVEL_SMALL)
 				{
-					CMushRoom* mushroom = new CMushRoom(x, y, MUSHROOM_TYPE_GREEN);
+					CMushRoom* mushroom = new CMushRoom(x, y, MUSHROOM_TYPE_RED);
 					mushroom->SetState(MUSHROOM_STATE_UP);
 					scene->AddObject(mushroom);
 				}
@@ -278,10 +281,39 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMario::OnCollisionWithSpecialBrick(LPCOLLISIONEVENT e)
+{
+	float x, y;
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CSpecialBrick* specialBrick = dynamic_cast<CSpecialBrick*>(e->obj);
+	specialBrick->GetPosition(x, y);
+	// jump from bottom
+	if (e->ny > 0)
+	{
+		if (!specialBrick->GetIsEmpty())
+		{
+			specialBrick->SetState(QUESTION_BRICK_STATE_UP);
+			if (specialBrick->GetType() == SPECIAL_BRICK_TYPE_MUSHROOM)
+			{
+				CMushRoom* mushroom = new CMushRoom(x, y, MUSHROOM_TYPE_GREEN);
+				mushroom->SetState(MUSHROOM_STATE_UP);
+				scene->AddObject(mushroom);
+			}
+			if (specialBrick->GetType() == SPECIAL_BRICK_TYPE_NORMAL)
+			{
+				specialBrick->Delete();
+			}
+		}
+	}
+}
+
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
-	y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT)/2;
-	SetLevel(level+1);
+	if (level <= MARIO_LEVEL_BIG)
+	{
+		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+		SetLevel(level + 1);
+	}
 	StartUntouchable();
 	e->obj->Delete();
 }
@@ -299,6 +331,7 @@ void CMario::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
 	CSpecialPlatform* specialPlat = dynamic_cast<CSpecialPlatform*>(e->obj);
 	float xPlat, yPlat;
 	specialPlat->GetPosition(xPlat, yPlat);
+	//block if fall down
 	if (e->ny < 0) {
 		if (level == MARIO_LEVEL_SMALL) {
 

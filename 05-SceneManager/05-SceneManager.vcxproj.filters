@@ -135,6 +135,9 @@
     <ClCompile Include="Portal.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="SpecialBrick.cpp">
+      <Filter>Source Files\Block</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mario.h">
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="Portal.h">
       <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecialBrick.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@
 #include "FireVenusTrap.h"
 #include "FireBall.h"
 #include "Koopa.h"
+#include "SpecialBrick.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -204,7 +205,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_FIREVENUSTRAP:obj = new CFireVenusTrap(x, y);
 		break;
-
+	case OBJECT_TYPE_SPECIAL_BRICK:
+	{
+		int type = atoi(tokens[3].c_str());
+		obj = new CSpecialBrick(x, y, type);
+		break;
+	}
 
 	case OBJECT_TYPE_PORTAL:
 	{

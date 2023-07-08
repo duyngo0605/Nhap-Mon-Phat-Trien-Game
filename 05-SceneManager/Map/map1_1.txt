@@ -13,6 +13,7 @@ Sprites/leaf.txt
 Sprites/firevenustrap.txt
 Sprites/fireball.txt
 Sprites/koopa.txt
+Sprites/specialbrick.txt
 
 #
 [OBJECTS]
@@ -123,6 +124,9 @@ Sprites/koopa.txt
 8	664	392	2
 8	712	360	1
 8	1480	376	2
+
+#SPECIAL_BRICK
+13	1448	136	1
 
 
 # MARIO
