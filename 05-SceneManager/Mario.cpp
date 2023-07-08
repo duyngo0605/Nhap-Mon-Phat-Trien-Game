@@ -249,7 +249,7 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
 	questionBrick->GetPosition(x, y);
 	// jump from bottom
-	if (e->ny > 0||isAttacking)
+	if (e->ny > 0 || isAttacking)
 	{
 		if (!questionBrick->GetIsEmpty())
 		{
