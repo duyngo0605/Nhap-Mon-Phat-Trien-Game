@@ -126,6 +126,7 @@ Sprites/specialbrick.txt
 8	1480	376	2
 
 #SPECIAL_BRICK
+13	160	360	0
 13	1448	136	1
 
 

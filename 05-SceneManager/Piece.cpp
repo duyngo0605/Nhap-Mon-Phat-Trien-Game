@@ -18,3 +18,11 @@ void CPiece::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		Delete();
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
+
+void CPiece::GetBoundingBox(float& l, float& t, float& r, float& b)
+{
+	l = x - PIECE_BBOX_WIDTH / 2;
+	t = y - PIECE_BBOX_HEIGHT / 2;
+	r = l + PIECE_BBOX_WIDTH;
+	b = t + PIECE_BBOX_HEIGHT;
+}

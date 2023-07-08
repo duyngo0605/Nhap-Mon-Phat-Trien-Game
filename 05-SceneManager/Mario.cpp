@@ -301,7 +301,9 @@ void CMario::OnCollisionWithSpecialBrick(LPCOLLISIONEVENT e)
 			}
 			if (specialBrick->GetType() == SPECIAL_BRICK_TYPE_NORMAL)
 			{
+				specialBrick->Break();
 				specialBrick->Delete();
+
 			}
 		}
 	}
