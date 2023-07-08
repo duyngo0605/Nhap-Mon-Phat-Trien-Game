@@ -336,7 +336,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		CGame::GetInstance()->SetCamPos(cx ,0);
 	}
-	else if (cy<=332&&player->GetIsFlying())
+	else if (cy<=332)
 	{
 		cy -= game->GetBackBufferHeight() / 2;
 		CGame::GetInstance()->SetCamPos(cx, cy);
