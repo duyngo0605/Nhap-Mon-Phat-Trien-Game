@@ -14,6 +14,7 @@ Sprites/firevenustrap.txt
 Sprites/fireball.txt
 Sprites/koopa.txt
 Sprites/specialbrick.txt
+Sprites/button.txt
 
 #
 [OBJECTS]

@@ -16,6 +16,7 @@
 #include "FireBall.h"
 #include "Koopa.h"
 #include"SpecialBrick.h"
+#include"Button.h"
 
 #include "Collision.h"
 
@@ -123,6 +124,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFireVenusTrap(e);
 	else if (dynamic_cast<CFireBall*>(e->obj))
 		OnCollisionWithFireBall(e);
+	
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }
@@ -293,18 +295,25 @@ void CMario::OnCollisionWithSpecialBrick(LPCOLLISIONEVENT e)
 		if (!specialBrick->GetIsEmpty())
 		{
 			specialBrick->SetState(QUESTION_BRICK_STATE_UP);
-			if (specialBrick->GetType() == SPECIAL_BRICK_TYPE_MUSHROOM)
-			{
-				CMushRoom* mushroom = new CMushRoom(x, y, MUSHROOM_TYPE_GREEN);
-				mushroom->SetState(MUSHROOM_STATE_UP);
-				scene->AddObject(mushroom);
-			}
 			if (specialBrick->GetType() == SPECIAL_BRICK_TYPE_NORMAL)
 			{
 				specialBrick->Break();
 				specialBrick->Delete();
 
 			}
+			if (specialBrick->GetType() == SPECIAL_BRICK_TYPE_MUSHROOM)
+			{
+				CMushRoom* mushroom = new CMushRoom(x, y, MUSHROOM_TYPE_GREEN);
+				mushroom->SetState(MUSHROOM_STATE_UP);
+				scene->AddObject(mushroom);
+			}
+			if (specialBrick->GetType() == SPECIAL_BRICK_TYPE_BUTTON)
+			{
+				CButton* button = new CButton(x, y - BUTTON_BBOX_HEIGHT);
+				button->SetState(MUSHROOM_STATE_UP);
+				scene->AddObject(button);
+			}
+			
 		}
 	}
 }
