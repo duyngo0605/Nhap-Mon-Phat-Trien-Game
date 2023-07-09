@@ -261,7 +261,7 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 			{
 				coin++;
 				CCoin* coin = new CCoin(x, y - QUESTION_BRICK_BBOX_HEIGHT);
-				coin->SetSpeed(0, -0.5f);
+				coin->SetState(COIN_STATE_OUT);
 				scene->AddObject(coin);
 			}
 			else if (questionBrick->GetType() == QUESTION_BRICK_TYPE_ITEM)
