@@ -14,7 +14,7 @@
 class CButton :public CGameObject
 {
 public:
-	CButton(float x, float y) : CGameObject(x, y) { state = BUTTON_STATE_NOT_CLICKED; }
+	CButton(float x, float y) : CGameObject(x, y) { SetState(BUTTON_STATE_NOT_CLICKED); }
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);

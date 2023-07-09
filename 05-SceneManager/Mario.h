@@ -234,6 +234,7 @@ class CMario : public CGameObject
 	void OnCollisionWithSpecialBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushRoom(LPCOLLISIONEVENT e);
 	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
+	void OnCollisionWithButton(LPCOLLISIONEVENT e);
 	void OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e);

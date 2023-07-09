@@ -124,7 +124,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFireVenusTrap(e);
 	else if (dynamic_cast<CFireBall*>(e->obj))
 		OnCollisionWithFireBall(e);
-	
+	else if (dynamic_cast<CButton*>(e->obj))
+		OnCollisionWithButton(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }
@@ -310,7 +311,6 @@ void CMario::OnCollisionWithSpecialBrick(LPCOLLISIONEVENT e)
 			if (specialBrick->GetType() == SPECIAL_BRICK_TYPE_BUTTON)
 			{
 				CButton* button = new CButton(x, y - BUTTON_BBOX_HEIGHT);
-				button->SetState(MUSHROOM_STATE_UP);
 				scene->AddObject(button);
 			}
 			
@@ -335,6 +335,12 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 		SetLevel(level+1);
 	StartUntouchable();
 	e->obj->Delete();
+}
+
+void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
+{
+	CButton* button = dynamic_cast<CButton*>(e->obj);
+	button->SetState(BUTTON_STATE_CLICKED);
 }
 
 void CMario::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
