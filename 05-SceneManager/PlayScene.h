@@ -41,6 +41,8 @@ public:
 	LPGAMEOBJECT GetPlayer() { return player; }
 
 	void AddObject(CGameObject* object);
+	long GetObjectsQuanity() { return objects.size(); }
+	LPGAMEOBJECT GetObject(long i) { return objects[i]; }
 	void Clear();
 	void PurgeDeletedObjects();
 

@@ -341,6 +341,19 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 {
 	CButton* button = dynamic_cast<CButton*>(e->obj);
 	button->SetState(BUTTON_STATE_CLICKED);
+
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	for (long i = 0; i < scene->GetObjectsQuanity(); i++)
+	{
+		if (dynamic_cast<CSpecialBrick*>(scene->GetObject(i)))
+		{
+			CSpecialBrick* brick = dynamic_cast<CSpecialBrick*>(scene->GetObject(i));
+			if (brick->GetType() == SPECIAL_BRICK_TYPE_NORMAL)
+			{
+				brick->Delete();
+			}
+		}
+	}
 }
 
 void CMario::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
