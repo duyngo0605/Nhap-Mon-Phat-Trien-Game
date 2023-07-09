@@ -343,6 +343,7 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 	button->SetState(BUTTON_STATE_CLICKED);
 
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	vector<CCoin*> coins;
 	for (long i = 0; i < scene->GetObjectsQuanity(); i++)
 	{
 		if (dynamic_cast<CSpecialBrick*>(scene->GetObject(i)))
@@ -350,9 +351,17 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 			CSpecialBrick* brick = dynamic_cast<CSpecialBrick*>(scene->GetObject(i));
 			if (brick->GetType() == SPECIAL_BRICK_TYPE_NORMAL)
 			{
+				float xC, yC;
+				brick->GetPosition(xC, yC);
+				CCoin* coin = new CCoin(xC, yC);
+				coins.push_back(coin);
 				brick->Delete();
 			}
 		}
+	}
+	for (int i = 0; i < coins.size(); i++)
+	{
+		scene->AddObject(coins[i]);
 	}
 }
 
