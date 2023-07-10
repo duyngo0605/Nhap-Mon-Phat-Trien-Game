@@ -18,7 +18,7 @@ void CSpecialBrick::Render()
 	RenderBoundingBox();
 }
 
-void CSpecialBrick::Break()
+void CSpecialBrick::Break() ///break into pieces
 {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	int count = 0, i = 1, j = 1;

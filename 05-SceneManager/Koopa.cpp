@@ -9,6 +9,8 @@
 #include "SpecialPlatform.h"
 #include "BlockKoopa.h"
 #include "FireVenusTrap.h"
+#include "SpecialBrick.h"
+#include "Button.h"
 
 CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
 {
@@ -148,12 +150,16 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		if (dynamic_cast<CGoomba*>(e->obj)) {
 			OnCollisionWithGoomba(e);
 		}
-		if (dynamic_cast<CFireVenusTrap*>(e->obj)) {
+		else if (dynamic_cast<CFireVenusTrap*>(e->obj)) {
 			OnCollisionWithFireVenusTrap(e);
 		}
-		if (dynamic_cast<CQuestionBrick*>(e->obj)) {
+		else if (dynamic_cast<CSpecialBrick*>(e->obj)) {
+			OnCollisionWithSpecialBrick(e);
+		}
+		else if (dynamic_cast<CQuestionBrick*>(e->obj)) {
 			OnCollisionWithQuestionBrick(e);
 		}
+		
 	}
 	else
 	{
@@ -222,6 +228,7 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
+	if (state != KOOPA_STATE_KICKED) return;
 	if (!questionBrick->GetIsEmpty())
 	{
 		questionBrick->SetState(QUESTION_BRICK_STATE_UP);
@@ -240,6 +247,40 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 				leaf->SetState(LEAF_STATE_UP);
 				scene->AddObject(leaf);
 			}
+		}
+	}
+}
+
+void CKoopa::OnCollisionWithSpecialBrick(LPCOLLISIONEVENT e)
+{
+	float x, y;
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CSpecialBrick* specialBrick = dynamic_cast<CSpecialBrick*>(e->obj);
+	specialBrick->GetPosition(x, y);
+	if (state != KOOPA_STATE_KICKED) return;
+	if (e->nx != 0)
+	{
+		if (!specialBrick->GetIsEmpty())
+		{
+			specialBrick->SetState(QUESTION_BRICK_STATE_UP);
+			if (specialBrick->GetType() == SPECIAL_BRICK_TYPE_NORMAL)
+			{
+				specialBrick->Break();
+				specialBrick->Delete();
+
+			}
+			if (specialBrick->GetType() == SPECIAL_BRICK_TYPE_MUSHROOM)
+			{
+				CMushRoom* mushroom = new CMushRoom(x, y, MUSHROOM_TYPE_GREEN);
+				mushroom->SetState(MUSHROOM_STATE_UP);
+				scene->AddObject(mushroom);
+			}
+			if (specialBrick->GetType() == SPECIAL_BRICK_TYPE_BUTTON)
+			{
+				CButton* button = new CButton(x, y - BUTTON_BBOX_HEIGHT);
+				scene->AddObject(button);
+			}
+
 		}
 	}
 }

@@ -75,6 +75,7 @@ public:
 	void OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithSpecialBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithBlockKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e);
 
