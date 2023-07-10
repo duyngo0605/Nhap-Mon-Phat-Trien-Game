@@ -203,8 +203,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
-	case OBJECT_TYPE_FIREVENUSTRAP:obj = new CFireVenusTrap(x, y);
-		break;
+	case OBJECT_TYPE_FIREVENUSTRAP:
+	{
+		int type = atoi(tokens[3].c_str());
+		obj = new CFireVenusTrap(x, y,type);
+		break; 
+	}
 	case OBJECT_TYPE_SPECIAL_BRICK:
 	{
 		int type = atoi(tokens[3].c_str());

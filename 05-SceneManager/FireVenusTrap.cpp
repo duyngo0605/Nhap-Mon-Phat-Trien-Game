@@ -3,12 +3,84 @@
 #include "Mario.h"
 #include "FireBall.h"
 
+int CFireVenusTrap::GetAniIdRed()
+{
+	int aniId = -1;
+	if (nx < 0) {
+		if (ny > 0)
+			if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
+				aniId = ID_ANI_RED_FIREVENUSTRAP_LEFT_DOWN + 5;
+			else
+				aniId = ID_ANI_RED_FIREVENUSTRAP_LEFT_DOWN;
+		else
+			if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
+				aniId = ID_ANI_RED_FIREVENUSTRAP_LEFT_UP + 5;
+			else
+				aniId = ID_ANI_RED_FIREVENUSTRAP_LEFT_UP;
+	}
+	else {
+		if (ny > 0)
+			if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
+				aniId = ID_ANI_RED_FIREVENUSTRAP_RIGHT_DOWN + 5;
+			else
+				aniId = ID_ANI_RED_FIREVENUSTRAP_RIGHT_DOWN;
+		else
+			if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
+				aniId = ID_ANI_RED_FIREVENUSTRAP_RIGHT_UP + 5;
+			else
+				aniId = ID_ANI_RED_FIREVENUSTRAP_RIGHT_UP;
+	}
+	return aniId;
+}
+
+int CFireVenusTrap::GetAniIdGreen()
+{
+	int aniId = -1;
+	if (nx < 0) {
+		if (ny > 0)
+			if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
+				aniId = ID_ANI_GREEN_FIREVENUSTRAP_LEFT_DOWN + 5;
+			else
+				aniId = ID_ANI_GREEN_FIREVENUSTRAP_LEFT_DOWN;
+		else
+			if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
+				aniId = ID_ANI_GREEN_FIREVENUSTRAP_LEFT_UP + 5;
+			else
+				aniId = ID_ANI_GREEN_FIREVENUSTRAP_LEFT_UP;
+	}
+	else {
+		if (ny > 0)
+			if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
+				aniId = ID_ANI_GREEN_FIREVENUSTRAP_RIGHT_DOWN + 5;
+			else
+				aniId = ID_ANI_GREEN_FIREVENUSTRAP_RIGHT_DOWN;
+		else
+			if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
+				aniId = ID_ANI_GREEN_FIREVENUSTRAP_RIGHT_UP + 5;
+			else
+				aniId = ID_ANI_GREEN_FIREVENUSTRAP_RIGHT_UP;
+	}
+	return aniId;
+
+}
+
 void CFireVenusTrap::GetBoundingBox(float& l, float& t, float&  r, float& b)
 {
-	l = x - FIREVENUSTRAP_BBOX_WIDTH / 2;
-	t = y - FIREVENUSTRAP_BBOX_HEIGHT / 2;
-	r = l + FIREVENUSTRAP_BBOX_WIDTH;
-	b = t + FIREVENUSTRAP_BBOX_HEIGHT;
+	if (type == FIREVENUSTRAP_TYPE_RED)
+	{
+		l = x - FIREVENUSTRAP_BBOX_WIDTH / 2;
+		t = y - FIREVENUSTRAP_RED_BBOX_HEIGHT / 2;
+		r = l + FIREVENUSTRAP_BBOX_WIDTH;
+		b = t + FIREVENUSTRAP_RED_BBOX_HEIGHT;
+	}
+	else
+	{
+		l = x - FIREVENUSTRAP_BBOX_WIDTH / 2;
+		t = y - FIREVENUSTRAP_GREEN_BBOX_HEIGHT / 2;
+		r = l + FIREVENUSTRAP_BBOX_WIDTH;
+		b = t + FIREVENUSTRAP_GREEN_BBOX_HEIGHT;
+
+	}
 
 }
 
@@ -39,8 +111,17 @@ void CFireVenusTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else if (GetState() == FIREVENUSTRAP_STATE_UP)
 	{
-		if (y <= yStart - FIREVENUSTRAP_BBOX_HEIGHT)
-			SetState(FIREVENUSTRAP_STATE_ATTACK);
+		if(type==FIREVENUSTRAP_TYPE_RED)
+		{ 
+			if (y <= yStart - FIREVENUSTRAP_RED_BBOX_HEIGHT)
+				SetState(FIREVENUSTRAP_STATE_ATTACK);
+		}
+		else
+		{
+			if (y <= yStart - FIREVENUSTRAP_GREEN_BBOX_HEIGHT)
+				SetState(FIREVENUSTRAP_STATE_ATTACK);
+		}
+		
 	}
 	else if (GetState() == FIREVENUSTRAP_STATE_ATTACK) {
 		if (GetTickCount64() - attack_start == FIREVENUSTRAP_TIME_ATTACK / 2)
@@ -64,36 +145,21 @@ void CFireVenusTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CFireVenusTrap::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
+	int aniId = -1;
 	if (GetState() == FIREVENUSTRAP_STATE_DIE)
 	{
-		animations->Get(ID_ANI_MARIO_FROM_BIG_TO_TAIL_RIGHT)->Render(x,y);
+		aniId = ID_ANI_MARIO_FROM_BIG_TO_TAIL_RIGHT;
 	}
 	else {
-		if (nx < 0) {
-			if (ny > 0)
-				if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
-					animations->Get(ID_ANI_FIREVENUSTRAP_LEFT_DOWN + 5)->Render(x, y);
-				else
-					animations->Get(ID_ANI_FIREVENUSTRAP_LEFT_DOWN)->Render(x, y);
-			else
-				if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
-					animations->Get(ID_ANI_FIREVENUSTRAP_LEFT_UP + 5)->Render(x, y);
-				else
-					animations->Get(ID_ANI_FIREVENUSTRAP_LEFT_UP)->Render(x, y);
+		if (type==FIREVENUSTRAP_TYPE_RED)
+		{ 
+			aniId = GetAniIdRed();
 		}
-		else {
-			if (ny > 0)
-				if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
-					animations->Get(ID_ANI_FIREVENUSTRAP_RIGHT_DOWN + 5)->Render(x, y);
-				else
-					animations->Get(ID_ANI_FIREVENUSTRAP_RIGHT_DOWN)->Render(x, y);
-			else
-				if (GetState() == FIREVENUSTRAP_STATE_ATTACK)
-					animations->Get(ID_ANI_FIREVENUSTRAP_RIGHT_UP + 5)->Render(x, y);
-				else
-					animations->Get(ID_ANI_FIREVENUSTRAP_RIGHT_UP)->Render(x, y);
-		}
+		else
+			aniId = GetAniIdGreen();
 	}
+	if (aniId == -1)return;
+	animations->Get(aniId)->Render(x, y);
 }
 
 void CFireVenusTrap::OnNoCollision(DWORD dt)
