@@ -12,12 +12,13 @@
 #include "SpecialBrick.h"
 #include "Button.h"
 
-CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
+CKoopa::CKoopa(float x, float y, int type, int level) :CGameObject(x, y)
 {
 	ax = 0;
 	ay = KOOPA_GRAVITY;
 	this->type = type;
 	vx = 0;
+	this->level = level;
 	SetState(GOOMBA_STATE_WALKING);
 }
 
@@ -55,7 +56,34 @@ int CKoopa::GetAniIdRed()
 
 int CKoopa::GetAniIdGreen()
 {
-	return 0;
+	int aniId = -1;
+	if (isFlipped)
+	{
+		if (state == KOOPA_STATE_DEFEND)
+			aniId = ID_ANI_GREEN_KOOPA_FLIP_DEFEND;
+		else if (state == KOOPA_STATE_BACK)
+			aniId = ID_ANI_GREEN_KOOPA_FLIP_BACK;
+		else
+			aniId = ID_ANI_GREEN_KOOPA_FLIP_KICKED;
+	}
+	else
+	{
+		if (vx == KOOPA_WALKING_SPEED)
+			aniId = ID_ANI_GREEN_KOOPA_WALK_RIGHT;
+		else if (vx == -KOOPA_WALKING_SPEED)
+			aniId = ID_ANI_GREEN_KOOPA_WALK_LEFT;
+		else if (abs(vx) == KOOPA_KICKED_SPEED)
+			aniId = ID_ANI_GREEN_KOOPA_KICKED;
+		else
+		{
+			if (state == KOOPA_STATE_DEFEND)
+				aniId = ID_ANI_GREEN_KOOPA_DEFEND;
+			else
+				aniId = ID_ANI_GREEN_KOOPA_BACK;
+		}
+	}
+	return aniId;
+
 }
 
 
@@ -131,6 +159,8 @@ void CKoopa::Render()
 	int aniId = -1;
 	if (type == KOOPA_TYPE_RED)
 		aniId = GetAniIdRed();
+	else
+		aniId = GetAniIdGreen();
 	CAnimations::GetInstance()->Get(aniId)->Render(x,y);
 		
 }
@@ -232,7 +262,7 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	if (!questionBrick->GetIsEmpty())
 	{
 		questionBrick->SetState(QUESTION_BRICK_STATE_UP);
-		
+
 		if (questionBrick->GetType() == QUESTION_BRICK_TYPE_ITEM)
 		{
 			if (mario->GetLevel() == MARIO_LEVEL_SMALL)

@@ -43,8 +43,15 @@
 #define ID_ANI_GREEN_KOOPA_WALK_LEFT 18600
 #define ID_ANI_GREEN_KOOPA_WALK_RIGHT 18601
 #define ID_ANI_GREEN_KOOPA_DEFEND 18700
-#define ID_ANI_GREEN_KOOPA_THROWN 18701
+#define ID_ANI_GREEN_KOOPA_KICKED 18701
 #define ID_ANI_GREEN_KOOPA_BACK 18800
+
+#define ID_ANI_GREEN_KOOPA_FLIP_DEFEND 18710
+#define ID_ANI_GREEN_KOOPA_FLIP_KICKED 18711
+#define ID_ANI_GREEN_KOOPA_FLIP_BACK 18810
+
+#define KOOPA_LEVEL_NORMAL 1
+#define KOOPA_LEVEL_WINGS 2
 
 class CKoopa : public CGameObject
 {
@@ -56,13 +63,15 @@ protected:
 	ULONGLONG die_start;
 	ULONGLONG back_start;
 
+	int level;
+
 	int GetAniIdRed();
 	int GetAniIdGreen();
 	bool isHeld = false;
 	bool isOnPlatForm;
 	bool isFlipped;
 public:
-	CKoopa(float x, float y, int type);
+	CKoopa(float x, float y, int type, int level);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
@@ -84,5 +93,6 @@ public:
 	{
 		this->isHeld = isHeld;
 	}
-
+	void SetLevel(int level) { this->level = level; }
+	int GetLevel() { return level; }
 };
