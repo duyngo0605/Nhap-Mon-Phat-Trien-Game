@@ -124,7 +124,8 @@ void CFireVenusTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		
 	}
 	else if (GetState() == FIREVENUSTRAP_STATE_ATTACK) {
-		if (GetTickCount64() - attack_start == FIREVENUSTRAP_TIME_ATTACK / 2)
+		
+		if (GetTickCount64() - attack_start == FIREVENUSTRAP_TIME_ATTACK / 2 && type!=VENUSTRAP_TYPE)
 		{
 			CFireBall* fire = new CFireBall(x, y-FIREBALL_BBOX_HEIGHT);
 			fire->SetSpeed(nx * FIREBALL_SPEED_X, ny * FIREBALL_SPEED_Y);
@@ -151,12 +152,14 @@ void CFireVenusTrap::Render()
 		aniId = ID_ANI_MARIO_FROM_BIG_TO_TAIL_RIGHT;
 	}
 	else {
-		if (type==FIREVENUSTRAP_TYPE_RED)
-		{ 
+		if (type == FIREVENUSTRAP_TYPE_RED)
+		{
 			aniId = GetAniIdRed();
 		}
-		else
+		else if (type == FIREVENUSTRAP_TYPE_GREEN)
 			aniId = GetAniIdGreen();
+		else
+			aniId = ID_ANI_VENUSTRAP;
 	}
 	if (aniId == -1)return;
 	animations->Get(aniId)->Render(x, y);
