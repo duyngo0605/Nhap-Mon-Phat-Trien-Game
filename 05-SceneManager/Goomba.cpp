@@ -149,9 +149,9 @@ void CGoomba::Render()
 		{
 			aniId = ID_ANI_GOOMBA_DIE;
 		}
-		if (state == GOOMBA_STATE_TAIL_ATTACKED)
+		if (state == GOOMBA_STATE_JUMP_DIE)
 		{
-			aniId = ID_ANI_GOOMBA_TAIL_ATTACKED;
+			aniId = ID_ANI_GOOMBA_JUMP_DIE;
 		}
 	}
 	else if (type == GOOMBA_TYPE_PARA)
@@ -160,7 +160,7 @@ void CGoomba::Render()
 		{
 			aniId = ID_ANI_PARAGOOMBA_DIE;
 		}
-		if (state == GOOMBA_STATE_TAIL_ATTACKED)
+		if (state == GOOMBA_STATE_JUMP_DIE)
 		{
 			aniId = ID_ANI_PARAGOOMBA_TAIL_ATTACKED;
 		}
@@ -199,7 +199,7 @@ void CGoomba::SetState(int state)
 			vy = 0;
 			ay = 0; 
 			break;
-		case GOOMBA_STATE_TAIL_ATTACKED:
+		case GOOMBA_STATE_JUMP_DIE:
 			die_start = GetTickCount64();
 			level = -1;
 			break;

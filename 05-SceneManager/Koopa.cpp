@@ -207,7 +207,8 @@ void CKoopa::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	goomba->SetState(GOOMBA_STATE_DIE);
+	goomba->SetState(GOOMBA_STATE_JUMP_DIE);
+	goomba->SetSpeed(nx * MARIO_TAIL_ATTACK_SPEED_X, MARIO_TAIL_ATTACK_SPEED_Y);
 }
 
 void CKoopa::OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e)

@@ -147,7 +147,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	{
 		if (isAttacking)
 		{
-			goomba->SetState(GOOMBA_STATE_TAIL_ATTACKED);
+			goomba->SetState(GOOMBA_STATE_JUMP_DIE);
 			goomba->SetSpeed(nx*MARIO_TAIL_ATTACK_SPEED_X, MARIO_TAIL_ATTACK_SPEED_Y);
 		}
 		else

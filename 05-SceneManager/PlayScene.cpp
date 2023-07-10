@@ -17,6 +17,7 @@
 #include "FireBall.h"
 #include "Koopa.h"
 #include "SpecialBrick.h"
+#include "BlockKoopa.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -213,6 +214,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		int type = atoi(tokens[3].c_str());
 		obj = new CSpecialBrick(x, y, type);
+		break;
+	}
+
+	case OBJECT_TYPE_BLOCKKOOPA:
+	{
+		obj = new CBlockKoopa(x, y);
 		break;
 	}
 

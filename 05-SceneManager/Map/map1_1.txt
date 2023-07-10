@@ -211,6 +211,11 @@ Sprites/button.txt
 
 #KOOPA
 3	600	360	1
+3	2104	370	1
+
+#BLOCK KOOPA
+15	2084	376
+15	2124	376
 
 
 
