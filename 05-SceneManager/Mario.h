@@ -15,6 +15,7 @@
 #define MARIO_JUMP_SPEED_Y		0.4f
 #define MARIO_JUMP_RUN_SPEED_Y	0.5f
 #define MARIO_JUMP_FLY_SPEED_Y	-0.2f
+#define MARIO_DOWN_PIPE			0.05f
 
 #define MARIO_GRAVITY			0.001f
 #define MARIO_ACCEL_JUMP_Y		0.00005f
@@ -40,6 +41,8 @@
 
 #define MARIO_STATE_FLY				800
 #define MARIO_STATE_FLY_RELEASE		801
+
+#define MARIO_STATE_DOWN_PIPE		900
 
 
 #pragma region ANIMATION_ID

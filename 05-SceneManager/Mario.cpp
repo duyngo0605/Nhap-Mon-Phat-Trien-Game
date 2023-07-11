@@ -953,6 +953,12 @@ void CMario::SetState(int state)
 		vx = 0;
 		ax = 0;
 		break;
+
+	case MARIO_STATE_DOWN_PIPE:
+		vy = MARIO_DOWN_PIPE;
+		ay = 0;
+
+		break;
 	}
 
 	CGameObject::SetState(state);
