@@ -28,7 +28,7 @@ int CKoopa::GetAniIdRed()
 	int aniId = -1;
 	if (isFlipped)
 	{
-		if (state == KOOPA_STATE_DEFEND)
+		if (state == KOOPA_STATE_DEFEND||state==KOOPA_STATE_DIE)
 			aniId = ID_ANI_RED_KOOPA_FLIP_DEFEND;
 		else if (state == KOOPA_STATE_BACK)
 			aniId = ID_ANI_RED_KOOPA_FLIP_BACK;
@@ -46,7 +46,7 @@ int CKoopa::GetAniIdRed()
 				aniId = ID_ANI_RED_KOOPA_KICKED;
 			else
 			{
-				if (state == KOOPA_STATE_DEFEND)
+				if (state == KOOPA_STATE_DEFEND || state == KOOPA_STATE_DIE)
 					aniId = ID_ANI_RED_KOOPA_DEFEND;
 				else
 					aniId = ID_ANI_RED_KOOPA_BACK;
@@ -61,7 +61,7 @@ int CKoopa::GetAniIdGreen()
 	int aniId = -1;
 	if (isFlipped)
 	{
-		if (state == KOOPA_STATE_DEFEND)
+		if (state == KOOPA_STATE_DEFEND || state == KOOPA_STATE_DIE)
 			aniId = ID_ANI_GREEN_KOOPA_FLIP_DEFEND;
 		else if (state == KOOPA_STATE_BACK)
 			aniId = ID_ANI_GREEN_KOOPA_FLIP_BACK;
@@ -80,7 +80,7 @@ int CKoopa::GetAniIdGreen()
 				aniId = ID_ANI_GREEN_KOOPA_KICKED;
 			else
 			{
-				if (state == KOOPA_STATE_DEFEND)
+				if (state == KOOPA_STATE_DEFEND || state == KOOPA_STATE_DIE)
 					aniId = ID_ANI_GREEN_KOOPA_DEFEND;
 				else
 					aniId = ID_ANI_GREEN_KOOPA_BACK;
@@ -132,6 +132,15 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (vy != 0) isOnPlatForm = false;
 	vx += ax * dt;
 	vy += ay * dt;
+	if (state == KOOPA_STATE_DIE)
+	{
+		if (GetTickCount64() - die_start > KOOPA_DIE_TIME)
+		{
+			Delete();
+			
+		}
+		
+	}
 	if (state == KOOPA_STATE_UP)
 	{
 		if (isOnPlatForm) SetState(KOOPA_STATE_DEFEND);
@@ -166,7 +175,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(KOOPA_STATE_WALKING);
 		}
 	}
-	
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -192,6 +201,7 @@ void CKoopa::OnNoCollision(DWORD dt)
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!isInCam()) return;
+	if (state == KOOPA_STATE_DIE) return;
 	if (GetState() == KOOPA_STATE_KICKED||GetState()==KOOPA_STATE_DEFEND)
 	{
 		if (dynamic_cast<CGoomba*>(e->obj)) {
@@ -218,12 +228,9 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CSpecialPlatform*>(e->obj))
 		OnCollisionWithSpecialPlatform(e);
 	if (!e->obj->IsBlocking()) return;
-
-	if (e->ny != 0)
-	{	
-		
-			vy = 0;
-		if(e->ny<0) isOnPlatForm = true;
+	if (e->ny < 0) { 
+		isOnPlatForm = true;
+		vy = 0;
 	}
 	else if (e->nx != 0)
 	{
@@ -264,12 +271,20 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 	goomba->SetState(GOOMBA_STATE_JUMP_DIE);
 	goomba->SetSpeed(nx * MARIO_TAIL_ATTACK_SPEED_X, MARIO_TAIL_ATTACK_SPEED_Y);
+	if (state == KOOPA_STATE_DEFEND && isHeld)
+	{
+		SetState(KOOPA_STATE_DIE);
+	}
 }
 
 void CKoopa::OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e)
 {
 	CFireVenusTrap* trap = dynamic_cast<CFireVenusTrap*>(e->obj);
 	trap->SetState(FIREVENUSTRAP_STATE_DIE);
+	if (state == KOOPA_STATE_DEFEND && isHeld)
+	{
+		SetState(KOOPA_STATE_DIE);
+	}
 }
 
 void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
@@ -377,8 +392,9 @@ void CKoopa::SetState(int state)
 	case KOOPA_STATE_DIE:
 		die_start = GetTickCount64();
 		vx = 0;
-		vy = 0;
-		ay = 0;
+		ay = 2 * KOOPA_GRAVITY;
+		vy = MARIO_TAIL_ATTACK_SPEED_Y*1.5;
+		level = 0;
 		break;
 	}
 }

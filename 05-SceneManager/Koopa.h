@@ -9,7 +9,7 @@
 #define KOOPA_DEFEND_TIMEOUT 8000 
 #define KOOPA_BACK_TIMEOUT 1000 
 
-#define KOOPA_DIE_TIME 1000
+#define KOOPA_DIE_TIME 2000
 
 #define KOOPA_BBOX_WIDTH 16
 #define KOOPA_BBOX_HEIGHT 26
@@ -80,7 +80,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() { return (state!=KOOPA_STATE_DIE); };
 	virtual int IsBlocking() { return 0; }
 
 	virtual void OnNoCollision(DWORD dt);

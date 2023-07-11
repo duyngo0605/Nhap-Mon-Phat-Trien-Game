@@ -108,7 +108,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vx += ax * dt;
 	
 	if (level == 0) SetState(GOOMBA_STATE_DIE);
-	if (GetState()==GOOMBA_STATE_DIE&&(GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
+	if ((state==GOOMBA_STATE_DIE||state==GOOMBA_STATE_JUMP_DIE)&&GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT)
 	{
 		Delete();
 		return;

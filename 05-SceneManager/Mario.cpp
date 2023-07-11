@@ -176,6 +176,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 	isHolding = false;
+	if (koopa->GetState() == KOOPA_STATE_DIE) return;
 	// jump on top >> Koopa defend and deflect a bit 
 	if (e->ny < 0)
 	{
