@@ -45,6 +45,9 @@
 
 #MUSHROOM
 11023	256	32	271	47	50
+
+#BLACK_TILE
+11999	2128	528	2143	543	50	
 	
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
