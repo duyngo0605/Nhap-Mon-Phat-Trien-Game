@@ -341,25 +341,25 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return; 
+	if (player == NULL) return;
 
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
-	CGame *game = CGame::GetInstance();
+	CGame* game = CGame::GetInstance();
 	cx -= game->GetBackBufferWidth() / 2;
 	if (cx < 0) cx = 0;
-	if (cx > MAP_WIDTH - game->GetBackBufferWidth()) cx=MAP_WIDTH - game->GetBackBufferWidth();
+	if (cx > MAP_WIDTH - game->GetBackBufferWidth()) cx = MAP_WIDTH - game->GetBackBufferWidth();
 	if (cy <= 120)
 	{
-		CGame::GetInstance()->SetCamPos(cx ,0);
+		CGame::GetInstance()->SetCamPos(cx, 0);
 	}
-	else if (cy<=332)
+	else if (cy <= 332)
 	{
 		cy -= game->GetBackBufferHeight() / 2;
 		CGame::GetInstance()->SetCamPos(cx, cy);
 	}
-	else if (cy<=HEIGHT_DEATH)
+	else if (cy <= HEIGHT_DEATH||player->GetState() == MARIO_STATE_DIE)
 		CGame::GetInstance()->SetCamPos(cx, 404-(game->GetBackBufferHeight() - MARIO_BIG_BBOX_HEIGHT / 2 - 16));
 	else
 			CGame::GetInstance()->SetCamPos(2096,632);

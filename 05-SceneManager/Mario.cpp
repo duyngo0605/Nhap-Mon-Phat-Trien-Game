@@ -23,12 +23,13 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	///set mario can fly 
 	if (runLevel == 2 && abs(vx) == MARIO_RUNNING_SPEED&&isOnPlatform) 
 	{ 
 		canFly = true; 
 		canFly_start = GetTickCount64();
 	}
-
+	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount64() - untouchable_start >= MARIO_UNTOUCHABLE_TIME/2)
 	{
 		if (GetTickCount64() - untouchable_start >= MARIO_UNTOUCHABLE_TIME)
@@ -46,7 +47,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		isKicking = false;
 	}
 
-
+	////using pipe action
 	if (GetTickCount64() - usingPipe_start >= MARIO_USING_PIPE_TIME/2 &&isUsingPipe)
 	{
 		
@@ -94,17 +95,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		else
 			SetRunLevel(0);
 	}
+
+	////begin and end point of scene
 	if (x <= MARIO_SMALL_BBOX_WIDTH/2)x = MARIO_SMALL_BBOX_WIDTH / 2;
 	if (x >= MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2)x = MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2;
-	if (y >= HEIGHT_DEATH&&y<=HEIGHT_DEATH+MARIO_BIG_BBOX_HEIGHT) SetState(MARIO_STATE_DIE);
+
+	///drop from floor and die
+	if (y >= HEIGHT_DEATH && y <= HEIGHT_DEATH + MARIO_BIG_BBOX_HEIGHT) { SetState(MARIO_STATE_DIE); }
 	else if (y <= 0) {
+		canFly = false;
 		y = MARIO_BIG_BBOX_HEIGHT/2;
 		vy = 0.0001f;
 		if (nx > 0) SetState(MARIO_STATE_WALKING_RIGHT);
 		else
 			SetState(MARIO_STATE_WALKING_LEFT);
 	}
-	// reset untouchable timer if untouchable time has passed
+	
 	
 	
 	isOnPlatform = false;

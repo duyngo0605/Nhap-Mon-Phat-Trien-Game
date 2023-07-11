@@ -207,7 +207,7 @@
 #define MARIO_FLY_JUMP_TIME		100
 #define MARIO_FLY_CAN_FLY_TIME	500
 #define MARIO_USING_PIPE_TIME	1500
-#define HEIGHT_DEATH 500
+#define HEIGHT_DEATH	500
 
 class CMario : public CGameObject
 {
