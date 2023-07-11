@@ -180,18 +180,22 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	if (e->ny < 0)
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		if (koopa->GetState() == KOOPA_STATE_WALKING|| koopa->GetState() == KOOPA_STATE_KICKED)
+		if (koopa->GetLevel() == KOOPA_LEVEL_NORMAL)
 		{
-			
-			koopa->SetState(KOOPA_STATE_DEFEND);
+			if (koopa->GetState() == KOOPA_STATE_WALKING || koopa->GetState() == KOOPA_STATE_KICKED)
+			{
+
+				koopa->SetState(KOOPA_STATE_DEFEND);
+			}
+			else if (koopa->GetState() == KOOPA_STATE_DEFEND)
+			{
+
+				koopa->SetIsHeld(false);
+				koopa->SetState(KOOPA_STATE_KICKED);
+			}
 		}
-		else if (koopa->GetState() == KOOPA_STATE_DEFEND)
-		{
-			
-			koopa->SetIsHeld(false);
-			koopa->SetState(KOOPA_STATE_KICKED);
-		}
-		
+		else
+			koopa->SetLevel(KOOPA_LEVEL_NORMAL);
 
 	}
 	else
@@ -200,7 +204,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		{
 			koopa->SetNX(-e->nx);
 			koopa->SetState(KOOPA_STATE_UP);
-			
+			koopa->SetLevel(KOOPA_LEVEL_NORMAL);
 		}
 		else {
 			if (untouchable == 0)
