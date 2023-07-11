@@ -15,7 +15,7 @@
 #define MARIO_JUMP_SPEED_Y		0.4f
 #define MARIO_JUMP_RUN_SPEED_Y	0.5f
 #define MARIO_JUMP_FLY_SPEED_Y	-0.2f
-#define MARIO_DOWN_PIPE			0.05f
+#define MARIO_GET_IN_PIPE_SPEED	0.05f
 
 #define MARIO_GRAVITY			0.001f
 #define MARIO_ACCEL_JUMP_Y		0.00005f
@@ -43,6 +43,7 @@
 #define MARIO_STATE_FLY_RELEASE		801
 
 #define MARIO_STATE_DOWN_PIPE		900
+#define MARIO_STATE_UP_PIPE			901
 
 
 #pragma region ANIMATION_ID
@@ -161,6 +162,8 @@
 #define ID_ANI_MARIO_TAIL_ATTACK_RIGHT 3400
 #define ID_ANI_MARIO_TAIL_ATTACK_LEFT 3401
 
+#define ID_ANI_MARIO_TAIL_GO_PIPE	3500
+
 ////Transform animations
 #define ID_ANI_MARIO_FROM_SMALL_TO_BIG_RIGHT 4000
 #define ID_ANI_MARIO_FROM_BIG_TO_TAIL_RIGHT 4001
@@ -203,6 +206,7 @@
 #define MARIO_TAIL_ATTACK_TIME	300
 #define MARIO_FLY_JUMP_TIME		100
 #define MARIO_FLY_CAN_FLY_TIME	500
+#define MARIO_USING_PIPE_TIME	1500
 #define HEIGHT_DEATH 500
 
 class CMario : public CGameObject
@@ -211,6 +215,8 @@ class CMario : public CGameObject
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
+
+	float xD, yD;
 
 	int level;
 	int runLevel;
@@ -221,6 +227,7 @@ class CMario : public CGameObject
 	ULONGLONG flyJump_start;
 	ULONGLONG tailAttack_start;
 	ULONGLONG canFly_start;
+	ULONGLONG usingPipe_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
@@ -232,6 +239,10 @@ class CMario : public CGameObject
 	bool flyJump = false;
 	bool isAttacking = false;
 	bool canFly = false;
+	bool canGoDownPipe = false;
+	bool canGoUpPipe = false;
+	bool isUsingPipe = false;
+	bool isOnPipe = false;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
@@ -245,6 +256,8 @@ class CMario : public CGameObject
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireBall(LPCOLLISIONEVENT e);
+	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
+	void UsingPipe(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -253,6 +266,8 @@ class CMario : public CGameObject
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
+		xD = x;
+		yD = y;
 		isSitting = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
@@ -261,6 +276,7 @@ public:
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
+		usingPipe_start = -1;
 		isOnPlatform = false;
 		canHold = false;
 		isKicking = false;
@@ -287,10 +303,14 @@ public:
 	void Fly();
 	void TailAttack();
 	bool GetIsFlying() { return isFlying; }
+	void SetCanDownPipe(bool canDown) { this->canGoDownPipe = canDown; }
+	void SetCanUpPipe(bool canUp) { this->canGoUpPipe = canUp; }
+	bool GetIsUsingPipe() { return isUsingPipe; }
+	bool GetIsOnPipe() { return isOnPipe; }
 
 	int IsCollidable()
 	{ 
-		return (state != MARIO_STATE_DIE); 
+		return (state != MARIO_STATE_DIE && state!=MARIO_STATE_DOWN_PIPE && state!=MARIO_STATE_UP_PIPE); 
 	}
 
 	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable==0); }

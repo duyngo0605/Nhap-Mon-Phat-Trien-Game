@@ -13,7 +13,11 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_DOWN:
-		mario->SetState(MARIO_STATE_SIT);
+		mario->SetCanDownPipe(true);
+		if(!mario->GetIsOnPipe()) mario->SetState(MARIO_STATE_SIT);
+		break;
+	case DIK_UP:
+		mario->SetCanUpPipe(true);
 		break;
 	case DIK_S:
 		mario->SetState(MARIO_STATE_JUMP);
@@ -57,10 +61,14 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
-		mario->SetState(MARIO_STATE_RELEASE_JUMP);
+		if (!mario->GetIsUsingPipe()) mario->SetState(MARIO_STATE_RELEASE_JUMP);
 		break;
 	case DIK_DOWN:
-		mario->SetState(MARIO_STATE_SIT_RELEASE);
+		if(!mario->GetIsUsingPipe())	mario->SetState(MARIO_STATE_SIT_RELEASE);
+		mario->SetCanDownPipe(false);
+		break;
+	case DIK_UP:
+		mario->SetCanUpPipe(false);
 		break;
 	case DIK_A: mario->SetCanHold(false); mario->SetRunLevel(0);
 		break;
@@ -86,5 +94,6 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
 	else
-		mario->SetState(MARIO_STATE_IDLE);
+		if(mario->GetState()!=MARIO_STATE_DOWN_PIPE&& mario->GetState() != MARIO_STATE_UP_PIPE)
+			mario->SetState(MARIO_STATE_IDLE);
 }

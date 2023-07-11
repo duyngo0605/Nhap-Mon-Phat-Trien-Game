@@ -194,6 +194,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 
 		int sprite_id = atoi(tokens[3].c_str());
+		if (tokens.size()>4)
+		{
+			int canDown = atoi(tokens[4].c_str());
+			int xD = atoi(tokens[5].c_str());
+			int yD = atoi(tokens[6].c_str());
+			obj = new CPipe(x, y, sprite_id, canDown, xD, yD);
+			break;
+		}
 		obj = new CPipe(x, y, sprite_id);
 		break;
 	}
