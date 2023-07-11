@@ -37,19 +37,21 @@ int CKoopa::GetAniIdRed()
 	}
 	else
 	{
-		if (vx == KOOPA_WALKING_SPEED)
-			aniId = ID_ANI_RED_KOOPA_WALK_RIGHT;
-		else if (vx == -KOOPA_WALKING_SPEED)
-			aniId = ID_ANI_RED_KOOPA_WALK_LEFT;
-		else if (abs(vx) == KOOPA_KICKED_SPEED)
-			aniId = ID_ANI_RED_KOOPA_KICKED;
-		else
-		{
-			if (state == KOOPA_STATE_DEFEND)
-				aniId = ID_ANI_RED_KOOPA_DEFEND;
+		
+			if (vx == KOOPA_WALKING_SPEED)
+				aniId = ID_ANI_RED_KOOPA_WALK_RIGHT;
+			else if (vx == -KOOPA_WALKING_SPEED)
+				aniId = ID_ANI_RED_KOOPA_WALK_LEFT;
+			else if (abs(vx) == KOOPA_KICKED_SPEED)
+				aniId = ID_ANI_RED_KOOPA_KICKED;
 			else
-				aniId = ID_ANI_RED_KOOPA_BACK;
-		}
+			{
+				if (state == KOOPA_STATE_DEFEND)
+					aniId = ID_ANI_RED_KOOPA_DEFEND;
+				else
+					aniId = ID_ANI_RED_KOOPA_BACK;
+			}
+		
 	}
 	return aniId;
 }
@@ -68,18 +70,28 @@ int CKoopa::GetAniIdGreen()
 	}
 	else
 	{
-		if (vx == KOOPA_WALKING_SPEED)
-			aniId = ID_ANI_GREEN_KOOPA_WALK_RIGHT;
-		else if (vx == -KOOPA_WALKING_SPEED)
-			aniId = ID_ANI_GREEN_KOOPA_WALK_LEFT;
-		else if (abs(vx) == KOOPA_KICKED_SPEED)
-			aniId = ID_ANI_GREEN_KOOPA_KICKED;
+		if (level == KOOPA_LEVEL_NORMAL)
+		{
+			if (vx == KOOPA_WALKING_SPEED)
+				aniId = ID_ANI_GREEN_KOOPA_WALK_RIGHT;
+			else if (vx == -KOOPA_WALKING_SPEED)
+				aniId = ID_ANI_GREEN_KOOPA_WALK_LEFT;
+			else if (abs(vx) == KOOPA_KICKED_SPEED)
+				aniId = ID_ANI_GREEN_KOOPA_KICKED;
+			else
+			{
+				if (state == KOOPA_STATE_DEFEND)
+					aniId = ID_ANI_GREEN_KOOPA_DEFEND;
+				else
+					aniId = ID_ANI_GREEN_KOOPA_BACK;
+			}
+		}
 		else
 		{
-			if (state == KOOPA_STATE_DEFEND)
-				aniId = ID_ANI_GREEN_KOOPA_DEFEND;
+			if (vx > 0)
+				aniId = ID_ANI_GREEN_KOOPA_WINGS_WALK_RIGHT;
 			else
-				aniId = ID_ANI_GREEN_KOOPA_BACK;
+				aniId = ID_ANI_GREEN_KOOPA_WINGS_WALK_LEFT;
 		}
 	}
 	return aniId;
@@ -113,6 +125,11 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	mario->GetPosition(xM, yM);
 	mario->GetSpeed(vxM, vyM);
 	if (!isInCam())	return;
+	if (level == KOOPA_LEVEL_WINGS)
+	{
+		if (isOnPlatForm) vy = KOOPA_JUMPING_SPEED;
+	}
+	if (vy != 0) isOnPlatForm = false;
 	vx += ax * dt;
 	vy += ay * dt;
 	if (state == KOOPA_STATE_UP)
@@ -193,7 +210,8 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else
 	{
-		if (dynamic_cast<CBlockKoopa*>(e->obj)) {
+		
+		if (dynamic_cast<CBlockKoopa*>(e->obj)&&level!=KOOPA_LEVEL_WINGS) {
 			OnCollisionWithBlockKoopa(e);
 		}
 	}
@@ -202,9 +220,10 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (!e->obj->IsBlocking()) return;
 
 	if (e->ny != 0)
-	{
-		vy = 0;
-		if(e->ny>0) isOnPlatForm = true;
+	{	
+		
+			vy = 0;
+		if(e->ny<0) isOnPlatForm = true;
 	}
 	else if (e->nx != 0)
 	{
