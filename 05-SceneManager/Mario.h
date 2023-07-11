@@ -7,14 +7,14 @@
 #include "debug.h"
 
 #define MARIO_WALKING_SPEED		0.1f
-#define MARIO_RUNNING_SPEED		0.2f
+#define MARIO_RUNNING_SPEED		0.18f
 
 #define MARIO_ACCEL_WALK_X	0.0001f
 #define MARIO_ACCEL_RUN_X	0.00015f
 
 #define MARIO_JUMP_SPEED_Y		0.4f
 #define MARIO_JUMP_RUN_SPEED_Y	0.5f
-#define MARIO_JUMP_FLY_SPEED_Y	-0.25f
+#define MARIO_JUMP_FLY_SPEED_Y	-0.2f
 
 #define MARIO_GRAVITY			0.001f
 #define MARIO_ACCEL_JUMP_Y		0.00005f
@@ -199,6 +199,7 @@
 #define MARIO_KICKING_TIME		200
 #define MARIO_TAIL_ATTACK_TIME	300
 #define MARIO_FLY_JUMP_TIME		100
+#define MARIO_FLY_CAN_FLY_TIME	500
 #define HEIGHT_DEATH 500
 
 class CMario : public CGameObject
@@ -216,6 +217,7 @@ class CMario : public CGameObject
 	ULONGLONG kick_start;
 	ULONGLONG flyJump_start;
 	ULONGLONG tailAttack_start;
+	ULONGLONG canFly_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
@@ -226,6 +228,7 @@ class CMario : public CGameObject
 	bool isFlying = false;
 	bool flyJump = false;
 	bool isAttacking = false;
+	bool canFly = false;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);

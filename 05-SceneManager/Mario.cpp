@@ -22,7 +22,12 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	
+	if (runLevel == 2 && abs(vx) == MARIO_RUNNING_SPEED&&isOnPlatform) 
+	{ 
+		canFly = true; 
+		canFly_start = GetTickCount64();
+	}
+
 	if (GetTickCount64() - untouchable_start >= MARIO_UNTOUCHABLE_TIME/2)
 	{
 		if (GetTickCount64() - untouchable_start >= MARIO_UNTOUCHABLE_TIME)
@@ -45,8 +50,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	if (GetTickCount64() - flyJump_start >= MARIO_FLY_JUMP_TIME)
 	{
+	
 		flyJump = false;
 		ay = MARIO_GRAVITY;
+	}
+	if (GetTickCount64() - canFly_start >= MARIO_FLY_CAN_FLY_TIME)
+	{
+		canFly = false;
 	}
 	if (isOnPlatform) { isFlying = false; ay = 0.002f; }
 	else
@@ -57,6 +67,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		vy += ay * dt;
 		vx += ax * dt;
 	}
+	if (isFlying) ax = nx*MARIO_ACCEL_RUN_X;
 
 	if (abs(vx) >= abs(maxVx)) { vx = maxVx; SetRunLevel(2); }
 	else
@@ -705,7 +716,7 @@ int CMario::GetAniIdTail()
 				{
 					if (!isOnPlatform)
 					{
-						if (runLevel == 2 && abs(ax) == MARIO_ACCEL_RUN_X)
+						if (canFly)
 						{
 							if (flyJump)
 							{
@@ -949,14 +960,18 @@ void CMario::SetState(int state)
 
 void CMario::Fly()
 {
-	if (runLevel == 2 && abs(ax) == MARIO_ACCEL_RUN_X) {
-		vy = MARIO_JUMP_FLY_SPEED_Y;
-		ay = 0;
+	if (canFly) 
+	{
+		ay = -MARIO_GRAVITY;
+		if (vy = MARIO_JUMP_FLY_SPEED_Y)
+			vy = MARIO_JUMP_FLY_SPEED_Y;
 		flyJump_start = GetTickCount64();
+		canFly_start = GetTickCount64();
 		isFlying = true;
 		flyJump = true;
+		canFly = true;
 	}
-	if (vy > 0&&isFlying)
+	else if (vy > 0&&isFlying)
 	{
 		coin++;
 		vy = 0;
