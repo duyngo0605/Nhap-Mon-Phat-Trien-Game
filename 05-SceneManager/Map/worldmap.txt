@@ -1,0 +1,9 @@
+# list of object assets to load in this scene
+[ASSETS]
+Sprites\WorldMap\mario.txt
+Sprites\WorldMap\landscape.txt
+Sprites\WorldMap\node.txt
+Sprites\WorldMap\path.txt
+
+#
+[OBJECTS]

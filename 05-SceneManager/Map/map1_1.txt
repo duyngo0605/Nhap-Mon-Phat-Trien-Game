@@ -1,21 +1,21 @@
 # list of object assets to load in this scene
 [ASSETS]
-Sprites/mario.txt
-Sprites/coin.txt
-Sprites/ground.txt
-Sprites/brick.txt
-Sprites/background_tile.txt
-Sprites/pipe.txt
-Sprites/questionbrick.txt
-Sprites/mushroom.txt
-Sprites/goomba.txt
-Sprites/leaf.txt
-Sprites/firevenustrap.txt
-Sprites/fireball.txt
-Sprites/koopa.txt
-Sprites/specialbrick.txt
-Sprites/button.txt
-Sprites/card.txt
+Sprites/Map_1-1/mario.txt
+Sprites/Map_1-1/coin.txt
+Sprites/Map_1-1/ground.txt
+Sprites/Map_1-1/brick.txt
+Sprites/Map_1-1/background_tile.txt
+Sprites/Map_1-1/pipe.txt
+Sprites/Map_1-1/questionbrick.txt
+Sprites/Map_1-1/mushroom.txt
+Sprites/Map_1-1/goomba.txt
+Sprites/Map_1-1/leaf.txt
+Sprites/Map_1-1/firevenustrap.txt
+Sprites/Map_1-1/fireball.txt
+Sprites/Map_1-1/koopa.txt
+Sprites/Map_1-1/specialbrick.txt
+Sprites/Map_1-1/button.txt
+Sprites/Map_1-1/card.txt
 
 #
 [OBJECTS]

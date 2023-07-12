@@ -8,6 +8,7 @@ height 616
 [SCENES]
 0	intro.txt
 1	Map\map1_1.txt
+2	Map\worldmap.txt
 
 # id	file 
 [TEXTURES]
@@ -21,3 +22,5 @@ height 616
 60	textures\enemies_1.png
 70	textures\hud.png
 80	textures\card.png
+90	textures\WorldMap_Tileset.png
+100	textures\WorldMap.png
