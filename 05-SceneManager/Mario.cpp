@@ -1039,8 +1039,12 @@ void CMario::SetState(int state)
 		usingPipe_start = GetTickCount64();
 		isUsingPipe = true;
 		vy = -MARIO_GET_IN_PIPE_SPEED;
+		vx = 0;
 		ay = 0;
 		break;
+	case MARIO_STATE_END_SCENE:
+
+
 	}
 
 

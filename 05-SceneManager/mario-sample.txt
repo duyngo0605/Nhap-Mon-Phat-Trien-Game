@@ -19,3 +19,5 @@ height 616
 40	textures\misc_2.png
 50	textures\bg-1-1.png
 60	textures\enemies_1.png
+70	textures\hud.png
+80	textures\card.png

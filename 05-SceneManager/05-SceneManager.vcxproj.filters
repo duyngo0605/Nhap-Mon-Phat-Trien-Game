@@ -144,6 +144,9 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Card.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mario.h">
@@ -252,6 +255,9 @@
       <Filter>Header Files\Block</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Card.h">
       <Filter>Header Files\Item</Filter>
     </ClInclude>
   </ItemGroup>

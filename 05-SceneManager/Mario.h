@@ -45,6 +45,8 @@
 #define MARIO_STATE_DOWN_PIPE		900
 #define MARIO_STATE_UP_PIPE			901
 
+#define MARIO_STATE_END_SCENE		999
+
 
 #pragma region ANIMATION_ID
 

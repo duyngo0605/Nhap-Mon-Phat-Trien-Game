@@ -18,6 +18,7 @@
 #include "Koopa.h"
 #include "SpecialBrick.h"
 #include "BlockKoopa.h"
+#include "Card.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -231,6 +232,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBlockKoopa(x, y);
 		break;
 	}
+	case OBJECT_TYPE_CARD:
+		obj = new CCard(x, y);
+		break;
 
 	case OBJECT_TYPE_PORTAL:
 	{
