@@ -15,6 +15,7 @@ Sprites/fireball.txt
 Sprites/koopa.txt
 Sprites/specialbrick.txt
 Sprites/button.txt
+Sprites/card.txt
 
 #
 [OBJECTS]
@@ -455,6 +456,8 @@ Sprites/button.txt
 7	2344	640	12103
 
 
+#Card
+20	2696	344
 
 #Portal 
 

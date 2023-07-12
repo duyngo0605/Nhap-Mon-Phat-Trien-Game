@@ -18,11 +18,18 @@
 #include"SpecialBrick.h"
 #include"Button.h"
 #include "Pipe.h"
+#include "Card.h"
+#include "BackgroundTile.h"
 
 #include "Collision.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	if (isEndScene && GetTickCount64() - endScene_start > MARIO_END_SCENE_TIME)
+	{
+		EndScene();
+		isEndScene = false;
+	}
 	///set mario can fly 
 	if (runLevel == 2 && abs(vx) == MARIO_RUNNING_SPEED&&isOnPlatform) 
 	{ 
@@ -98,7 +105,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	////begin and end point of scene
 	if (x <= MARIO_SMALL_BBOX_WIDTH/2)x = MARIO_SMALL_BBOX_WIDTH / 2;
-	if (x >= MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2)x = MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2;
+	if (x >= MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2&&!isEndScene)x = MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2;
 
 	///drop from floor and die
 	if (y >= HEIGHT_DEATH && y <= HEIGHT_DEATH + MARIO_BIG_BBOX_HEIGHT) { SetState(MARIO_STATE_DIE); }
@@ -147,8 +154,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CPipe*>(e->obj))
 	{
 		OnCollisionWithPipe(e);
-
 	}
+	else if (dynamic_cast<CCard*>(e->obj))
+		OnCollisionWithCard(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 	if (dynamic_cast<CKoopa*>(e->obj))
@@ -172,6 +180,17 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 	
+}
+
+void CMario::EndScene()
+{
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+	CBackgroundTile* announce1 = new CBackgroundTile(ANNOUCE_X, ANNOUCE_Y, ID_SPRITE_COURSE_CLEAR);
+	CBackgroundTile* announce2 = new CBackgroundTile(ANNOUCE_X, ANNOUCE_Y+24, ID_SPRITE_YOU_GOT_A_CARD);
+	scene->AddObject(announce1);
+	scene->AddObject(announce2);
+	scene->AddObject(this->card);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -522,6 +541,17 @@ void CMario::UsingPipe(LPCOLLISIONEVENT e)
 		if (canGoUpPipe)
 			SetState(MARIO_STATE_UP_PIPE);
 	}
+
+}
+
+void CMario::OnCollisionWithCard(LPCOLLISIONEVENT e)
+{
+	CCard* card = dynamic_cast<CCard*>(e->obj);
+	this->card = new CCard(ANNOUCE_X+61, ANNOUCE_Y+24, card->GetType(), CARD_STATE_HUD);
+	card->SetState(CARD_STATE_UP);
+	isEndScene = true;
+	endScene_start = GetTickCount64();
+	SetState(MARIO_STATE_WALKING_RIGHT);
 
 }
 
@@ -1042,9 +1072,7 @@ void CMario::SetState(int state)
 		vx = 0;
 		ay = 0;
 		break;
-	case MARIO_STATE_END_SCENE:
-
-
+	
 	}
 
 

@@ -50,5 +50,13 @@
 11999	2128	528	2143	543	50	
 	
 
+#COURSE CLEAR
+11024	64	360	183	375	80
+
+#YOU GOT A CARD
+11025	54	391	203	418	80
+
+
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]

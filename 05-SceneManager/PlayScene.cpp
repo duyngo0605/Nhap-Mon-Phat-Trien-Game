@@ -363,7 +363,7 @@ void CPlayScene::Update(DWORD dt)
 		cy -= game->GetBackBufferHeight() / 2;
 		CGame::GetInstance()->SetCamPos(cx, cy);
 	}
-	else if (cy <= HEIGHT_DEATH||player->GetState() == MARIO_STATE_DIE)
+	else if (cy <= HEIGHT_DEATH||player->GetState() == MARIO_STATE_DIE||player->GetIsEndScene())
 		CGame::GetInstance()->SetCamPos(cx, 404-(game->GetBackBufferHeight() - MARIO_BIG_BBOX_HEIGHT / 2 - 16));
 	else
 			CGame::GetInstance()->SetCamPos(2096,632);
@@ -379,7 +379,13 @@ void CPlayScene::Render()
 
 void CPlayScene::AddObject(CGameObject* object)
 {
-	objects.insert(objects.begin() + numofBackgroundTile + 1, object);
+	if (dynamic_cast<CBackgroundTile*>(object))
+	{
+		objects.insert(objects.begin() + numofBackgroundTile, object);
+		numofBackgroundTile++;
+	}
+	else
+		objects.insert(objects.begin() + numofBackgroundTile + 1, object);
 }
 
 /*

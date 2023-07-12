@@ -1,8 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-#define CARD_REFRESH_TIME	50
-#define CARD_UP_TIME		200
+#define CARD_REFRESH_TIME	100
+#define CARD_UP_TIME		2000
 
 #define ID_ANI_CARD_MUSHROOM 19100
 #define ID_ANI_CARD_STAR	 19101
@@ -31,10 +31,16 @@ public:
 		type = CARD_TYPE_MUSHROOM;
 		refresh_start = up_start = -1;
 	}
+	CCard(float x, float y, int type, int state) : CGameObject(x, y) {
+		SetState(state);
+		this->type = type;
+		refresh_start = up_start = -1;
+	}
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	void SetState(int state);
+	int GetType() { return type; }
 	int IsBlocking() { return 0; }
 };
 

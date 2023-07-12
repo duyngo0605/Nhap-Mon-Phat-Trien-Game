@@ -3,6 +3,7 @@
 
 #include "Animation.h"
 #include "Animations.h"
+#include "Card.h"
 
 #include "debug.h"
 
@@ -44,8 +45,6 @@
 
 #define MARIO_STATE_DOWN_PIPE		900
 #define MARIO_STATE_UP_PIPE			901
-
-#define MARIO_STATE_END_SCENE		999
 
 
 #pragma region ANIMATION_ID
@@ -209,7 +208,14 @@
 #define MARIO_FLY_JUMP_TIME		100
 #define MARIO_FLY_CAN_FLY_TIME	500
 #define MARIO_USING_PIPE_TIME	1500
+#define MARIO_END_SCENE_TIME	3000
 #define HEIGHT_DEATH	500
+
+#define ID_SPRITE_COURSE_CLEAR			11024
+#define ID_SPRITE_YOU_GOT_A_CARD		11025
+
+#define ANNOUCE_X	2688
+#define	ANNOUCE_Y	256
 
 class CMario : public CGameObject
 {
@@ -230,6 +236,7 @@ class CMario : public CGameObject
 	ULONGLONG tailAttack_start;
 	ULONGLONG canFly_start;
 	ULONGLONG usingPipe_start;
+	ULONGLONG endScene_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
@@ -245,6 +252,11 @@ class CMario : public CGameObject
 	bool canGoUpPipe = false;
 	bool isUsingPipe = false;
 	bool isOnPipe = false;
+	bool isEndScene = false;
+
+	CCard* card;
+
+	void EndScene();
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
@@ -260,6 +272,8 @@ class CMario : public CGameObject
 	void OnCollisionWithFireBall(LPCOLLISIONEVENT e);
 	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
 	void UsingPipe(LPCOLLISIONEVENT e);
+
+	void OnCollisionWithCard(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -323,5 +337,8 @@ public:
 	void SetLevel(int l);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void AddCoin() { coin++; }
+
+	bool GetIsEndScene() { return isEndScene; }
+
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

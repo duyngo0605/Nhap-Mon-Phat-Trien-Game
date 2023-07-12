@@ -23,7 +23,7 @@ void CCard::Render()
 			aniId = ID_ANI_CARD_STAR;
 		else
 			aniId = ID_ANI_CARD_FLOWER;
-		aniId += 10;
+		aniId += 100;
 	}
 	else
 	{
@@ -33,7 +33,7 @@ void CCard::Render()
 			aniId = ID_ANI_CARD_STAR;
 		else
 			aniId = ID_ANI_CARD_FLOWER;
-		aniId += 20;
+		aniId += 200;
 	}
 	animations->Get(aniId)->Render(x, y);
 }
@@ -41,7 +41,7 @@ void CCard::Render()
 void CCard::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	x += vx * dt;
-	y += y * dt;
+	y += vy * dt;
 	if (state == CARD_STATE_REFRESHING)
 	{
 		if (GetTickCount64() - refresh_start > CARD_REFRESH_TIME)
