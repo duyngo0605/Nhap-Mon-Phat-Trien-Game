@@ -1,22 +1,35 @@
 #pragma once
 #include "Portal.h"
 
-#define NODE_BBOX_WIDTH 16
-#define NODE_BBOX_HEIGHT 16
+#define NODE_BBOX_WIDTH 0.001
+#define NODE_BBOX_HEIGHT 0.001
 
 class CNode :public CPortal
 {
 	int sprite_id;
 	bool canPlay = false;
+
 public:
-	CNode(float x, float y, int sprite_id):CPortal(x,y)
+	bool canMoveLeft;
+	bool canMoveUp;
+	bool canMoveRight;
+	bool canMoveDown;
+	CNode(float x, float y, int sprite_id, int l, int u, int r, int d):CPortal(x,y)
 	{
 		this->sprite_id = sprite_id;
+		canMoveLeft = l;
+		canMoveUp = u;
+		canMoveRight = r;
+		canMoveDown = d;
 	}
-	CNode(float x, float y, int sprite_id, int scene_id) :
+	CNode(float x, float y, int sprite_id, int l, int u, int r, int d, int scene_id) :
 		CPortal(x-NODE_BBOX_WIDTH/2, y-NODE_BBOX_HEIGHT/2,x+NODE_BBOX_WIDTH/2,y+NODE_BBOX_HEIGHT/2, scene_id){
 		this->sprite_id = sprite_id;
 		canPlay = true;
+		canMoveLeft = l;
+		canMoveUp = u;
+		canMoveRight = r;
+		canMoveDown = d;
 	}
 	void Render();
 

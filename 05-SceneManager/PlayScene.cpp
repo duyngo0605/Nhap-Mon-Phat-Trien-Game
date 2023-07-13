@@ -265,12 +265,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_NODE:
 	{
 		int sprite_id = atoi(tokens[3].c_str());
-		if (tokens.size() > 4)
+		int l= atoi(tokens[4].c_str());
+		int u= atoi(tokens[5].c_str());
+		int r= atoi(tokens[6].c_str());
+		int d= atoi(tokens[7].c_str());
+		if (tokens.size() > 8)
 		{
-			int scene_id = atoi(tokens[4].c_str());
-			obj = new CNode(x, y, sprite_id, scene_id);
+			int scene_id = atoi(tokens[8].c_str());
+			obj = new CNode(x, y, sprite_id, l, u, r, d, scene_id);
 		}
-		else obj = new CNode(x, y, sprite_id);
+		else obj = new CNode(x, y, sprite_id, l, u, r, d);
 		break;
 	}
 

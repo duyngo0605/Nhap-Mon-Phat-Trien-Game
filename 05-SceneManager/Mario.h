@@ -247,10 +247,13 @@ class CMario : public CGameObject
 	int coin; 
 
 	///worldmap mario
+	int ny;
 	bool isInWorldMap = false;
 	bool canEnterNode = false;
 	int entrance_id;
-	BOOLEAN isOnPath = false;
+	float xNode, yNode;
+	bool isMoving = false;
+
 
 	bool canHold;
 	bool isHolding = false;
@@ -294,6 +297,11 @@ class CMario : public CGameObject
 	int GetAniIdTail();
 
 public:
+	bool canMoveRight = true;
+	bool canMoveLeft = false;
+	bool canMoveUp = false;
+	bool canMoveDown = false;
+
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		xD = x;
@@ -339,6 +347,7 @@ public:
 	void SetCanUpPipe(bool canUp) { this->canGoUpPipe = canUp; }
 	bool GetIsUsingPipe() { return isUsingPipe; }
 	bool GetIsOnPipe() { return isOnPipe; }
+	bool IsMoving() { return isMoving; } ///worldmap
 
 	int IsCollidable()
 	{ 

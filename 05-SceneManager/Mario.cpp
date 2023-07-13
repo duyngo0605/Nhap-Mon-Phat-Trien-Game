@@ -123,7 +123,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	
 	
-	
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -564,12 +563,16 @@ void CMario::OnCollisionWithCard(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithNode(LPCOLLISIONEVENT e)
 {
 	CNode* node = dynamic_cast<CNode*>(e->obj);
-	float xN, yN;
-	node->GetPosition(xN, yN);
-	if(x>=xN&&y>=yN)
-		SetState(MARIO_STATE_WORLDMAP_IDLE);
+	node->GetPosition(xNode, yNode);
+	SetState(MARIO_STATE_WORLDMAP_IDLE);
+	SetPosition(xNode, yNode);
 	this->entrance_id = node->GetSceneId();
 	this->canEnterNode = node->IsCanPlay();
+	this->canMoveDown = node->canMoveDown;
+	this->canMoveUp = node->canMoveUp;
+	this->canMoveRight = node->canMoveRight;
+	this->canMoveLeft = node->canMoveLeft;
+	isMoving = false;
 }
 
 void CMario::EnterNode()
@@ -1095,23 +1098,36 @@ void CMario::SetState(int state)
 		ay = 0;
 		break;
 	case MARIO_STATE_WORLDMAP_IDLE:
+		nx = 0;
 		ax = ay = 0;
 		vx = vy = 0;
 		break;
 	case MARIO_STATE_WORLDMAP_WALK_RIGHT:
+		isMoving = true;
+		nx = 1;
+		ny = 0;
 		maxVx=vx = MARIO_WALKING_SPEED;
 		vy = 0;
 		maxVx = vx;
 		break;
 	case MARIO_STATE_WORLDMAP_WALK_LEFT:
+		isMoving = true;
+		nx = -1;
+		ny = 0;
 		maxVx=vx = -MARIO_WALKING_SPEED;
 		vy = 0;
 		break;
 	case MARIO_STATE_WORLDMAP_WALK_UP:
+		isMoving = true;
+		ny = -1;
+		nx = 0;
 		vy = -MARIO_WALKING_SPEED;
 		vx = 0;
 		break;
 	case MARIO_STATE_WORLDMAP_WALK_DOWN:
+		isMoving = true;
+		ny = 1;
+		nx = 0;
 		vy = MARIO_WALKING_SPEED;
 		vx = 0;
 		break;
@@ -1151,6 +1167,7 @@ void CMario::TailAttack()
 	isAttacking = true;
 	tailAttack_start = GetTickCount64();
 }
+
 
 
 

@@ -11,24 +11,29 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetIsEndScene()) return;
-	if (mario->GetIsInWorldMap())
+	if (mario->GetIsInWorldMap()&&!mario->IsMoving())
 	{
 		switch (KeyCode)
 		{
 		case DIK_RIGHT:
-			mario->SetState(MARIO_STATE_WORLDMAP_WALK_RIGHT);
+			if(mario->canMoveRight)
+				mario->SetState(MARIO_STATE_WORLDMAP_WALK_RIGHT);
 			break;
 		case DIK_LEFT:
-			mario->SetState(MARIO_STATE_WORLDMAP_WALK_LEFT);
+			if (mario->canMoveLeft)
+				mario->SetState(MARIO_STATE_WORLDMAP_WALK_LEFT);
 			break;
 		case DIK_DOWN:
-			mario->SetState(MARIO_STATE_WORLDMAP_WALK_DOWN);
+			if(mario->canMoveDown)
+				mario->SetState(MARIO_STATE_WORLDMAP_WALK_DOWN);
 			break;
-			case DIK_UP:
-			mario->SetState(MARIO_STATE_WORLDMAP_WALK_UP);
+		case DIK_UP:
+			if (mario->canMoveUp)
+				mario->SetState(MARIO_STATE_WORLDMAP_WALK_UP);
 			break;
 		case DIK_W:
-				mario->EnterNode();
+			mario->EnterNode();
+			break;
 		}
 	}
 	else
