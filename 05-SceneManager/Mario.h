@@ -90,6 +90,8 @@
 
 #define ID_ANI_MARIO_DIE 999
 
+#define ID_ANI_MARIO_WORLDMAP	399
+
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1100
 #define ID_ANI_MARIO_SMALL_IDLE_LEFT 1102
@@ -120,6 +122,8 @@
 
 #define ID_ANI_MARIO_SMALL_KICKING_RIGHT 1900
 #define ID_ANI_MARIO_SMALL_KICKING_LEFT 1901
+
+#define ID_ANI_MARIO_SMALL_WORLDMAP	1199
 
 
 ///TAIL MARIO
@@ -170,6 +174,8 @@
 #define ID_ANI_MARIO_TAIL_ATTACK_LEFT 3401
 
 #define ID_ANI_MARIO_TAIL_GO_PIPE	3500
+
+#define ID_ANI_MARIO_TAIL_WORLDMAP	2199
 
 ////Transform animations
 #define ID_ANI_MARIO_FROM_SMALL_TO_BIG_RIGHT 4000
@@ -243,6 +249,7 @@ class CMario : public CGameObject
 	ULONGLONG canFly_start;
 	ULONGLONG usingPipe_start;
 	ULONGLONG endScene_start;
+	ULONGLONG prepareScene_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
@@ -268,7 +275,7 @@ class CMario : public CGameObject
 	bool isUsingPipe = false;
 	bool isOnPipe = false;
 	bool isEndScene = false;
-	
+	bool isSwitchScene = false;
 
 	CCard* card;
 

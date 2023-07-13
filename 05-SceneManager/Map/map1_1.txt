@@ -312,7 +312,7 @@ Sprites/Map_1-1/card.txt
 13	2040	376	2
 
 # MARIO
-0	20	0
+0	20	400
 
 #COIN
 4	1080	328
