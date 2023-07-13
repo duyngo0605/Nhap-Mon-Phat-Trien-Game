@@ -46,6 +46,10 @@
 #define MARIO_STATE_DOWN_PIPE		900
 #define MARIO_STATE_UP_PIPE			901
 
+#define MARIO_STATE_WORLDMAP_IDLE		1000
+#define MARIO_STATE_WORLDMAP_WALK_RIGHT	1100
+#define MARIO_STATE_WORLDMAP_WALK_LEFT	1101
+
 
 #pragma region ANIMATION_ID
 
@@ -253,6 +257,7 @@ class CMario : public CGameObject
 	bool isUsingPipe = false;
 	bool isOnPipe = false;
 	bool isEndScene = false;
+	bool isEnterNode = false;
 
 	CCard* card;
 
@@ -299,6 +304,7 @@ public:
 		isTransforming = false;
 		coin = 0;
 		runLevel = 0;
+		state = MARIO_STATE_IDLE;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -339,6 +345,7 @@ public:
 	void AddCoin() { coin++; }
 
 	bool GetIsEndScene() { return isEndScene; }
+	void EnterNode() { isEnterNode = true; }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

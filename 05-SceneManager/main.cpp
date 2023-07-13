@@ -16,6 +16,7 @@
 #include "Goomba.h"
 #include "Coin.h"
 #include "Platform.h"
+#include "PlayScene.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -25,7 +26,8 @@
 #define MAIN_WINDOW_TITLE L"04 - Collision"
 #define WINDOW_ICON_PATH L"mario.ico"
 
-#define BACKGROUND_COLOR D3DXCOLOR(156.0f/255, 252.0f/255, 240.0f/255, 0.0f)
+#define BACKGROUND_PLAYSCENE_COLOR D3DXCOLOR(156.0f/255, 252.0f/255, 240.0f/255, 0.0f)
+#define BACKGROUND_WORLDMAP_COLOR D3DXCOLOR(252.0f/255, 216.0f/255, 168.0f/255, 0.0f)
 
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -61,7 +63,12 @@ void Render()
 	IDXGISwapChain* pSwapChain = g->GetSwapChain();
 	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
 	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
-	pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_COLOR);
+
+	int id = g->GetCurrentScene()->GetId();
+	if (id==ID_SCENE_PLAY)
+		pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_PLAYSCENE_COLOR);
+	else
+		pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_WORLDMAP_COLOR);
 
 	spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
 

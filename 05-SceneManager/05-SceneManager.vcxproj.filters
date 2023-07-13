@@ -43,6 +43,12 @@
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{9bd51f6a-554a-41b1-828b-963a854ba654}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\WorldMap">
+      <UniqueIdentifier>{c72d4e60-044c-4b2c-9b16-93dd51d235fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\WorldMap">
+      <UniqueIdentifier>{1278f386-005d-4635-b16d-ed72b44cda7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -146,6 +152,15 @@
     </ClCompile>
     <ClCompile Include="Card.cpp">
       <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="LandScape.cpp">
+      <Filter>Source Files\WorldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.cpp">
+      <Filter>Source Files\WorldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Source Files\WorldMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +274,15 @@
     </ClInclude>
     <ClInclude Include="Card.h">
       <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="LandScape.h">
+      <Filter>Header Files\WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\WorldMap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

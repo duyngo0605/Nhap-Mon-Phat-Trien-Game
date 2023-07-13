@@ -11,6 +11,9 @@
 #define MAP_HEIGHT 432
 #define MAP_WIDTH 2816
 
+#define ID_SCENE_PLAY		1
+#define ID_SCENE_WORLDMAP	2
+
 
 class CPlayScene: public CScene
 {

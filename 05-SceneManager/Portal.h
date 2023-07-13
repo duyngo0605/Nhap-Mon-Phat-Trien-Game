@@ -12,6 +12,7 @@ class CPortal : public CGameObject
 	float width;
 	float height; 
 public:
+	CPortal(float x, float y) :CGameObject(x, y) { width = height = 16; scene_id = -1; }
 	CPortal(float l, float t, float r, float b, int scene_id);
 	virtual void Render();
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);

@@ -72,7 +72,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		isAttacking = false;
 	}
-	if (GetTickCount64() - flyJump_start >= MARIO_FLY_JUMP_TIME)
+	if (GetTickCount64() - flyJump_start >= MARIO_FLY_JUMP_TIME&&flyJump)
 	{
 	
 		flyJump = false;
@@ -90,7 +90,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (isTransforming) vx = vy = 0;
 	else
 	{
-		if (state != MARIO_STATE_DOWN_PIPE&&state!=MARIO_STATE_UP_PIPE) vy += ay * dt;
+		if (state != MARIO_STATE_DOWN_PIPE&&state!=MARIO_STATE_UP_PIPE&&state != MARIO_STATE_WORLDMAP_IDLE && state == MARIO_STATE_WORLDMAP_WALK_RIGHT&&state!=MARIO_STATE_WORLDMAP_WALK_LEFT)
+			vy += ay * dt;
 		vx += ax * dt;
 	}
 	if (isFlying) ax = nx*MARIO_ACCEL_RUN_X;
@@ -117,6 +118,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		else
 			SetState(MARIO_STATE_WALKING_LEFT);
 	}
+	
 	
 	
 	
@@ -177,7 +179,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFireBall(e);
 	else if (dynamic_cast<CButton*>(e->obj))
 		OnCollisionWithButton(e);
-	else if (dynamic_cast<CPortal*>(e->obj))
+	else if (dynamic_cast<CPortal*>(e->obj)&&isEnterNode)
 		OnCollisionWithPortal(e);
 	
 }
@@ -1072,7 +1074,18 @@ void CMario::SetState(int state)
 		vx = 0;
 		ay = 0;
 		break;
-	
+	case MARIO_STATE_WORLDMAP_IDLE:
+		ax = ay = 0;
+		vx = vy = 0;
+		break;
+	case MARIO_STATE_WORLDMAP_WALK_RIGHT:
+		vy = 0;
+		vx = MARIO_WALKING_SPEED;
+		break;
+	case MARIO_STATE_WORLDMAP_WALK_LEFT:
+		vy = 0;
+		vx = -MARIO_WALKING_SPEED;
+		break;
 	}
 
 

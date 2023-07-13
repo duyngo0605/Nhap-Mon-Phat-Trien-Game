@@ -19,6 +19,9 @@
 #include "SpecialBrick.h"
 #include "BlockKoopa.h"
 #include "Card.h"
+#include "LandScape.h"
+#include "Path.h"
+#include "Node.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -125,6 +128,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new CMario(x,y); 
 		player = (CMario*)obj;  
+		if (this->id == ID_SCENE_PLAY)
+			player->SetState(MARIO_STATE_IDLE);
+		else if (this->id == ID_SCENE_WORLDMAP)
+			player->SetState(MARIO_STATE_WORLDMAP_IDLE);
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
@@ -235,6 +242,31 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_CARD:
 		obj = new CCard(x, y);
 		break;
+	case OBJECT_TYPE_LANDSCAPE:
+	{
+		int sprite_id = atoi(tokens[3].c_str());
+		obj = new CLandScape(x, y, sprite_id);
+		break;
+	}
+
+	case OBJECT_TYPE_PATH:
+	{
+		int sprite_id = atoi(tokens[3].c_str());
+		obj = new CPath(x, y, sprite_id);
+		break;
+	}
+
+	case OBJECT_TYPE_NODE:
+	{
+		int sprite_id = atoi(tokens[3].c_str());
+		if (tokens.size() > 4)
+		{
+			int scene_id = atoi(tokens[4].c_str());
+			obj = new CNode(x, y, sprite_id, scene_id);
+		}
+		obj = new CNode(x, y, sprite_id);
+		break;
+	}
 
 	case OBJECT_TYPE_PORTAL:
 	{
