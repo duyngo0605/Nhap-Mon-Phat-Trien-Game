@@ -20,6 +20,8 @@
 #include "Pipe.h"
 #include "Card.h"
 #include "BackgroundTile.h"
+#include "Node.h"
+#include "Path.h"
 
 #include "Collision.h"
 
@@ -90,7 +92,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (isTransforming) vx = vy = 0;
 	else
 	{
-		if (state != MARIO_STATE_DOWN_PIPE&&state!=MARIO_STATE_UP_PIPE&&state != MARIO_STATE_WORLDMAP_IDLE && state == MARIO_STATE_WORLDMAP_WALK_RIGHT&&state!=MARIO_STATE_WORLDMAP_WALK_LEFT)
+		if (state != MARIO_STATE_DOWN_PIPE&&state!=MARIO_STATE_UP_PIPE&&!isInWorldMap)
 			vy += ay * dt;
 		vx += ax * dt;
 	}
@@ -103,22 +105,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		else
 			SetRunLevel(0);
 	}
+	if (!isInWorldMap)
+	{////begin and end point of scene
+		if (x <= MARIO_SMALL_BBOX_WIDTH / 2)x = MARIO_SMALL_BBOX_WIDTH / 2;
+		if (x >= MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2 && !isEndScene)x = MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2;
 
-	////begin and end point of scene
-	if (x <= MARIO_SMALL_BBOX_WIDTH/2)x = MARIO_SMALL_BBOX_WIDTH / 2;
-	if (x >= MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2&&!isEndScene)x = MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2;
-
-	///drop from floor and die
-	if (y >= HEIGHT_DEATH && y <= HEIGHT_DEATH + MARIO_BIG_BBOX_HEIGHT) { SetState(MARIO_STATE_DIE); }
-	else if (y <= 0) {
-		canFly = false;
-		y = MARIO_BIG_BBOX_HEIGHT/2;
-		vy = 0.0001f;
-		if (nx > 0) SetState(MARIO_STATE_WALKING_RIGHT);
-		else
-			SetState(MARIO_STATE_WALKING_LEFT);
+		///drop from floor and die
+		if (y >= HEIGHT_DEATH && y <= HEIGHT_DEATH + MARIO_BIG_BBOX_HEIGHT) { SetState(MARIO_STATE_DIE); }
+		else if (y <= 0) {
+			canFly = false;
+			y = MARIO_BIG_BBOX_HEIGHT / 2;
+			vy = 0.0001f;
+			if (nx > 0) SetState(MARIO_STATE_WALKING_RIGHT);
+			else
+				SetState(MARIO_STATE_WALKING_LEFT);
+		}
 	}
-	
 	
 	
 	
@@ -179,8 +181,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFireBall(e);
 	else if (dynamic_cast<CButton*>(e->obj))
 		OnCollisionWithButton(e);
-	else if (dynamic_cast<CPortal*>(e->obj)&&isEnterNode)
-		OnCollisionWithPortal(e);
+	else if (dynamic_cast<CNode*>(e->obj))
+		OnCollisionWithNode(e);
+
 	
 }
 
@@ -527,7 +530,8 @@ void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 			if (e->ny < 0) isOnPlatform = true;
 		}
 	}
-	if (e->nx != 0) vx = 0;
+	if (e->nx != 0) 
+		vx = 0;
 }
 
 void CMario::UsingPipe(LPCOLLISIONEVENT e)
@@ -557,6 +561,22 @@ void CMario::OnCollisionWithCard(LPCOLLISIONEVENT e)
 
 }
 
+void CMario::OnCollisionWithNode(LPCOLLISIONEVENT e)
+{
+	CNode* node = dynamic_cast<CNode*>(e->obj);
+	float xN, yN;
+	node->GetPosition(xN, yN);
+	if(x>=xN&&y>=yN)
+		SetState(MARIO_STATE_WORLDMAP_IDLE);
+	this->entrance_id = node->GetSceneId();
+	this->canEnterNode = node->IsCanPlay();
+}
+
+void CMario::EnterNode()
+{
+	if (this->canEnterNode)
+		CGame::GetInstance()->InitiateSwitchScene(entrance_id);
+}
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
@@ -1079,13 +1099,23 @@ void CMario::SetState(int state)
 		vx = vy = 0;
 		break;
 	case MARIO_STATE_WORLDMAP_WALK_RIGHT:
+		maxVx=vx = MARIO_WALKING_SPEED;
 		vy = 0;
-		vx = MARIO_WALKING_SPEED;
+		maxVx = vx;
 		break;
 	case MARIO_STATE_WORLDMAP_WALK_LEFT:
+		maxVx=vx = -MARIO_WALKING_SPEED;
 		vy = 0;
-		vx = -MARIO_WALKING_SPEED;
 		break;
+	case MARIO_STATE_WORLDMAP_WALK_UP:
+		vy = -MARIO_WALKING_SPEED;
+		vx = 0;
+		break;
+	case MARIO_STATE_WORLDMAP_WALK_DOWN:
+		vy = MARIO_WALKING_SPEED;
+		vx = 0;
+		break;
+
 	}
 
 
@@ -1121,6 +1151,7 @@ void CMario::TailAttack()
 	isAttacking = true;
 	tailAttack_start = GetTickCount64();
 }
+
 
 
 void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)

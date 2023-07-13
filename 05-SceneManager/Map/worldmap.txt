@@ -153,4 +153,4 @@ Sprites\WorldMap\path.txt
 
 
 #MARIO
-0	20	0
+0	24	40

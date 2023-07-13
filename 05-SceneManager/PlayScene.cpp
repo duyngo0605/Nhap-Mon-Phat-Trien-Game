@@ -129,9 +129,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CMario(x,y); 
 		player = (CMario*)obj;  
 		if (this->id == ID_SCENE_PLAY)
+		{
 			player->SetState(MARIO_STATE_IDLE);
+			player->SetIsInWorldMap(false);
+		}
 		else if (this->id == ID_SCENE_WORLDMAP)
+		{
 			player->SetState(MARIO_STATE_WORLDMAP_IDLE);
+			player->SetIsInWorldMap(true);
+		}
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
@@ -264,7 +270,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			int scene_id = atoi(tokens[4].c_str());
 			obj = new CNode(x, y, sprite_id, scene_id);
 		}
-		obj = new CNode(x, y, sprite_id);
+		else obj = new CNode(x, y, sprite_id);
 		break;
 	}
 

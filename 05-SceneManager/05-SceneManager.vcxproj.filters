@@ -278,10 +278,10 @@
     <ClInclude Include="LandScape.h">
       <Filter>Header Files\WorldMap</Filter>
     </ClInclude>
-    <ClInclude Include="Path.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Node.h">
+      <Filter>Header Files\WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
       <Filter>Header Files\WorldMap</Filter>
     </ClInclude>
   </ItemGroup>

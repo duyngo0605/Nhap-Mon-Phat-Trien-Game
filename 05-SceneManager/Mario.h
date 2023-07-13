@@ -49,6 +49,8 @@
 #define MARIO_STATE_WORLDMAP_IDLE		1000
 #define MARIO_STATE_WORLDMAP_WALK_RIGHT	1100
 #define MARIO_STATE_WORLDMAP_WALK_LEFT	1101
+#define MARIO_STATE_WORLDMAP_WALK_UP	1102
+#define MARIO_STATE_WORLDMAP_WALK_DOWN	1103
 
 
 #pragma region ANIMATION_ID
@@ -244,6 +246,12 @@ class CMario : public CGameObject
 	BOOLEAN isOnPlatform;
 	int coin; 
 
+	///worldmap mario
+	bool isInWorldMap = false;
+	bool canEnterNode = false;
+	int entrance_id;
+	BOOLEAN isOnPath = false;
+
 	bool canHold;
 	bool isHolding = false;
 	bool isKicking;
@@ -257,7 +265,7 @@ class CMario : public CGameObject
 	bool isUsingPipe = false;
 	bool isOnPipe = false;
 	bool isEndScene = false;
-	bool isEnterNode = false;
+	
 
 	CCard* card;
 
@@ -279,6 +287,7 @@ class CMario : public CGameObject
 	void UsingPipe(LPCOLLISIONEVENT e);
 
 	void OnCollisionWithCard(LPCOLLISIONEVENT e);
+	void OnCollisionWithNode(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -321,7 +330,8 @@ public:
 	void Kick() { isKicking = true; kick_start = GetTickCount64(); }
 	bool GetIsTransforming() { return isTransforming; }
 	int GetNX() { return nx; }
-
+	bool GetIsInWorldMap() { return isInWorldMap; }
+	void SetIsInWorldMap(bool isIn) { this->isInWorldMap = isIn; }
 	void Fly();
 	void TailAttack();
 	bool GetIsFlying() { return isFlying; }
@@ -345,7 +355,7 @@ public:
 	void AddCoin() { coin++; }
 
 	bool GetIsEndScene() { return isEndScene; }
-	void EnterNode() { isEnterNode = true; }
+	void EnterNode();
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

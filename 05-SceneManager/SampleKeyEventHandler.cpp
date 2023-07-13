@@ -11,45 +11,68 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetIsEndScene()) return;
-	switch (KeyCode)
+	if (mario->GetIsInWorldMap())
 	{
-	case DIK_DOWN:
-		mario->SetCanDownPipe(true);
-		if(!mario->GetIsOnPipe()) mario->SetState(MARIO_STATE_SIT);
-		break;
-	case DIK_UP:
-		mario->SetCanUpPipe(true);
-		break;
-	case DIK_S:
-		mario->SetState(MARIO_STATE_JUMP);
-		break;
-	case DIK_1:
-		mario->SetLevel(MARIO_LEVEL_SMALL);
-		break;
-	case DIK_2:
-		mario->SetLevel(MARIO_LEVEL_BIG);
-		break;
-	case DIK_3:
-		mario->SetLevel(MARIO_LEVEL_TAIL);
-		break;
-	case DIK_0:
-		mario->SetState(MARIO_STATE_DIE);
-		break;
-	case DIK_R: // reset
-		//Reload();
-		break;
-	case DIK_A: 
-		if (mario->GetRunLevel() < 2)
+		switch (KeyCode)
 		{
-			mario->SetRunLevel(1);
-			mario->SetCanHold(true);
+		case DIK_RIGHT:
+			mario->SetState(MARIO_STATE_WORLDMAP_WALK_RIGHT);
+			break;
+		case DIK_LEFT:
+			mario->SetState(MARIO_STATE_WORLDMAP_WALK_LEFT);
+			break;
+		case DIK_DOWN:
+			mario->SetState(MARIO_STATE_WORLDMAP_WALK_DOWN);
+			break;
+			case DIK_UP:
+			mario->SetState(MARIO_STATE_WORLDMAP_WALK_UP);
+			break;
+		case DIK_W:
+				mario->EnterNode();
 		}
-		if (mario->GetLevel() == MARIO_LEVEL_TAIL)
+	}
+	else
+	{
+		switch (KeyCode)
 		{
-			mario->TailAttack();
+		case DIK_DOWN:
+			mario->SetCanDownPipe(true);
+			if (!mario->GetIsOnPipe()) mario->SetState(MARIO_STATE_SIT);
+			break;
+		case DIK_UP:
+			mario->SetCanUpPipe(true);
+			break;
+		case DIK_S:
+			mario->SetState(MARIO_STATE_JUMP);
+			break;
+		case DIK_1:
+			mario->SetLevel(MARIO_LEVEL_SMALL);
+			break;
+		case DIK_2:
+			mario->SetLevel(MARIO_LEVEL_BIG);
+			break;
+		case DIK_3:
+			mario->SetLevel(MARIO_LEVEL_TAIL);
+			break;
+		case DIK_0:
+			mario->SetState(MARIO_STATE_DIE);
+			break;
+		case DIK_R: // reset
+			//Reload();
+			break;
+		case DIK_A:
+			if (mario->GetRunLevel() < 2)
+			{
+				mario->SetRunLevel(1);
+				mario->SetCanHold(true);
+			}
+			if (mario->GetLevel() == MARIO_LEVEL_TAIL)
+			{
+				mario->TailAttack();
+			}
+			break;
+		
 		}
-	
-		break;
 	}
 }
 
@@ -60,7 +83,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetIsEndScene()) return;
-
+	if (mario->GetIsInWorldMap()) return;
 	switch (KeyCode)
 	{
 	case DIK_S:
@@ -83,7 +106,7 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetIsEndScene()) return;
-
+	if (mario->GetIsInWorldMap()) return;
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
 		if (game->IsKeyDown(DIK_A))
