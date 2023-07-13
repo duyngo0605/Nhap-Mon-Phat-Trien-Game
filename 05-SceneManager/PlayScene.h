@@ -8,8 +8,8 @@
 #include "Goomba.h"
 //#include "Koopas.h"
 
-#define MAP_HEIGHT 432
-#define MAP_WIDTH 2816
+#define MAP_HEIGHT 432.0f
+#define MAP_WIDTH 2816.0f
 
 #define ID_SCENE_PLAY		1
 #define ID_SCENE_WORLDMAP	2
@@ -45,7 +45,7 @@ public:
 	LPGAMEOBJECT GetPlayer() { return player; }
 
 	void AddObject(CGameObject* object);
-	long GetObjectsQuanity() { return objects.size(); }
+	size_t GetObjectsQuanity() { return objects.size(); }
 	LPGAMEOBJECT GetObject(long i) { return objects[i]; }
 	void Clear();
 	void PurgeDeletedObjects();

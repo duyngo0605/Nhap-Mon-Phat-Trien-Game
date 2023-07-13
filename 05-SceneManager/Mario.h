@@ -326,7 +326,7 @@ public:
 	void SetCanHold(bool canHold) { this->canHold = canHold; if (canHold == false) isHolding = false; }
 	void Kick() { isKicking = true; kick_start = GetTickCount64(); }
 	bool GetIsTransforming() { return isTransforming; }
-	int GetNX() { return nx; }
+	float GetNX() { return nx; }
 	bool GetIsInWorldMap() { return isInWorldMap; }
 	void SetIsInWorldMap(bool isIn) { this->isInWorldMap = isIn; }
 	void Fly();

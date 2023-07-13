@@ -210,8 +210,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		if (tokens.size()>4)
 		{
 			int canDown = atoi(tokens[4].c_str());
-			int xD = atoi(tokens[5].c_str());
-			int yD = atoi(tokens[6].c_str());
+			float xD = (float)atof(tokens[5].c_str());
+			float yD = (float)atof(tokens[6].c_str());
 			obj = new CPipe(x, y, sprite_id, canDown, xD, yD);
 			break;
 		}
@@ -422,7 +422,7 @@ void CPlayScene::Update(DWORD dt)
 			CGame::GetInstance()->SetCamPos(cx, cy);
 		}
 		else if (cy <= HEIGHT_DEATH || player->GetState() == MARIO_STATE_DIE)
-			CGame::GetInstance()->SetCamPos(cx, 404 - (game->GetBackBufferHeight() - MARIO_BIG_BBOX_HEIGHT / 2 - 16));
+			CGame::GetInstance()->SetCamPos(cx, 404.0f - (game->GetBackBufferHeight() - MARIO_BIG_BBOX_HEIGHT / 2 - 16));
 		else
 			CGame::GetInstance()->SetCamPos(cx, 632);
 	}

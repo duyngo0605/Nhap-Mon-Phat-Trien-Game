@@ -14,7 +14,7 @@
 #define LEAF_SPEED_FLYING 0.05f
 
 #define LEAF_SPEED_DROP_START 0.025f
-#define LEAF_GRAVITY 0.00002
+#define LEAF_GRAVITY 0.00002f
 
 class CLeaf :public CGameObject
 {

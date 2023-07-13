@@ -1,8 +1,8 @@
 #pragma once
 #include "Portal.h"
 
-#define NODE_BBOX_WIDTH 0.001
-#define NODE_BBOX_HEIGHT 0.001
+#define NODE_BBOX_WIDTH 0.001f
+#define NODE_BBOX_HEIGHT 0.001f
 
 class CNode :public CPortal
 {
