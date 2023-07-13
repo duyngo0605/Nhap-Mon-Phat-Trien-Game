@@ -13,6 +13,7 @@
 
 #define ID_SCENE_PLAY		1
 #define ID_SCENE_WORLDMAP	2
+#define ID_SCENE_INTRO		3
 
 
 class CPlayScene: public CScene

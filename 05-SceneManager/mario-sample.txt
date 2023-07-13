@@ -1,5 +1,5 @@
 [SETTINGS]
-start	1
+start	3
 width	320
 height 616
 
@@ -9,6 +9,7 @@ height 616
 0	intro.txt
 1	Map\map1_1.txt
 2	Map\worldmap.txt
+3	Map\intro.txt
 
 # id	file 
 [TEXTURES]
@@ -24,3 +25,5 @@ height 616
 80	textures\card.png
 90	textures\WorldMap_Tileset.png
 100	textures\WorldMap.png
+110	textures\Border.png
+120	textures\intro.png

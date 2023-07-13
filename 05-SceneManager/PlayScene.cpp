@@ -397,8 +397,8 @@ void CPlayScene::Update(DWORD dt)
 
 	///worldmap
 	if(id==ID_SCENE_WORLDMAP)
-		CGame::GetInstance()->SetCamPos(0, 0);
-	else
+		CGame::GetInstance()->SetCamPos(-7, -5);
+	else if (id==ID_SCENE_PLAY)
 	{
 		//map 1-1
 		float cx, cy;
@@ -421,6 +421,8 @@ void CPlayScene::Update(DWORD dt)
 		else
 			CGame::GetInstance()->SetCamPos(cx, 632);
 	}
+	else
+		CGame::GetInstance()->SetCamPos(0, 0);
 	PurgeDeletedObjects();
 
 }

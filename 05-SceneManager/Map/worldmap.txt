@@ -91,6 +91,9 @@ Sprites\WorldMap\path.txt
 25	136	136	27105
 25	136	120	27104
 
+#BORDER
+25	112	76	28100
+
 
 
 ####PATH

@@ -1,0 +1,17 @@
+# list of object assets to load in this scene
+[ASSETS]
+
+Sprites\intro.txt
+Sprites\Map_1-1\mario.txt
+Sprites\WorldMap\mario.txt
+Sprites\WorldMap\landscape.txt
+Sprites\WorldMap\node.txt
+Sprites\WorldMap\path.txt
+
+
+[OBJECTS]
+#BACKGROUND
+6	128	112	11500
+
+#MARIO
+0	24	40
