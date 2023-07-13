@@ -131,12 +131,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		if (this->id == ID_SCENE_PLAY)
 		{
 			player->SetState(MARIO_STATE_IDLE);
-			player->SetIsInWorldMap(false);
 		}
 		else if (this->id == ID_SCENE_WORLDMAP)
 		{
 			player->SetState(MARIO_STATE_WORLDMAP_IDLE);
-			player->SetIsInWorldMap(true);
 		}
 
 		DebugOut(L"[INFO] Player object has been created!\n");
@@ -416,7 +414,7 @@ void CPlayScene::Update(DWORD dt)
 			cy -= game->GetBackBufferHeight() / 2;
 			CGame::GetInstance()->SetCamPos(cx, cy);
 		}
-		else if (cy <= HEIGHT_DEATH || player->GetState() == MARIO_STATE_DIE || player->GetIsEndScene())
+		else if (cy <= HEIGHT_DEATH || player->GetState() == MARIO_STATE_DIE)
 			CGame::GetInstance()->SetCamPos(cx, 404 - (game->GetBackBufferHeight() - MARIO_BIG_BBOX_HEIGHT / 2 - 16));
 		else
 			CGame::GetInstance()->SetCamPos(cx, 632);

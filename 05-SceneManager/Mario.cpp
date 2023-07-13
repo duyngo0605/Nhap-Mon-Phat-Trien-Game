@@ -25,6 +25,33 @@
 
 #include "Collision.h"
 
+CMario::CMario(float x, float y):CGameObject(x,y)
+{
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	if (scene->GetId() == ID_SCENE_WORLDMAP)
+		SetIsInWorldMap(true);
+	else
+		SetIsInWorldMap(false);
+	xD = x;
+	yD = y;
+	isSitting = false;
+	maxVx = 0.0f;
+	ax = 0.0f;
+	ay = MARIO_GRAVITY;
+	nx = 1;
+	level = MARIO_LEVEL_SMALL;
+	untouchable = 0;
+	untouchable_start = -1;
+	usingPipe_start = -1;
+	isOnPlatform = false;
+	canHold = false;
+	isKicking = false;
+	isTransforming = false;
+	coin = 0;
+	runLevel = 0;
+	state = MARIO_STATE_IDLE;
+}
+
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	if (isEndScene && GetTickCount64() - endScene_start > MARIO_END_SCENE_TIME)

@@ -4,6 +4,7 @@
 #include "Animation.h"
 #include "Animations.h"
 #include "Card.h"
+#include "PlayScene.h"
 
 #include "debug.h"
 
@@ -309,27 +310,8 @@ public:
 	bool canMoveUp = false;
 	bool canMoveDown = false;
 
-	CMario(float x, float y) : CGameObject(x, y)
-	{
-		xD = x;
-		yD = y;
-		isSitting = false;
-		maxVx = 0.0f;
-		ax = 0.0f;
-		ay = MARIO_GRAVITY; 
-		nx = 1;
-		level = MARIO_LEVEL_SMALL;
-		untouchable = 0;
-		untouchable_start = -1;
-		usingPipe_start = -1;
-		isOnPlatform = false;
-		canHold = false;
-		isKicking = false;
-		isTransforming = false;
-		coin = 0;
-		runLevel = 0;
-		state = MARIO_STATE_IDLE;
-	}
+	CMario(float x, float y);
+	
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
