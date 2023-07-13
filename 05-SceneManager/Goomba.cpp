@@ -106,7 +106,8 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (!isInCam()) return;
 	vy += ay * dt;
 	vx += ax * dt;
-	
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (mario->GetIsTransforming()) return;
 	if (level == 0) SetState(GOOMBA_STATE_DIE);
 	if ((state==GOOMBA_STATE_DIE||state==GOOMBA_STATE_JUMP_DIE)&&GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT)
 	{

@@ -88,6 +88,7 @@ void CFireVenusTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)(scene->GetPlayer());
+	if (mario->GetIsTransforming())return;
 	float xM, yM;
 	mario->GetPosition(xM, yM);
 	if (xM - x < 0) nx = -1;

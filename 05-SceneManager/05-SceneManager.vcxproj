@@ -156,6 +156,7 @@
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Data.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="FireVenusTrap.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Card.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="Data.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="FireBall.h" />
     <ClInclude Include="FireVenusTrap.h" />

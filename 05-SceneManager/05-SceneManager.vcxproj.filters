@@ -52,6 +52,9 @@
     <Filter Include="Header Files\Player">
       <UniqueIdentifier>{4377bda9-21b8-428d-8604-cf38a96433f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\HUD">
+      <UniqueIdentifier>{9ef7b225-a556-4f87-b296-ff98ecd92d10}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -166,6 +169,9 @@
       <Filter>Source Files\WorldMap</Filter>
     </ClCompile>
     <ClCompile Include="Arrow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -291,6 +297,9 @@
       <Filter>Header Files\Player</Filter>
     </ClInclude>
     <ClInclude Include="Arrow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

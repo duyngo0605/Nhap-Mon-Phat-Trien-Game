@@ -125,6 +125,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	mario->GetPosition(xM, yM);
 	mario->GetSpeed(vxM, vyM);
 	if (!isInCam())	return;
+	if (mario->GetIsTransforming()) return;
 	if (level == KOOPA_LEVEL_WINGS)
 	{
 		if (isOnPlatForm) vy = KOOPA_JUMPING_SPEED;
@@ -244,6 +245,7 @@ void CKoopa::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
 	CSpecialPlatform* specialPlat = dynamic_cast<CSpecialPlatform*>(e->obj);
 	float xPlat, yPlat;
 	specialPlat->GetPosition(xPlat, yPlat);
+
 	if (e->ny < 0) {
 		if (state == KOOPA_STATE_WALKING)
 		{

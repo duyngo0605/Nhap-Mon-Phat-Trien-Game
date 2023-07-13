@@ -1,4 +1,6 @@
 #include "FireBall.h"
+#include "PlayScene.h"
+#include "Mario.h"
 
 void CFireBall::Render()
 {
@@ -8,6 +10,8 @@ void CFireBall::Render()
 
 void CFireBall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (mario->GetIsTransforming()) return;
 	x += vx * dt;
 	y += vy * dt;
 	if (!isInCam()) Delete();
