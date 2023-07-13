@@ -22,6 +22,7 @@
 #include "LandScape.h"
 #include "Path.h"
 #include "Node.h"
+#include "Arrow.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -276,6 +277,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj = new CNode(x, y, sprite_id, l, u, r, d, scene_id);
 		}
 		else obj = new CNode(x, y, sprite_id, l, u, r, d);
+		break;
+	}
+
+	case OBJECT_TYPE_ARROW:
+	{
+		obj = new CArrow(x, y);
+		if (id == ID_SCENE_INTRO)
+			player = (CArrow*)obj;
 		break;
 	}
 

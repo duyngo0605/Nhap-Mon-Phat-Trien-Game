@@ -13,5 +13,5 @@ Sprites\WorldMap\path.txt
 #BACKGROUND
 6	128	112	11500
 
-#MARIO
-0	24	40
+#ARROW
+45	72	148

@@ -49,6 +49,9 @@
     <Filter Include="Source Files\WorldMap">
       <UniqueIdentifier>{1278f386-005d-4635-b16d-ed72b44cda7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{4377bda9-21b8-428d-8604-cf38a96433f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -162,11 +165,11 @@
     <ClCompile Include="Node.cpp">
       <Filter>Source Files\WorldMap</Filter>
     </ClCompile>
+    <ClCompile Include="Arrow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mario.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BackgroundTile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -283,6 +286,12 @@
     </ClInclude>
     <ClInclude Include="Path.h">
       <Filter>Header Files\WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Mario.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Arrow.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

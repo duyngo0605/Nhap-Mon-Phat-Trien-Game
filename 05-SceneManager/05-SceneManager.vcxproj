@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
+    <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="BackgroundTile.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BlockKoopa.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationFrame.h" />
     <ClInclude Include="Animations.h" />
+    <ClInclude Include="Arrow.h" />
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="BackgroundTile.h" />
     <ClInclude Include="Brick.h" />

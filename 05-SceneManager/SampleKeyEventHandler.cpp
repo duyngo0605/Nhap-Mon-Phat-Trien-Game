@@ -4,11 +4,35 @@
 #include "Game.h"
 
 #include "Mario.h"
+#include "Arrow.h"
 #include "PlayScene.h"
 
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	if (dynamic_cast<CArrow*>(((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer()))
+	{
+		CArrow* arrow = dynamic_cast<CArrow*>(((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer());
+		switch (KeyCode)
+		{
+		case DIK_UP:
+			if (arrow->GetState() == ARROW_STATE_UP)
+				arrow->SetState(ARROW_STATE_DOWN);
+			else
+				arrow->SetState(ARROW_STATE_UP);
+			break;
+		case DIK_DOWN:
+			if (arrow->GetState() == ARROW_STATE_UP)
+				arrow->SetState(ARROW_STATE_DOWN);
+			else
+				arrow->SetState(ARROW_STATE_UP);
+			break;
+		case DIK_W:
+			arrow->EnterWorldMap();
+			break;
+		}
+		return;
+	}
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetIsEndScene()) return;
 	if (mario->GetIsInWorldMap()&&!mario->IsMoving())
@@ -85,7 +109,8 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 {
 
 	//DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
-
+	if (dynamic_cast<CArrow*>(((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer()))
+		return;
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetIsEndScene()) return;
 	if (mario->GetIsInWorldMap()) return;
@@ -109,6 +134,10 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 void CSampleKeyHandler::KeyState(BYTE *states)
 {
 	LPGAME game = CGame::GetInstance();
+
+	if (dynamic_cast<CArrow*>(((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer()))
+		return;
+
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetIsEndScene()) return;
 	if (mario->GetIsInWorldMap()) return;
