@@ -23,6 +23,7 @@
 #include "Node.h"
 #include "Path.h"
 #include "Effect.h"
+#include "Data.h"
 
 #include "Collision.h"
 
@@ -40,7 +41,7 @@ CMario::CMario(float x, float y):CGameObject(x,y)
 	ax = 0.0f;
 	ay = MARIO_GRAVITY;
 	nx = 1;
-	level = MARIO_LEVEL_SMALL;
+	SetLevel(MARIO_LEVEL_SMALL);
 	untouchable = 0;
 	untouchable_start = -1;
 	usingPipe_start = -1;
@@ -55,6 +56,11 @@ CMario::CMario(float x, float y):CGameObject(x,y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	//update timer
+	if (GetTickCount64() - second_start > 1000)
+		UpdateTimer();
+
+	//annouce course clear
 	if (isEndScene && GetTickCount64() - endScene_start > MARIO_END_SCENE_TIME)
 	{
 		EndScene();
@@ -64,6 +70,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		entrance_id = ID_SCENE_WORLDMAP;
 	}
 
+	//back to worldmap
 	if (GetTickCount64() - prepareScene_start> MARIO_END_SCENE_TIME/2 && isSwitchScene)
 	{
 		isSwitchScene = false;
@@ -146,7 +153,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (!isInWorldMap)
 	{////begin and end point of scene
 		if (x <= MARIO_SMALL_BBOX_WIDTH / 2)x = MARIO_SMALL_BBOX_WIDTH / 2;
-		if (x >= MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2 && !isEndScene)x = MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2;
+		if (x >= MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2 && x <= MAP_WIDTH + MARIO_SMALL_BBOX_WIDTH / 2 && !isEndScene)x = MAP_WIDTH - MARIO_SMALL_BBOX_WIDTH / 2;
 
 		///drop from floor and die
 		if (y >= HEIGHT_DEATH && y <= HEIGHT_DEATH + MARIO_BIG_BBOX_HEIGHT) { SetState(MARIO_STATE_DIE); }
@@ -447,6 +454,7 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 	if (mushroom->GetType() == MUSHROOM_TYPE_GREEN)
 	{
 		CEffect* effect = new CEffect(x, y, EFFECT_SCORE_1UP);
+		AddHP(1);
 	}
 	else
 	{
@@ -619,6 +627,7 @@ void CMario::OnCollisionWithCard(LPCOLLISIONEVENT e)
 	isEndScene = true;
 	endScene_start = GetTickCount64();
 	SetState(MARIO_STATE_WALKING_RIGHT);
+	CData::GetInstance()->SetCard(this->card->GetType());
 
 }
 
@@ -640,7 +649,9 @@ void CMario::OnCollisionWithNode(LPCOLLISIONEVENT e)
 void CMario::EnterNode()
 {
 	if (this->canEnterNode)
+	{
 		CGame::GetInstance()->InitiateSwitchScene(entrance_id);
+	}
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -1290,6 +1301,28 @@ void CMario::SetLevel(int l)
 	}
 	isTransforming = true;
 	level = l;
-	
+	CData::GetInstance()->marioLevel = level;
+}
+
+void CMario::AddCoin()
+{
+	coin++;
+	CData::GetInstance()->coin++;
+}
+
+void CMario::AddScore(int score)
+{
+	CData::GetInstance()->score += score;
+}
+
+void CMario::AddHP(int HP)
+{
+	CData::GetInstance()->HP += HP;
+}
+
+void CMario::UpdateTimer()
+{
+	second_start = GetTickCount64();
+	CData::GetInstance()->timer--;
 }
 

@@ -14,8 +14,9 @@ public:
 	static int score;
 	static CCard cardGot[3];
 	static int marioLevel;
-	static float marioX;
-	static float marioY;
+	static int timer;
+	static float x;
+	static float y;
 	CData(){}
 	~CData(){}
 	static CData* GetInstance()
@@ -24,6 +25,6 @@ public:
 			__dataInstance = new CData();
 		return __dataInstance;
 	}
-
+	void SetCard(int type);
 };
 

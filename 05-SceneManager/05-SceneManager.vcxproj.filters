@@ -311,11 +311,11 @@
     <ClInclude Include="Data.h">
       <Filter>Header Files\HUD</Filter>
     </ClInclude>
-    <ClInclude Include="Hud.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Effect.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>Header Files\HUD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

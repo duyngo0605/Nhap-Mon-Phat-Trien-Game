@@ -26,6 +26,9 @@ class CCard :public CGameObject
 	int type;
 	ULONGLONG refresh_start, up_start;
 public:
+	CCard() {
+		type = -1; refresh_start = up_start = -1;
+	}
 	CCard(float x, float y) : CGameObject(x, y) {
 		state = CARD_STATE_REFRESHING;
 		type = CARD_TYPE_MUSHROOM;

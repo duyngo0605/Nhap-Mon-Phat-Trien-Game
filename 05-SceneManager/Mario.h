@@ -251,6 +251,7 @@ class CMario : public CGameObject
 	ULONGLONG usingPipe_start;
 	ULONGLONG endScene_start;
 	ULONGLONG prepareScene_start;
+	ULONGLONG second_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
@@ -350,7 +351,10 @@ public:
 	int GetLevel() { return level; }
 	void SetLevel(int l);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
-	void AddCoin() { coin++; }
+	void AddCoin();
+	void AddScore(int score);
+	void AddHP(int HP);
+	void UpdateTimer();
 
 	bool GetIsEndScene() { return isEndScene; }
 	void EnterNode();
