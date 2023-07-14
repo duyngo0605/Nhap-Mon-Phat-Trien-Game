@@ -1225,7 +1225,7 @@ void CMario::Fly()
 		flyJump = true;
 		canFly = true;
 	}
-	else if (vy > 0&&isFlying)
+	else if (vy > 0)
 	{
 		coin++;
 		vy = 0;
