@@ -2,6 +2,7 @@
 #include "Node.h"
 #include "Card.h"
 
+#define LIMIT_TIME 300
 
 ///store the data to link 1-1 and worldmap HUD
 class CData

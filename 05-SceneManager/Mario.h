@@ -222,6 +222,7 @@
 #define MARIO_FLY_CAN_FLY_TIME	500
 #define MARIO_USING_PIPE_TIME	1500
 #define MARIO_END_SCENE_TIME	3000
+#define MARIO_DIE_TIMEOUT		2000
 #define HEIGHT_DEATH	500
 
 #define ID_SPRITE_COURSE_CLEAR			11024
@@ -243,6 +244,7 @@ class CMario : public CGameObject
 	int runLevel;
 
 	int untouchable; 
+	ULONGLONG die_start;
 	ULONGLONG untouchable_start;
 	ULONGLONG kick_start;
 	ULONGLONG flyJump_start;
@@ -264,6 +266,7 @@ class CMario : public CGameObject
 	bool isMoving = false;
 
 
+	bool isDead = false;
 	bool canHold;
 	bool isHolding = false;
 	bool isKicking;

@@ -7,7 +7,7 @@ int CData::HP = 4;
 int CData::score = 0;
 CCard CData::cardGot[3];
 int CData::marioLevel = MARIO_LEVEL_SMALL;
-int CData::timer = 300;
+int CData::timer = LIMIT_TIME;
 
 
 void CData::SetCard(int type)
