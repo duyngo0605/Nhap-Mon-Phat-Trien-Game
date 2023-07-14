@@ -11,6 +11,7 @@
 #include "FireVenusTrap.h"
 #include "SpecialBrick.h"
 #include "Button.h"
+#include "Effect.h"
 
 CKoopa::CKoopa(float x, float y, int type, int level) :CGameObject(x, y)
 {
@@ -274,6 +275,7 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	if (state == KOOPA_STATE_DEFEND && isHeld||state==KOOPA_STATE_KICKED)
 	{
+		CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
 		CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 		goomba->SetState(GOOMBA_STATE_JUMP_DIE);
 		goomba->SetSpeed(nx * MARIO_TAIL_ATTACK_SPEED_X, MARIO_TAIL_ATTACK_SPEED_Y);
@@ -285,6 +287,7 @@ void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	if (state == KOOPA_STATE_DEFEND && isHeld || state == KOOPA_STATE_KICKED)
 	{
+		CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
 		CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 		koopa->SetIsFlipped(true);
 		koopa->SetLevel(KOOPA_LEVEL_NORMAL);
@@ -294,6 +297,7 @@ void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e)
 {
+	CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
 	CFireVenusTrap* trap = dynamic_cast<CFireVenusTrap*>(e->obj);
 	trap->SetState(FIREVENUSTRAP_STATE_DIE);
 	if (state == KOOPA_STATE_DEFEND && isHeld)
