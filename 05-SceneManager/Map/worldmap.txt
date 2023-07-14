@@ -8,6 +8,7 @@ Sprites\WorldMap\path.txt
 Sprites/hud.txt
 Sprites\Map_1-1\card.txt
 Sprites\intro.txt
+Sprites\WorldMap\worldmapobject.txt
 
 #
 [OBJECTS]
@@ -97,7 +98,8 @@ Sprites\intro.txt
 #BORDER
 25	112	76	28100
 
-
+#HELP
+25	200	88	29100
 
 ####PATH
 35	8	40	35000
@@ -157,6 +159,8 @@ Sprites\intro.txt
 40	120	72	46000	1	1	0	0
 
 
+####WORLDMAP OBJECT (MILITARY)
+30	120	104	0.02	0	34100
 
 #MARIO
 0	24	40

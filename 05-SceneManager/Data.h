@@ -43,10 +43,13 @@ public:
 		yMarioWorld = MARIO_WOLRDMAP_START_Y;
 		marioRunLevel = 0;
 		CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-		scene->GetPlayer()->SetPosition(-100.0f, -100.0f);
-		CMario* mario = new CMario(MARIO_WOLRDMAP_START_X, MARIO_WOLRDMAP_START_Y);
-		scene->SetPlayer(mario);
-		scene->AddObject(mario);
+		if (scene->GetId() == ID_SCENE_WORLDMAP)
+		{
+			scene->GetPlayer()->SetPosition(-100.0f, -100.0f);
+			CMario* mario = new CMario(MARIO_WOLRDMAP_START_X, MARIO_WOLRDMAP_START_Y);
+			scene->SetPlayer(mario);
+			scene->AddObject(mario);
+		}
 	}
 };
 

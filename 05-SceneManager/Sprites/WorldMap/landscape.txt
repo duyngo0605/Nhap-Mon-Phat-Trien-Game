@@ -24,6 +24,9 @@
 #BORDER
 28000	0	0	235	161	110
 
+#HELP
+29000	67	157	84	182	90
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 #GRASS
@@ -43,3 +46,6 @@
 
 #BORDER
 28100	28000	100
+
+#HELP
+29100	29000	300	27004	300

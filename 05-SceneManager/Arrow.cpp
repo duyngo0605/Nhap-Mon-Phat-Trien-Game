@@ -29,7 +29,10 @@ void CArrow::SelectOpion()
 	if (scene->GetId() == ID_SCENE_WORLDMAP)
 	{
 		if (state == ARROW_STATE_DOWN)
+		{
 			CGame::GetInstance()->InitiateSwitchScene(ID_SCENE_INTRO);
+			CData::GetInstance()->ResetData();
+		}
 		else
 		{
 			CData::GetInstance()->ResetData();

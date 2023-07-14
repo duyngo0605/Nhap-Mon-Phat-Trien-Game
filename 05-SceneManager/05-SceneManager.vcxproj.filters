@@ -186,6 +186,9 @@
     <ClCompile Include="Mario.cpp">
       <Filter>Source Files\Player</Filter>
     </ClCompile>
+    <ClCompile Include="WorldMapObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackgroundTile.h">
@@ -319,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="Arrow.h">
       <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMapObject.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

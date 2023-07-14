@@ -25,6 +25,7 @@
 #include "Arrow.h"
 #include "Hud.h"
 #include "Data.h"
+#include "WorldMapObject.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -267,6 +268,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		numofBackgroundTile++;
 		int sprite_id = atoi(tokens[3].c_str());
 		obj = new CLandScape(x, y, sprite_id);
+		break;
+	}
+
+	case OBJECT_TYPE_WORLDMAPOBJECT:
+	{
+		float vx= (float)atof(tokens[3].c_str());
+		float vy= (float)atof(tokens[4].c_str());
+		int aniId = atoi(tokens[5].c_str());
+		obj = new CWorldMapObject(x, y, vx, vy, aniId);
 		break;
 	}
 

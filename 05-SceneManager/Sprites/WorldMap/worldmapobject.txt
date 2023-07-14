@@ -1,0 +1,21 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+
+#MILITARY
+
+#WALK_LEFT
+34000	147	163	162	178	90
+34001	166	163	181	178	90
+
+#WALK_RIGHT
+34010	130	216	145	231	90
+34011	151	216	166	231	90
+
+
+
+
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+34100	34000	250	34001	250
+34110	34010	250	34011	250

@@ -1219,6 +1219,8 @@ void CMario::SetState(int state)
 		isDead = true;
 		isFlying = false;
 		SetLevel(MARIO_LEVEL_SMALL);
+		CData::GetInstance()->xMarioWorld = MARIO_WOLRDMAP_START_X;
+		CData::GetInstance()->yMarioWorld = MARIO_WOLRDMAP_START_Y;
 		break;
 	case MARIO_STATE_DOWN_PIPE:
 		isOnPlatform = false;
