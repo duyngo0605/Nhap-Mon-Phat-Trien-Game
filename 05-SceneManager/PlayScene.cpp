@@ -23,6 +23,7 @@
 #include "Path.h"
 #include "Node.h"
 #include "Arrow.h"
+#include "Hud.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -397,37 +398,9 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
-	// Update camera to follow mario
+	UpdateCamera();
+	CHud::GetInstance()->Update();
 
-
-	///worldmap
-	if(id==ID_SCENE_WORLDMAP)
-		CGame::GetInstance()->SetCamPos(-7, -5);
-	else if (id==ID_SCENE_PLAY)
-	{
-		//map 1-1
-		float cx, cy;
-		player->GetPosition(cx, cy);
-		CGame* game = CGame::GetInstance();
-		cx -= game->GetBackBufferWidth() / 2;
-		if (cx < 0) cx = 0;
-		if (cx > MAP_WIDTH - game->GetBackBufferWidth()) cx = MAP_WIDTH - game->GetBackBufferWidth();
-		if (cy <= 120)
-		{
-			CGame::GetInstance()->SetCamPos(cx, 0);
-		}
-		else if (cy <= 332)
-		{
-			cy -= game->GetBackBufferHeight() / 2;
-			CGame::GetInstance()->SetCamPos(cx, cy);
-		}
-		else if (cy <= HEIGHT_DEATH || player->GetState() == MARIO_STATE_DIE)
-			CGame::GetInstance()->SetCamPos(cx, 404.0f - (game->GetBackBufferHeight() - MARIO_BIG_BBOX_HEIGHT / 2 - 16));
-		else
-			CGame::GetInstance()->SetCamPos(cx, 632);
-	}
-	else
-		CGame::GetInstance()->SetCamPos(0, 0);
 	PurgeDeletedObjects();
 
 }
@@ -436,6 +409,8 @@ void CPlayScene::Render()
 {
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	if(id!=ID_SCENE_INTRO)
+		CHud::GetInstance()->Render();
 }
 
 void CPlayScene::AddObject(CGameObject* object)
@@ -500,3 +475,45 @@ void CPlayScene::PurgeDeletedObjects()
 		std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
 		objects.end());
 }
+
+void CPlayScene::UpdateCamera()
+{
+	
+	// Update camera to follow mario
+
+
+	///worldmap
+	if (id == ID_SCENE_WORLDMAP)
+		CGame::GetInstance()->SetCamPos(-7, -5);
+	else if (id == ID_SCENE_PLAY)
+	{
+		//map 1-1
+		player->GetPosition(cx, cy);
+		CGame* game = CGame::GetInstance();
+		cx -= game->GetBackBufferWidth() / 2;
+		if (cx < 0) cx = 0.0f;
+		if (cx > MAP_WIDTH - game->GetBackBufferWidth()) cx = (float)(MAP_WIDTH - game->GetBackBufferWidth());
+		if (cy <= 120)
+		{
+			cy = 0.0f;
+		}
+		else if (cy <= 332)
+		{
+			cy -= (float)game->GetBackBufferHeight() / 2;
+		}
+		else if (cy <= HEIGHT_DEATH || player->GetState() == MARIO_STATE_DIE)
+		{
+			cy = (float)(MAP_HEIGHT+HUD_HEIGHT+MARIO_BIG_BBOX_HEIGHT+16.0f-SCREEN_HEIGHT);
+		}
+		else
+		{
+			cy = 0.0f;
+		}
+	}
+	else
+	{
+		cx = cy = 0.0f;		
+	}
+	CGame::GetInstance()->SetCamPos(cx, cy);
+}
+

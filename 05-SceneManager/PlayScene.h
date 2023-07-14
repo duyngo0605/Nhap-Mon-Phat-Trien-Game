@@ -11,6 +11,9 @@
 #define MAP_HEIGHT 432.0f
 #define MAP_WIDTH 2816.0f
 
+#define HUD_X		SCREEN_WIDTH/2
+#define HUD_Y		SCREEN_HEIGHT-16.0f
+
 #define ID_SCENE_PLAY		1
 #define ID_SCENE_WORLDMAP	2
 #define ID_SCENE_INTRO		3
@@ -20,6 +23,8 @@ class CPlayScene: public CScene
 {
 protected: 
 	// A play scene has to have player, right? 
+
+	float cx, cy; //cameraposition
 
 	int numofBackgroundTile = 0;
 	LPGAMEOBJECT player;
@@ -49,6 +54,10 @@ public:
 	LPGAMEOBJECT GetObject(long i) { return objects[i]; }
 	void Clear();
 	void PurgeDeletedObjects();
+
+	void UpdateCamera();
+	float GetCamX() { return cx; }
+	float GetCamY() { return cy; }
 
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };

@@ -5,6 +5,7 @@ Sprites\WorldMap\mario.txt
 Sprites\WorldMap\landscape.txt
 Sprites\WorldMap\node.txt
 Sprites\WorldMap\path.txt
+Sprites/hud.txt
 
 #
 [OBJECTS]
