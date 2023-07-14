@@ -117,11 +117,18 @@ void CHud::RenderCard()
 {
 	for (int i = 0; i < 3; i++)
 	{
-		if (CData::GetInstance()->cardGot[i].GetType() != -1)
+		CAnimations* animations = CAnimations::GetInstance();
+		switch (CData::GetInstance()->cardGot[i].GetType())
 		{
-			CData::GetInstance()->cardGot[i].SetPosition(x+54.0f+i*24.0f,y);
-			CData::GetInstance()->cardGot[i].Render();
-
+		case CARD_TYPE_MUSHROOM:
+			animations->Get(ID_ANI_CARD_MUSHROOM + 200)->Render(x + 54.0f + i * 24.0f, y);
+			break;
+		case CARD_TYPE_STAR:
+			animations->Get(ID_ANI_CARD_STAR + 200)->Render(x + 54.0f + i * 24.0f, y);
+			break;
+		case CARD_TYPE_FLOWER:
+			animations->Get(ID_ANI_CARD_FLOWER + 200)->Render(x + 54.0f + i * 24.0f, y);
+			break;
 		}
 	}
 }
