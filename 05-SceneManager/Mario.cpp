@@ -22,6 +22,7 @@
 #include "BackgroundTile.h"
 #include "Node.h"
 #include "Path.h"
+#include "Effect.h"
 
 #include "Collision.h"
 
@@ -248,7 +249,10 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			goomba->MinusLevel();
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
+			
 		}
+
 	}
 	else // hit by Goomba
 	{
@@ -256,6 +260,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			goomba->SetState(GOOMBA_STATE_JUMP_DIE);
 			goomba->SetSpeed(nx*MARIO_TAIL_ATTACK_SPEED_X, MARIO_TAIL_ATTACK_SPEED_Y);
+			CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
 		}
 		else
 		{
@@ -292,24 +297,29 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		{
 			if (koopa->GetState() == KOOPA_STATE_WALKING || koopa->GetState() == KOOPA_STATE_KICKED)
 			{
-
+				CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
 				koopa->SetState(KOOPA_STATE_DEFEND);
 			}
 			else if (koopa->GetState() == KOOPA_STATE_DEFEND)
 			{
-
+				CEffect* effect = new CEffect(x, y, EFFECT_SCORE_200);
 				koopa->SetIsHeld(false);
 				koopa->SetState(KOOPA_STATE_KICKED);
+
 			}
 		}
 		else
+		{
+			CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
 			koopa->SetLevel(KOOPA_LEVEL_NORMAL);
+		}
 
 	}
 	else
 	{
 		if (isAttacking)
 		{
+			CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
 			koopa->SetNX(-e->nx);
 			koopa->SetState(KOOPA_STATE_UP);
 			koopa->SetLevel(KOOPA_LEVEL_NORMAL);
@@ -375,6 +385,7 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 				CCoin* coin = new CCoin(x, y - QUESTION_BRICK_BBOX_HEIGHT);
 				coin->SetState(COIN_STATE_OUT);
 				scene->AddObject(coin);
+				CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
 			}
 			else if (questionBrick->GetType() == QUESTION_BRICK_TYPE_ITEM)
 			{
@@ -432,17 +443,27 @@ void CMario::OnCollisionWithSpecialBrick(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
-	if (level <= MARIO_LEVEL_BIG)
+	CMushRoom* mushroom = dynamic_cast<CMushRoom*>(e->obj);
+	if (mushroom->GetType() == MUSHROOM_TYPE_GREEN)
 	{
-		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
-		SetLevel(level + 1);
+		CEffect* effect = new CEffect(x, y, EFFECT_SCORE_1UP);
 	}
-	StartUntouchable();
+	else
+	{
+		if (level <= MARIO_LEVEL_BIG)
+		{
+			y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+			SetLevel(level + 1);
+		}
+		CEffect* effect = new CEffect(x, y, EFFECT_SCORE_1000);
+		StartUntouchable();
+	}
 	e->obj->Delete();
 }
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
+	CEffect* effect = new CEffect(x, y, EFFECT_SCORE_1000);
 	if (level < MARIO_LEVEL_TAIL)
 		SetLevel(level+1);
 	StartUntouchable();
@@ -519,6 +540,7 @@ void CMario::OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e)
 {
 	if (isAttacking)
 	{
+		CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
 		e->obj->SetState(FIREVENUSTRAP_STATE_DIE);
 	}
 	if (untouchable == 0)

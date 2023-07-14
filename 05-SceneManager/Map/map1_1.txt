@@ -16,6 +16,7 @@ Sprites/Map_1-1/koopa.txt
 Sprites/Map_1-1/specialbrick.txt
 Sprites/Map_1-1/button.txt
 Sprites/Map_1-1/card.txt
+Sprites/Map_1-1/effect.txt
 
 #
 [OBJECTS]

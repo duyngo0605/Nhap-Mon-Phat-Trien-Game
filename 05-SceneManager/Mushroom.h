@@ -38,5 +38,6 @@ public:
 	void SetState(int state);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
+	int GetType() { return type; }
 };
 
