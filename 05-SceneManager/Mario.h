@@ -11,15 +11,15 @@
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.18f
 
-#define MARIO_ACCEL_WALK_X	0.0001f
-#define MARIO_ACCEL_RUN_X	0.00015f
+#define MARIO_ACCEL_WALK_X	0.00007f
+#define MARIO_ACCEL_RUN_X	0.00012f
 
-#define MARIO_JUMP_SPEED_Y		0.4f
-#define MARIO_JUMP_RUN_SPEED_Y	0.5f
+#define MARIO_JUMP_SPEED_Y		0.38f
+#define MARIO_JUMP_RUN_SPEED_Y	0.45f
 #define MARIO_JUMP_FLY_SPEED_Y	-0.2f
 #define MARIO_GET_IN_PIPE_SPEED	0.05f
 
-#define MARIO_GRAVITY			0.001f
+#define MARIO_GRAVITY			0.0007f
 #define MARIO_ACCEL_JUMP_Y		0.00005f
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.3f
@@ -340,6 +340,7 @@ public:
 	void SetCanUpPipe(bool canUp) { this->canGoUpPipe = canUp; }
 	bool GetIsUsingPipe() { return isUsingPipe; }
 	bool GetIsOnPipe() { return isOnPipe; }
+	bool GetIsOnPlatform() { return isOnPlatform; }
 	bool IsMoving() { return isMoving; } ///worldmap
 
 	int IsCollidable()

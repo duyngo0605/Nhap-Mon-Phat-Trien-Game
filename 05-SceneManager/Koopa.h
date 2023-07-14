@@ -1,6 +1,6 @@
 #include"GameObject.h"
 
-#define KOOPA_GRAVITY 0.001f
+#define KOOPA_GRAVITY 0.0007f
 #define KOOPA_WALKING_SPEED 0.03f
 #define KOOPA_JUMPING_SPEED -0.3f
 #define KOOPA_KICKED_SPEED 0.2f

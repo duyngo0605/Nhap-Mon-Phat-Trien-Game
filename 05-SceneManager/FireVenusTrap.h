@@ -51,7 +51,7 @@ public:
 	CFireVenusTrap(float x, float y, int type) :CGameObject(x, y) { 
 		vx = 0; vy = 0; xStart = x; yStart = y; 
 		state = FIREVENUSTRAP_STATE_HIDE; 
-		ny = 0; attack_start = -1; attack_gap = -1;
+		ny = 0; attack_start = -1; attack_gap = -1,die_start=-1;
 		this->type = type;
 	}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);

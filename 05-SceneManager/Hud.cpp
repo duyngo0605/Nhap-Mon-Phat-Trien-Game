@@ -35,6 +35,8 @@ void CHud::Render()
 	RenderHP();
 	RenderScore();
 	RenderTimer();
+	RenderSpeedBar();
+	RenderCard();
 }
 
 void CHud::RenderCoin()
@@ -86,5 +88,31 @@ void CHud::RenderTimer()
 	for (int i = 0; i < 3; i++)
 	{
 		sprites->Get(digits[i])->Draw(x +26.0f - 8.0f * i, y + 4.0f);
+	}
+}
+
+void CHud::RenderSpeedBar()
+{
+	CSprites* sprites = CSprites::GetInstance();
+	if (CData::GetInstance()->marioRunLevel == 1)
+	{
+		sprites->Get(ID_RUNLEVEL_1)->Draw(x - 34.0f, y - 3.0f);
+	}
+	else if (CData::GetInstance()->marioRunLevel == 2)
+	{
+		sprites->Get(ID_RUNLEVEL_2)->Draw(x - 34.0f, y - 3.0f);
+	}
+}
+
+void CHud::RenderCard()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		if (CData::GetInstance()->cardGot[i].GetType() != -1)
+		{
+			CData::GetInstance()->cardGot[i].SetPosition(x+54.0f+i*24.0f,y);
+			CData::GetInstance()->cardGot[i].Render();
+
+		}
 	}
 }

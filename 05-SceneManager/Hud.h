@@ -12,8 +12,8 @@
 #define ID_NUMBER_8	8
 #define ID_NUMBER_9	9
 
-#define ID_RUNLEVEL	10
-#define ID_P		11	//can fly
+#define ID_RUNLEVEL_1	10
+#define ID_RUNLEVEL_2	11	//can fly
 
 #define HUD_WIDTH	270.0f
 #define HUD_HEIGHT 32.0f
@@ -38,5 +38,7 @@ public:
 	void RenderHP();
 	void RenderScore();
 	void RenderTimer();
+	void RenderSpeedBar();
+	void RenderCard();
 };
 

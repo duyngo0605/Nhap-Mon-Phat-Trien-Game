@@ -56,6 +56,7 @@ CMario::CMario(float x, float y):CGameObject(x,y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	CData::GetInstance()->marioRunLevel = runLevel;
 	//update timer
 	if (!isDead&&GetTickCount64() - second_start > 1000&&!isInWorldMap)
 		UpdateTimer();
@@ -484,7 +485,7 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 	{
 		
 		AddHP(1);
-		CEffect* effect = new CEffect(x, y, EFFECT_SCORE_1UP);
+		CEffect* effect_ = new CEffect(x, y, EFFECT_SCORE_1UP);
 	}
 	e->obj->Delete();
 }

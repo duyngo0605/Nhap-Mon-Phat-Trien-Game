@@ -18,6 +18,7 @@ public:
 	static int timer;
 	static float x;
 	static float y;
+	static int marioRunLevel;
 	CData(){}
 	~CData(){}
 	static CData* GetInstance()

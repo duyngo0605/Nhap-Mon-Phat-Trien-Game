@@ -6,6 +6,7 @@ Sprites\WorldMap\landscape.txt
 Sprites\WorldMap\node.txt
 Sprites\WorldMap\path.txt
 Sprites/hud.txt
+Sprites\Map_1-1\card.txt
 
 #
 [OBJECTS]

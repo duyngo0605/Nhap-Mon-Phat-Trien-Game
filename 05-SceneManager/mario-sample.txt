@@ -27,3 +27,4 @@ height 616
 100	textures\WorldMap.png
 110	textures\Border.png
 120	textures\intro.png
+130	textures\dialogs.png
