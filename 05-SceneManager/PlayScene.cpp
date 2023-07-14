@@ -32,6 +32,7 @@ using namespace std;
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
+	cx = cy = 0.0f;
 	player = NULL;
 	key_handler = new CSampleKeyHandler(this);
 }
@@ -450,7 +451,7 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = NULL;
-
+	numofBackgroundTile = 0;
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 
