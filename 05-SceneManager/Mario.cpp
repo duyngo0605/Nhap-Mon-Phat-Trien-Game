@@ -257,7 +257,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			goomba->MinusLevel();
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 			CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
-			
+			AddScore(100);
 		}
 
 	}
@@ -268,6 +268,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			goomba->SetState(GOOMBA_STATE_JUMP_DIE);
 			goomba->SetSpeed(nx*MARIO_TAIL_ATTACK_SPEED_X, MARIO_TAIL_ATTACK_SPEED_Y);
 			CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
+			AddScore(100);
 		}
 		else
 		{
@@ -305,11 +306,13 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			if (koopa->GetState() == KOOPA_STATE_WALKING || koopa->GetState() == KOOPA_STATE_KICKED)
 			{
 				CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
+				AddScore(100);
 				koopa->SetState(KOOPA_STATE_DEFEND);
 			}
 			else if (koopa->GetState() == KOOPA_STATE_DEFEND)
 			{
 				CEffect* effect = new CEffect(x, y, EFFECT_SCORE_200);
+				AddScore(200);
 				koopa->SetIsHeld(false);
 				koopa->SetState(KOOPA_STATE_KICKED);
 
@@ -327,6 +330,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		if (isAttacking)
 		{
 			CEffect* effect = new CEffect(x, y, EFFECT_SCORE_100);
+			AddScore(100);
 			koopa->SetNX(-e->nx);
 			koopa->SetState(KOOPA_STATE_UP);
 			koopa->SetLevel(KOOPA_LEVEL_NORMAL);
@@ -370,7 +374,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	e->obj->Delete();
-	coin++;
+	AddCoin();
 }
 
 
@@ -388,7 +392,8 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 			questionBrick->SetState(QUESTION_BRICK_STATE_UP);
 			if (questionBrick->GetType() == QUESTION_BRICK_TYPE_COIN)
 			{
-				coin++;
+				AddCoin();
+				AddScore(100);
 				CCoin* coin = new CCoin(x, y - QUESTION_BRICK_BBOX_HEIGHT);
 				coin->SetState(COIN_STATE_OUT);
 				scene->AddObject(coin);
@@ -464,6 +469,7 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 			SetLevel(level + 1);
 		}
 		CEffect* effect = new CEffect(x, y, EFFECT_SCORE_1000);
+		AddScore(1000);
 		StartUntouchable();
 	}
 	e->obj->Delete();
@@ -472,6 +478,7 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
 	CEffect* effect = new CEffect(x, y, EFFECT_SCORE_1000);
+	AddScore(1000);
 	if (level < MARIO_LEVEL_TAIL)
 		SetLevel(level+1);
 	StartUntouchable();
@@ -1238,7 +1245,6 @@ void CMario::Fly()
 	}
 	else if (vy > 0)
 	{
-		coin++;
 		vy = 0;
 		ay = MARIO_GRAVITY / 10;
 		flyJump_start = GetTickCount64();	

@@ -228,7 +228,7 @@
 #define ID_SPRITE_YOU_GOT_A_CARD		11025
 
 #define ANNOUCE_X	2688
-#define	ANNOUCE_Y	256
+#define	ANNOUCE_Y	280
 
 class CMario : public CGameObject
 {

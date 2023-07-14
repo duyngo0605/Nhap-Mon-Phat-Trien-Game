@@ -484,7 +484,10 @@ void CPlayScene::UpdateCamera()
 
 	///worldmap
 	if (id == ID_SCENE_WORLDMAP)
-		CGame::GetInstance()->SetCamPos(-7, -5);
+	{
+		cx = -7.0f;
+		cy = -5.0f;
+	}
 	else if (id == ID_SCENE_PLAY)
 	{
 		//map 1-1
@@ -503,11 +506,11 @@ void CPlayScene::UpdateCamera()
 		}
 		else if (cy <= HEIGHT_DEATH || player->GetState() == MARIO_STATE_DIE)
 		{
-			cy = (float)(MAP_HEIGHT+HUD_HEIGHT+MARIO_BIG_BBOX_HEIGHT+16.0f-SCREEN_HEIGHT);
+			cy = (float)(MAP_HEIGHT+HUD_HEIGHT+MARIO_BIG_BBOX_HEIGHT+14.0f-SCREEN_HEIGHT);
 		}
-		else
+		else ///hidenzone
 		{
-			cy = 0.0f;
+			cy = 640.0f;
 		}
 	}
 	else
