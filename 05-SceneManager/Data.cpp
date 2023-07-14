@@ -9,6 +9,8 @@ CCard CData::cardGot[3];
 int CData::marioLevel = MARIO_LEVEL_SMALL;
 int CData::timer = LIMIT_TIME;
 int CData::marioRunLevel = 0;
+float CData::xMarioWorld = MARIO_WOLRDMAP_START_X;
+float CData::yMarioWorld = MARIO_WOLRDMAP_START_Y;
 
 void CData::SetCard(int type)
 {

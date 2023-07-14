@@ -56,6 +56,10 @@ public:
 	void PurgeDeletedObjects();
 
 	void UpdateCamera();
+	void SetPlayer(LPGAMEOBJECT player) { 
+		this->player = player; 
+	}
+
 	float GetCamX() { return cx; }
 	float GetCamY() { return cy; }
 

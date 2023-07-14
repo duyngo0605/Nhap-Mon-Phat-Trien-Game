@@ -37,6 +37,15 @@ void CHud::Render()
 	RenderTimer();
 	RenderSpeedBar();
 	RenderCard();
+	RenderGameOverHud();
+	if (GetTickCount64() - spawn_start > DIALOG_TIMEOUT)
+	{	
+		isRenderStartDialog = false;
+		return;
+	}
+	RenderStartHud();
+
+
 }
 
 void CHud::RenderCoin()
@@ -114,5 +123,22 @@ void CHud::RenderCard()
 			CData::GetInstance()->cardGot[i].Render();
 
 		}
+	}
+}
+
+void CHud::RenderStartHud()
+{
+	
+	CSprites* sprites = CSprites::GetInstance();
+	sprites->Get(ID_DIALOG_START)->Draw(DIALOG_X, DIALOG_Y);
+	sprites->Get(CData::GetInstance()->HP)->Draw(DIALOG_X + 39.0f, DIALOG_Y + 10.0f);
+}
+
+void CHud::RenderGameOverHud()
+{
+	if (CData::GetInstance()->HP == 0)
+	{
+		CSprites* sprites = CSprites::GetInstance();
+		sprites->Get(ID_DIALOG_END)->Draw(DIALOG_X, DIALOG_Y);
 	}
 }

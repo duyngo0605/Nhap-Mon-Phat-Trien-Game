@@ -238,7 +238,7 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 
-	float xD, yD;
+	float xD, yD; ///destination when use pipe
 
 	int level;
 	int runLevel;
@@ -267,9 +267,9 @@ class CMario : public CGameObject
 
 
 	bool isDead = false;
-	bool canHold;
+	bool canHold = false;
 	bool isHolding = false;
-	bool isKicking;
+	bool isKicking = false;
 	bool isTransforming;
 	bool isFlying = false;
 	bool flyJump = false;

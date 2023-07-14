@@ -58,15 +58,15 @@
     <Filter Include="Source Files\HUD">
       <UniqueIdentifier>{ed2e04ca-174b-4f24-9280-e66155bfcee3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Player">
+      <UniqueIdentifier>{f7a200e4-30d6-46a1-8e11-21f2a1343426}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mario.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BackgroundTile.cpp">
@@ -171,9 +171,6 @@
     <ClCompile Include="Node.cpp">
       <Filter>Source Files\WorldMap</Filter>
     </ClCompile>
-    <ClCompile Include="Arrow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Data.cpp">
       <Filter>Source Files\HUD</Filter>
     </ClCompile>
@@ -182,6 +179,12 @@
     </ClCompile>
     <ClCompile Include="Hud.cpp">
       <Filter>Source Files\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Arrow.cpp">
+      <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Mario.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

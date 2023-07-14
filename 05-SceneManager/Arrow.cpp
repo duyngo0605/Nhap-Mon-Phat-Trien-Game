@@ -1,6 +1,7 @@
 #include "Arrow.h"
 #include "PlayScene.h"
 #include "Game.h"
+#include "Data.h"
 
 void CArrow::Render()
 {
@@ -13,16 +14,28 @@ void CArrow::SetState(int state)
 	switch (state)
 	{
 	case ARROW_STATE_UP:
-		SetPosition(ARROW_X,ARROW_UP_Y);
+		SetPosition(x, y - distance);
 		break;
 	case ARROW_STATE_DOWN:
-		SetPosition(ARROW_X, ARROW_DOWN_Y);
+		SetPosition(x, y + distance);
 		break;
 	}
 	CGameObject::SetState(state);
 }
 
-void CArrow::EnterWorldMap()
+void CArrow::SelectOpion()
 {
-	CGame::GetInstance()->InitiateSwitchScene(ID_SCENE_WORLDMAP);
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	if (scene->GetId() == ID_SCENE_WORLDMAP)
+	{
+		if (state == ARROW_STATE_DOWN)
+			CGame::GetInstance()->InitiateSwitchScene(ID_SCENE_INTRO);
+		else
+		{
+			CData::GetInstance()->ResetData();
+		}
+
+	}
+	else
+		CGame::GetInstance()->InitiateSwitchScene(ID_SCENE_WORLDMAP);
 }

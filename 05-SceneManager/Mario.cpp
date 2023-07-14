@@ -31,9 +31,14 @@ CMario::CMario(float x, float y):CGameObject(x,y)
 {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	if (scene->GetId() == ID_SCENE_WORLDMAP)
+	{
 		SetIsInWorldMap(true);
+		CData::GetInstance()->timer = LIMIT_TIME;
+	}
 	else
+	{
 		SetIsInWorldMap(false);
+	}
 	xD = x;
 	yD = y;
 	isSitting = false;
@@ -327,7 +332,11 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				CEffect* effect = new CEffect(x, y, EFFECT_SCORE_200);
 				AddScore(200);
 				koopa->SetIsHeld(false);
+				float xK, yK;
+				koopa->GetPosition(xK, yK);
+				koopa->SetPosition(xK, yK-1.0f); //avoid Koopa drop from floor
 				koopa->SetState(KOOPA_STATE_KICKED);
+				
 
 			}
 		}
@@ -671,6 +680,8 @@ void CMario::OnCollisionWithNode(LPCOLLISIONEVENT e)
 
 void CMario::EnterNode()
 {
+	CData::GetInstance()->xMarioWorld = x;
+	CData::GetInstance()->yMarioWorld = y;
 	if (this->canEnterNode)
 	{
 		CGame::GetInstance()->InitiateSwitchScene(entrance_id);
@@ -1201,11 +1212,13 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_DIE:
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		vx = 0;
-		ax = 0;
+		vx = 0.0f;
+		ax = 0.0f;
 		AddHP(-1);
 		die_start = GetTickCount64();
 		isDead = true;
+		isFlying = false;
+		SetLevel(MARIO_LEVEL_SMALL);
 		break;
 	case MARIO_STATE_DOWN_PIPE:
 		isOnPlatform = false;

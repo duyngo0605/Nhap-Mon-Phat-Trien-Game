@@ -6,9 +6,11 @@
 #include "Mario.h"
 #include "Arrow.h"
 #include "PlayScene.h"
+#include "Hud.h"
 
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
+	
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	if (dynamic_cast<CArrow*>(((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer()))
 	{
@@ -27,13 +29,14 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			else
 				arrow->SetState(ARROW_STATE_UP);
 			break;
-		case DIK_W:
-			arrow->EnterWorldMap();
+		case DIK_S:
+			arrow->SelectOpion();
 			break;
 		}
 		return;
 	}
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (CHud::GetInstance()->isRenderStartDialog&&mario->GetIsInWorldMap()) return;
 	if (mario->GetIsEndScene()) return;
 	switch (KeyCode)
 	{
@@ -67,7 +70,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			if (mario->canMoveUp)
 				mario->SetState(MARIO_STATE_WORLDMAP_WALK_UP);
 			break;
-		case DIK_W:
+		case DIK_S:
 			mario->EnterNode();
 			break;
 		}

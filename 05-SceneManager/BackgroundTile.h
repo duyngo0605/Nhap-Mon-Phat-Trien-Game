@@ -2,6 +2,8 @@
 #include "GameObject.h"
 
 
+///use to draw background of map
+
 class CBackgroundTile :
     public CGameObject
 {

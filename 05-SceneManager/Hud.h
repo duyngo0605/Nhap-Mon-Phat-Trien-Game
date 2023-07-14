@@ -1,4 +1,5 @@
-#pragma once
+#include <algorithm>
+#include <gameux.h>
 
 #define ID_HUD	999999
 #define ID_NUMBER_0	0
@@ -19,14 +20,25 @@
 #define HUD_HEIGHT 32.0f
 
 
+#define ID_DIALOG_START	1100
+#define ID_DIALOG_END		1101
+
+#define DIALOG_X	SCREEN_WIDTH/2
+#define DIALOG_Y	80.0f
+
+#define DIALOG_TIMEOUT	1500
 
 class CHud
 {
 	static CHud* __hudInstance;
 	float x, y;
+	ULONGLONG spawn_start;
+	
 public:
+	bool isRenderStartDialog = true;
 	CHud(float x, float y)
 	{
+		spawn_start = GetTickCount64();
 		this->x = x;
 		this->y = y;
 	}
@@ -40,5 +52,7 @@ public:
 	void RenderTimer();
 	void RenderSpeedBar();
 	void RenderCard();
+	void RenderStartHud();
+	void RenderGameOverHud();
 };
 

@@ -24,6 +24,7 @@
 #include "Node.h"
 #include "Arrow.h"
 #include "Hud.h"
+#include "Data.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -35,6 +36,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	cx = cy = 0.0f;
 	player = NULL;
 	key_handler = new CSampleKeyHandler(this);
+
 }
 
 
@@ -129,18 +131,25 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
+		if (CData::GetInstance()->HP == 0)
+		{
+			x = DIALOG_X - 14.0f;
+			y = DIALOG_Y + 10.0f;
+			obj= new CArrow(x,y);
+			player = (CArrow*)obj;
+			break;
+		}
+		obj = new CMario(x, y);
+		player = (CMario*)obj;
 		if (this->id == ID_SCENE_PLAY)
 		{
-			obj = new CMario(x, y);
-			player = (CMario*)obj;
 			player->SetState(MARIO_STATE_IDLE);
 		}
 		else if (this->id == ID_SCENE_WORLDMAP)
 		{
 			player->SetState(MARIO_STATE_WORLDMAP_IDLE);
 		}
+		
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
@@ -401,6 +410,7 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
+
 	UpdateCamera();
 	CHud::GetInstance()->Update();
 
@@ -414,6 +424,7 @@ void CPlayScene::Render()
 		objects[i]->Render();
 	if(id!=ID_SCENE_INTRO)
 		CHud::GetInstance()->Render();
+	player->Render();
 }
 
 void CPlayScene::AddObject(CGameObject* object)
@@ -495,6 +506,7 @@ void CPlayScene::UpdateCamera()
 	{
 		//map 1-1
 		player->GetPosition(cx, cy);
+		CMario* mario = (CMario*)player;
 		CGame* game = CGame::GetInstance();
 		cx -= game->GetBackBufferWidth() / 2;
 		if (cx < 0) cx = 0.0f;
@@ -503,7 +515,7 @@ void CPlayScene::UpdateCamera()
 		{
 			cy = 0.0f;
 		}
-		else if (cy <= 332)
+		else if (cy <= (MAP_HEIGHT-SCREEN_HEIGHT) || mario->GetIsFlying())
 		{
 			cy -= (float)game->GetBackBufferHeight() / 2;
 		}
