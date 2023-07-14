@@ -133,6 +133,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CMario*)obj;  
 		if (this->id == ID_SCENE_PLAY)
 		{
+			obj = new CMario(x, y);
+			player = (CMario*)obj;
 			player->SetState(MARIO_STATE_IDLE);
 		}
 		else if (this->id == ID_SCENE_WORLDMAP)
