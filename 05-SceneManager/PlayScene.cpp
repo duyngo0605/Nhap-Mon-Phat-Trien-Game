@@ -541,7 +541,7 @@ void CPlayScene::UpdateCamera()
 		{
 			cy = 0.0f;
 		}
-		else if (cy <= (MAP_HEIGHT-SCREEN_HEIGHT) || mario->GetIsFlying())
+		else if (cy <= (MAP_HEIGHT-SCREEN_HEIGHT) || mario->GetIsFlying()&&cx<414.0f)
 		{
 			cy -= (float)game->GetBackBufferHeight() / 2;
 		}
