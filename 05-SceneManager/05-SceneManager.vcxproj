@@ -158,11 +158,13 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="debug.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="FireVenusTrap.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="Hud.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="LandScape.cpp" />
     <ClCompile Include="Leaf.cpp" />
@@ -200,11 +202,13 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="debug.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="FireBall.h" />
     <ClInclude Include="FireVenusTrap.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Goomba.h" />
+    <ClInclude Include="Hud.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="LandScape.h" />

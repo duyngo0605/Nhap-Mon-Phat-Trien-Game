@@ -87,11 +87,13 @@ public:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithSpecialBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithBlockKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireVenusTrap(LPCOLLISIONEVENT e);
 
+	void SetIsFlipped(bool isFlipped) { this->isFlipped = isFlipped; }
 	void SetState(int state);
 	void SetIsHeld(bool isHeld)
 	{

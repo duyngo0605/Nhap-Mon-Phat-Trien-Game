@@ -208,6 +208,8 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		if (dynamic_cast<CGoomba*>(e->obj)) {
 			OnCollisionWithGoomba(e);
 		}
+		else if (dynamic_cast<CKoopa*>(e->obj))
+			OnCollisionWithKoopa(e);
 		else if (dynamic_cast<CFireVenusTrap*>(e->obj)) {
 			OnCollisionWithFireVenusTrap(e);
 		}
@@ -270,12 +272,23 @@ void CKoopa::OnCollisionWithSpecialPlatform(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
-	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	goomba->SetState(GOOMBA_STATE_JUMP_DIE);
-	goomba->SetSpeed(nx * MARIO_TAIL_ATTACK_SPEED_X, MARIO_TAIL_ATTACK_SPEED_Y);
-	if (state == KOOPA_STATE_DEFEND && isHeld)
+	if (state == KOOPA_STATE_DEFEND && isHeld||state==KOOPA_STATE_KICKED)
 	{
-		SetState(KOOPA_STATE_DIE);
+		CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+		goomba->SetState(GOOMBA_STATE_JUMP_DIE);
+		goomba->SetSpeed(nx * MARIO_TAIL_ATTACK_SPEED_X, MARIO_TAIL_ATTACK_SPEED_Y);
+	}
+	
+}
+
+void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
+{
+	if (state == KOOPA_STATE_DEFEND && isHeld || state == KOOPA_STATE_KICKED)
+	{
+		CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+		koopa->SetIsFlipped(true);
+		koopa->SetLevel(KOOPA_LEVEL_NORMAL);
+		koopa->SetState(KOOPA_STATE_DIE);
 	}
 }
 

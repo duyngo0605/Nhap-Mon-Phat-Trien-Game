@@ -55,6 +55,9 @@
     <Filter Include="Header Files\HUD">
       <UniqueIdentifier>{9ef7b225-a556-4f87-b296-ff98ecd92d10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\HUD">
+      <UniqueIdentifier>{ed2e04ca-174b-4f24-9280-e66155bfcee3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -172,6 +175,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data.cpp">
+      <Filter>Source Files\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -300,6 +309,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data.h">
+      <Filter>Header Files\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

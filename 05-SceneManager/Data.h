@@ -11,10 +11,11 @@ public:
 
 	static int coin;
 	static int HP;
-	static int point;
-	static CNode nodesPlayed[7];
+	static int score;
 	static CCard cardGot[3];
 	static int marioLevel;
+	static float marioX;
+	static float marioY;
 	CData(){}
 	~CData(){}
 	static CData* GetInstance()
