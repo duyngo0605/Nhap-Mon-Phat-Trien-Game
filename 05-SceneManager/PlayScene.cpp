@@ -410,6 +410,8 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
+	if (isPause) return;
+
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
@@ -432,11 +434,23 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
+	
+
 	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
-	if(id!=ID_SCENE_INTRO)
+	{
+		if(!isPause||isPause&&dynamic_cast<CBackgroundTile*>(objects[i])|| dynamic_cast<CPlatform*>(objects[i]))
+			objects[i]->Render();
+	}
+	if (isPause)
+	{
+		CSprites* sprites = CSprites::GetInstance();
+		sprites->Get(ID_SPRITE_PAUSE)->Draw(cx+SCREEN_WIDTH/2,cy+SCREEN_HEIGHT/3);
+	}
+	else player->Render();
+	if (id != ID_SCENE_INTRO)
 		CHud::GetInstance()->Render();
-	player->Render();
+	
+
 }
 
 void CPlayScene::AddObject(CGameObject* object)

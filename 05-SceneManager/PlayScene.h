@@ -18,6 +18,7 @@
 #define ID_SCENE_WORLDMAP	2
 #define ID_SCENE_INTRO		3
 
+#define ID_SPRITE_PAUSE		11050
 
 class CPlayScene: public CScene
 {
@@ -25,6 +26,7 @@ protected:
 	// A play scene has to have player, right? 
 
 	float cx, cy; //cameraposition
+	bool isPause = false;
 
 	int numofBackgroundTile = 0;
 	LPGAMEOBJECT player;
@@ -58,6 +60,14 @@ public:
 	void UpdateCamera();
 	void SetPlayer(LPGAMEOBJECT player) { 
 		this->player = player; 
+	}
+	void Pause() {
+		if (isPause) isPause = false;
+		else isPause = true;
+	}
+	bool GetIsPause()
+	{
+		return isPause;
 	}
 
 	float GetCamX() { return cx; }

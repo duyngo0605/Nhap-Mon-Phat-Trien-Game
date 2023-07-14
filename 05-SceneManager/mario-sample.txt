@@ -28,3 +28,4 @@ height 616
 110	textures\Border.png
 120	textures\intro.png
 130	textures\dialogs.png
+140	textures\pause.png

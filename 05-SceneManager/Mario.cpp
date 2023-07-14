@@ -258,6 +258,7 @@ void CMario::EndScene()
 	scene->AddObject(announce1);
 	scene->AddObject(announce2);
 	scene->AddObject(this->card);
+	CData::GetInstance()->SetCard(this->card->GetType());
 
 	
 	
@@ -659,7 +660,7 @@ void CMario::OnCollisionWithCard(LPCOLLISIONEVENT e)
 	isEndScene = true;
 	endScene_start = GetTickCount64();
 	SetState(MARIO_STATE_WALKING_RIGHT);
-	CData::GetInstance()->SetCard(this->card->GetType());
+	
 
 }
 

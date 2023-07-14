@@ -10,8 +10,19 @@
 
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
-	
-	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+
+	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+
+	//pause scene
+	CPlayScene* scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	if (scene->GetId() == ID_SCENE_PLAY)
+	{
+		if (KeyCode == DIK_W)
+			scene->Pause();
+	}
+
+	if (scene->GetIsPause()) return;
+
 	if (dynamic_cast<CArrow*>(((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer()))
 	{
 		CArrow* arrow = dynamic_cast<CArrow*>(((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer());
@@ -36,7 +47,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		return;
 	}
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (CHud::GetInstance()->isRenderStartDialog&&mario->GetIsInWorldMap()) return;
+	if (CHud::GetInstance()->isRenderStartDialog && mario->GetIsInWorldMap()) return;
 	if (mario->GetIsEndScene()) return;
 	switch (KeyCode)
 	{
