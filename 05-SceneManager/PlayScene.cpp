@@ -446,7 +446,6 @@ void CPlayScene::Render()
 		CSprites* sprites = CSprites::GetInstance();
 		sprites->Get(ID_SPRITE_PAUSE)->Draw(cx+SCREEN_WIDTH/2,cy+SCREEN_HEIGHT/3);
 	}
-	else player->Render();
 	if (id != ID_SCENE_INTRO)
 		CHud::GetInstance()->Render();
 	

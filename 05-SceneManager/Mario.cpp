@@ -161,7 +161,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	if (isFlying) ax = nx*MARIO_ACCEL_RUN_X;
 
-	if (abs(vx) >= abs(maxVx)) { vx = maxVx; SetRunLevel(2); }
+	if (abs(vx) >= abs(maxVx)&&abs(maxVx)==MARIO_RUNNING_SPEED) { vx = maxVx; SetRunLevel(2); }
 	else
 	{
 		if (abs(ax) == MARIO_ACCEL_RUN_X) SetRunLevel(1);
@@ -187,6 +187,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	
 	
 	isOnPlatform = false;
+	isOnPipe = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -630,6 +631,7 @@ void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 		{
 			vy = 0;
 			if (e->ny < 0) isOnPlatform = true;
+
 		}
 	}
 	if (e->nx != 0) 
@@ -1193,6 +1195,7 @@ void CMario::SetState(int state)
 			state = MARIO_STATE_IDLE;
 			isSitting = true;
 			vx = 0; vy = 0.0f;
+			ax = 0.0f;
 			y +=MARIO_SIT_HEIGHT_ADJUST;
 		}
 		break;
