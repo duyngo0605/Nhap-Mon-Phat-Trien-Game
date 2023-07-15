@@ -651,6 +651,11 @@ void CMario::UsingPipe(LPCOLLISIONEVENT e)
 		if (canGoUpPipe)
 			SetState(MARIO_STATE_UP_PIPE);
 	}
+	else
+	{
+		if (canGoDownPipe)
+			SetState(MARIO_STATE_SIT);
+	}
 
 }
 
