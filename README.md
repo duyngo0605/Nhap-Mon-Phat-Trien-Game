@@ -3,7 +3,7 @@ Project Nhập môn phá triển Game - SE102.N22.PMCL
 Giảng viên: Đinh Nguyễn Anh Dũng
 Link framework của thầy: https://github.com/dungdna2000/gamedev-intro-tutorials
 
-Đây là app build lại stage 1-1 của game Super Mario Bros 3, sử dụng ngôn ngữ C++ và thư viện DirectX
+Đây là project cá nhân, app build lại stage 1-1 của game Super Mario Bros 3, sử dụng ngôn ngữ C++ và thư viện DirectX
 Điểm đồ án: 8/10
 
 Mô tả một số cơ chế:
