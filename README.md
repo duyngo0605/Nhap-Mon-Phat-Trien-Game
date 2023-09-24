@@ -7,14 +7,14 @@ Link framework của thầy: https://github.com/dungdna2000/gamedev-intro-tutori
 Điểm đồ án: 8/10
 
 Mô tả một số cơ chế:
-- Có 3 level của Mario: dạng nhỏ, dạng lớn và dạng chồn
+- Có 3 level của Mario: dạng nhỏ, dạng lớn và dạng gấu mèo
 - Nếu ăn được item Mushroom hoặc Leaf sẽ tăng level, ngược lại nếu va chạm với kẻ địch trong trạng thái không bất tử sẽ giảm level
 - Người chơi sẽ thua khi Mario bị giảm level khi trong dạng nhỏ hoặc rớt xuống vực
 - Các hành động:
   + Nhảy (phím S)
   + Chạy nhanh (giữ phím A)
-  + Tấn công kẻ địch bằng đuôi trong dạng chồn (phím A)
-  + Bay trong dạng chồn (nhấn liên tục phím A)
+  + Tấn công kẻ địch bằng đuôi trong dạng gấu mèo (phím A)
+  + Bay trong dạng gấu mèo (nhấn liên tục phím A)
   + Sử dụng các phím mũi tên →, ← để di chuyển
   + Ngồi (phím ↓)
 
